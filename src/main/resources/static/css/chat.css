@@ -1,0 +1,367 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-container {
+  width: 400px;  /* 컨테이너 크기 확장 */
+  height: 900px; /* 컨테이너 높이 확장 */
+  text-align: left;
+  padding: 20px;  /* 패딩 추가 */
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.date {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.create-room-button, .invite-code-button {
+  padding: 15px 20px; 
+  font-size: 16px;    
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1;
+  margin: 0 5px; 
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.message.received {
+  background-color: #eee;
+  text-align: left;
+}
+
+.message.sent {
+  background-color: #d1e7dd;
+  text-align: right;
+}
+
+.chat-input {
+  display: flex;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+}
+
+.chat-input button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 350px;  
+  border-radius: 10px; 
+}
+
+.popup-content input {
+  width: calc(100% - 40px);  
+  padding: 15px;  
+  margin: 10px 0;  
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.create-team-button, .confirm-button {
+  width: 100%;
+  padding: 15px; 
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#invite-error-msg {
+  margin-top: 10px;
+  color: red;
+  }
+
+  .wrap {
+    padding: 70px 0;
+    background-color: #A8C0D6;
+    }
+    
+    .wrap .chat {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    }
+    
+    .wrap .chat .icon {
+    position: relative;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #eee;
+    }
+    
+    .wrap .chat .icon i {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    font-size: 2.5rem;
+    color: #aaa;
+    transform: translateX(-50%);
+    }
+    
+    .wrap .chat .textbox {
+    position: relative;
+    display: inline-block;
+    max-width: calc(100% - 70px);
+    padding: 10px;
+    margin-top: 7px;
+    font-size: 13px;
+    border-radius: 10px;
+    }
+    
+    .wrap .chat .textbox::before {
+    position: absolute;
+    display: block;
+    top: 0;
+    font-size: 1.5rem;
+    }
+    
+    .wrap .ch1 .textbox {
+    margin-left: 20px;
+    background-color: #ddd;
+    }
+    
+    .wrap .ch1 .textbox::before {
+    left: -15px;
+    content: "◀";
+    color: #ddd;
+    }
+    
+    .wrap .ch2 {
+    flex-direction: row-reverse;
+    }
+    
+    .wrap .ch2 .textbox {
+    margin-right: 20px;
+    background-color: #F9EB54;
+    }
+    
+    .wrap .ch2 .textbox::before {
+    right: -15px;
+    content: "▶";
+    color: #F9EB54;
+    }
+    .chat-box{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 320px;
+    }
+
+
+
+/*
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#today-date {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 320px;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.create-team-button,
+.create-room-button,
+.invite-code-button,
+.confirm-button {
+  padding: 10px 20px;
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.chat-container {
+  text-align: left;
+  resize: both;
+  overflow: auto;
+  padding: 10px;
+  width: 20%;
+  height: 90%;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.date {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.my-team-title {
+  font-size: 10px;
+  margin-top: 0;
+  text-align: left;
+}
+
+.my-team-container {
+  background-color: #f1f1f1;
+  resize: both;
+  overflow: auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 300px;
+  text-align: left;
+}
+
+.my-team-container h2 {
+  margin-top: 0;
+}
+
+#invite-error-msg {
+  margin-top: 10px;
+}
+*/

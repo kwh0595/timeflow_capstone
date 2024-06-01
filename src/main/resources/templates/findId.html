@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>아이디 찾기</title>
+  <link href="/css/findId.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="find-id-form">
+    <h2>아이디 찾기</h2>
+    <form id="findIdForm">
+      <div class="form-group">
+        <label for="userName">이름:</label>
+        <input type="text" id="userName" required>
+        <span id="name_error_message"></span>
+      </div>
+      <div class="form-group">
+        <label for="birthday_year">생년월일:</label>
+        <select class="box" id="birthday_year" required>
+          <option disabled selected>출생 연도</option>
+        </select>
+        <select class="box" id="birthday_month" required>
+          <option disabled selected>월</option>
+        </select>
+        <select class="box" id="birthday_day" required>
+          <option disabled selected>일</option>
+        </select>
+        <span id="birthday_error_message"></span>
+      </div>
+      <button id="findIdButton">아이디 찾기</button>
+    </form>
+  </div>
+  <div id="popup_message" class="popup"></div>
+  <script src="/js/findId.js"></script>
+</body>
+</html>

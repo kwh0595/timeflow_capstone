@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/chat.css">
+  <title>Chat</title>
+</head>
+<body>
+  <div class="chat-wrapper">
+    <div class="chat-container">
+      <div class="date" id="today-date"></div>
+      <div class="button-container">
+        <button class="create-room-button">방 만들기</button>
+        <button class="invite-code-button">초대코드</button>
+      </div>
+      <div class="chat-box">
+        <div class="message received">
+          <p>!</p>
+        </div>
+        <div class="message sent">
+          <p>?</p>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="메시지를 입력하세요">
+        <button>전송</button>
+      </div>
+    </div>
+  
+    <!-- 방 만들기 팝업창 -->
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <span class="close-button" onclick="closePopup('popup')">&times;</span>
+        <h2>방 만들기</h2>
+        <input type="text" placeholder="방 이름을 입력하세요" id="room-name-input">
+        <button class="create-team-button">팀 생성</button>
+      </div>
+    </div>
+      
+    <!-- 초대코드 입력 팝업창 -->
+    <div class="popup" id="invite-popup">
+      <div class="popup-content">
+        <span class="close-button" onclick="closePopup('invite-popup')">&times;</span>
+        <h2>초대코드</h2>
+        <input type="text" placeholder="초대코드를 입력하세요" id="invite-code">
+        <button class="confirm-button" onclick="checkInviteCode()">확인</button>
+        <p id="invite-error-msg" style="color: red; display: none;">* 다시 입력하십시오.</p>
+      </div>
+    </div>
+    
+    <!-- 코드 생성 팝업창 -->
+    <div class="popup" id="code-popup">
+      <div class="popup-content">
+        <span class="close-button" onclick="closePopup('code-popup')">&times;</span>
+        <h2>초대코드</h2>
+        <p id="generated-code"></p>
+        <button class="confirm-button" onclick="copyCode()">복사</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/chat.js"></script>
+  <script>
+    // 오늘 날짜 표시
+    var todayDateElement = document.getElementById('today-date');
+    var today = new Date();
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    todayDateElement.innerText = today.toLocaleDateString('ko-KR', options);
+  </script>
+</body>
+</html>
+

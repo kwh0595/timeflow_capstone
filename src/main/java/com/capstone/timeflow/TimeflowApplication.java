@@ -3,11 +3,13 @@ package com.capstone.timeflow;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.context.ApplicationContext;
+
 @SpringBootApplication
 public class TimeflowApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TimeflowApplication.class, args);
-	}
+		ApplicationContext context = SpringApplication.run(TimeflowApplication.class, args);
 
+	}
 }

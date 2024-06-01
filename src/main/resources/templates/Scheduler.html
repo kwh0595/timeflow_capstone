@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheduler</title>
+  <link rel="stylesheet" href="/css/scheduler.css">
+</head>
+<body>
+  <!-- 로고 아이콘 -->
+  <div class="logo"></div>
+
+<!-- 상단 현재 날짜 표시 -->
+<div class="date-header">
+  <!-- 날짜 선택 입력 필드 -->
+  <input type="date" id="date-input" onchange="updateDate()" />
+  <div class="week-of-text">WEEK OF</div>
+  <div id="month" class="MONTH"></div>
+  <div id="year" class="year"></div>
+</div>
+
+  <!-- 달력 -->
+  <div class="calendar-container">
+    <!-- 요일 -->
+    <div class="calendar-day">SUN</div>
+    <div class="calendar-day">MON</div>
+    <div class="calendar-day">TUE</div>
+    <div class="calendar-day">WED</div>
+    <div class="calendar-day">THU</div>
+    <div class="calendar-day">FRI</div>
+    <div class="calendar-day">SAT</div>
+
+    <!-- 1일부터 35일까지의 날짜 -->
+    <div class="calendar-date">1</div>
+    <div class="calendar-date">2</div>
+    <div class="calendar-date">3</div>
+    <div class="calendar-date">4</div>
+    <div class="calendar-date">5</div>
+    <div class="calendar-date">6</div>
+    <div class="calendar-date">7</div>
+    <div class="calendar-date">8</div>
+    <div class="calendar-date">9</div>
+    <div class="calendar-date">10</div>
+    <div class="calendar-date">11</div>
+    <div class="calendar-date">12</div>
+    <div class="calendar-date">13</div>
+    <div class="calendar-date">14</div>
+    <div class="calendar-date">15</div>
+    <div class="calendar-date">16</div>
+    <div class="calendar-date">17</div>
+    <div class="calendar-date">18</div>
+    <div class="calendar-date">19</div>
+    <div class="calendar-date">20</div>
+    <div class="calendar-date">21</div>
+    <div class="calendar-date">22</div>
+    <div class="calendar-date">23</div>
+    <div class="calendar-date">24</div>
+    <div class="calendar-date">25</div>
+    <div class="calendar-date">26</div>
+    <div class="calendar-date">27</div>
+    <div class="calendar-date">28</div>
+    <div class="calendar-date">29</div>
+    <div class="calendar-date">30</div>
+    <div class="calendar-date">31</div>
+    <div class="calendar-date"></div>
+    <div class="calendar-date"></div>
+    <div class="calendar-date"></div>
+    <div class="calendar-date"></div>
+    
+  </div>
+
+  <!-- 하단 우측 챗봇 아이콘 -->
+  <!-- <div class="chatbot-icon"></div> -->
+
+  <script src="/js/scheduler.js"></script>
+
+</body>
+</html>
+
+
+
+

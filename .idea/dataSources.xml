@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com" uuid="a7c9fd24-facc-4998-b7f8-4cfa6d25b9b5">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com:3306/timeflowdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

@@ -1,0 +1,108 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.find-id-form {
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.find-id-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    min-height: 70px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 출생 연도 드롭다운 스타일 */
+#birthday_year {
+    box-sizing: border-box;
+    position: absolute;
+    width: 150px;
+    height: 49px;
+    left: 0px; /* .info 내에서의 왼쪽 기준 위치 */
+    top: 20px; /* "생년월일" 텍스트 바로 아래에 위치하도록 조정 */
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+/* 월 드롭다운 스타일 */
+#birthday_month {
+    box-sizing: border-box;
+    position: absolute;
+    width: 150px;
+    height: 49px;
+    left: 176px; /* #birth-year 다음에 위치 */
+    top: 20px; /* 동일한 높이에 위치하도록 조정 */
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+/* 일 드롭다운 스타일 */
+#birthday_day {
+    box-sizing: border-box;
+    position: absolute;
+    width: 150px;
+    height: 49px;
+    left: 350px; /* #birth-month 다음에 위치 */
+    top: 20px; /* 동일한 높이에 위치하도록 조정 */
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc; /* 테두리 스타일 및 색상 */
+    border-radius: 5px; /* 테두리의 모서리를 둥글게 만듦 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
