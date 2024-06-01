@@ -9,19 +9,26 @@ spring:
     password: 20020619
   thymeleaf:
     cache: false
-
+  # spring data jpa 설정
   security:
     user:
       name: user
       password: 1234
-
+  mvc:
+    log-request-details: true
+  config:
+    import: optional:file:.env[.properties]
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: update
-
+  jackson:
+    serialization:
+      indent-output: true
+  profiles:
+    include: secret
   # spring mail sender 설정
   mail:
     host: smtp.gmail.com  #메일 서버의 호스트 주소
@@ -36,3 +43,6 @@ spring:
             enable: true  # STARTTLS 사용 여부
     default-encoding: UTF-8 # 기본 인코딩 설정
     debug: true # 메일 전송 과정의 디버그 정보 출력 여부
+logging:
+  level:
+    org.springframework.web: DEBUG

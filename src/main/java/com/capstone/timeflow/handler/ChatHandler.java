@@ -1,5 +1,6 @@
 package com.capstone.timeflow.handler;
 
+import com.capstone.timeflow.dto.ChatGPTResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -14,11 +15,14 @@ import java.util.List;
 @Log4j2
 public class ChatHandler extends TextWebSocketHandler {
     private static List<WebSocketSession> list = new ArrayList<>();
+
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         log.info("payload : " + payload);
         //페이로드란 전송되는 데이터를 의미한다.
+
         for(WebSocketSession sess: list) {
             sess.sendMessage(message);
         }
@@ -29,7 +33,7 @@ public class ChatHandler extends TextWebSocketHandler {
         list.add(session);
         log.info(session + " 클라이언트 접속");
     }
-    /* Client가 접속 해제 시 호출되는 메서드드 */
+     /*Client가 접속 해제 시 호출되는 메서드드 */
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {

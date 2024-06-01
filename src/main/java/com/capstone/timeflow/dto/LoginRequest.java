@@ -10,7 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class LoginRequest {
+
     private String userMail;
+
     private String userPassword;
     public static LoginRequest toLoginRequest(UserEntity userEntity){
         LoginRequest loginRequest = new LoginRequest();

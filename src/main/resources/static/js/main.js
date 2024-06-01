@@ -32,13 +32,13 @@ function renderCalendar() {
   }
 
 // 이전 달의 마지막 일부 날짜 채우기
-const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
-for (let i = startDayOfWeek - 1; i >= 0; i--) {
-  const dateElement = document.createElement("div");
-  dateElement.classList.add("date", "prev-month");
-  dateElement.textContent = prevMonthDays - i;
-  calendarDates.appendChild(dateElement);
-}
+  const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
+  for (let i = startDayOfWeek - 1; i >= 0; i--) {
+    const dateElement = document.createElement("div");
+    dateElement.classList.add("date", "prev-month");
+    dateElement.textContent = prevMonthDays - i;
+    calendarDates.appendChild(dateElement);
+  }
 
   // 현재 달의 날짜
   for (let i = 1; i <= daysInMonth; i++) {
@@ -55,7 +55,7 @@ for (let i = startDayOfWeek - 1; i >= 0; i--) {
     dateElement.classList.add("date", "next-month");
     dateElement.textContent = i + 1;
     calendarDates.appendChild(dateElement);
-}
+  }
   /* 
   1. for 문을 이용하여 현재 월의 총 일 수만큼 반복하여 월의 날짜를 순서대로 표시한다.
   2. const dateElement = document.createElement("div");를 통해 날짜를 나타내는 div 요소를 생성한다.

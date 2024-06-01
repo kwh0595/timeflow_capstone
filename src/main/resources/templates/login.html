@@ -1,30 +1,38 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/login.css" />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
     />
     <title>로그인</title>
 </head>
 <body>
-    <div class="container">
-        <h2>TIMEFLOW</h2>
+<div class="container">
+    <h2>TIMEFLOW</h2>
+    <form th:action="@{/main}" method="POST" th:object="${LoginRequest}">
         <div class="login_input">
-            <input type="text" name="id" placeholder="ID" />
-            <input type="password" name="passwd" placeholder="PASSWORD" />
+            <!-- userMail 필드와 바인딩 -->
+            <input type="text" th:field="*{userMail}" placeholder="ID" />
+            <!-- userPassword 필드와 바인딩 -->
+            <input type="password" th:field="*{userPassword}" placeholder="PASSWORD" />
+        </div>
+        <div th:if="${#fields.hasGlobalErrors()}">
+        <br/>
+        <div class="error-class" th:each="error : ${#fields.globalErrors()}" th:text="${error}" />
         </div>
         <div class="submit_button">
-            <input type="submit" value="Login" onclick="location.href = 'main.html'" />
+            <input type="submit" value="Login" />
         </div>
-        <div class="links" style="display: flex; justify-content: space-around;">
-            <a href="/user/signup">회원가입</a>
-            <a href="/user/findId">ID 찾기</a>
-            <a href="/user/findPassword">비밀번호 찾기</a>
-        </div>
+    </form>
+    <div class="links" style="display: flex; justify-content: space-around;">
+        <a href="/user/signup">회원가입</a>
+        <a href="/user/findId">ID 찾기</a>
+        <a href="/user/findPassword">비밀번호 찾기</a>
     </div>
+</div>
 </body>
 </html>

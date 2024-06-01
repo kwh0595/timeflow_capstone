@@ -8,27 +8,17 @@
         /* 스크롤 가능하도록 설정 */
         .privacyPolicy {
             height: 150px;
-            /* 약관 칸의 높이를 지정하여 스크롤이 가능하도록 함 */
             overflow: auto;
-            /* 내용이 벗어날 경우 스크롤이 생기도록 함 */
             border: 1px solid #ccc;
-            /* 경계선 추가 */
             padding: 10px;
-            /* 내부 여백 추가 */
             margin-top: 20px;
-            /* 위쪽 여백 추가 */
         }
         .servicePolicy{
             height: 150px;
-            /* 약관 칸의 높이를 지정하여 스크롤이 가능하도록 함 */
             overflow: auto;
-            /* 내용이 벗어날 경우 스크롤이 생기도록 함 */
             border: 1px solid #ccc;
-            /* 경계선 추가 */
             padding: 10px;
-            /* 내부 여백 추가 */
             margin-top: 20px;
-            /* 위쪽 여백 추가 */
         }
     </style>
 </head>
@@ -47,14 +37,25 @@
         </div>
         <div class="email">
             <h3 class="list">아이디<span id="Idsu"></span></h3>
-            <input id="email" name="userMail" type="text" placeholder="이메일을 입력해 주세요.">
+            <!-- Flexbox를 사용하는 div 추가 -->
+            <div class="email-container">
+                <input id="email" name="userMail" type="text" placeholder="이메일을 입력해 주세요.">
+                <button type="button" class="email_button" onclick="verifyEmail()">Email 인증하기</button>
+            </div>
             <div id="emailError" class="error"></div>
         </div>
+
+        <div class = "success-message hide"></div>
+        <div class = "failure-message hide">올바른 이메일 형식이 아닙니다.</div>
+
         <div class="password">
             <h3 class="list">비밀번호<span id="passwordsu"></span></h3>
             <input id="password" name="userPassword" type="password" placeholder="비밀번호를 입력해 주세요.">
             <div id="passwordError" class="error"></div>
         </div>
+
+        <div class = "strongPassword-message hide"> 6자~20자,숫자,대소문자,특수문자(@$!%*#?&)를 사용하세요.</div>
+
         <div class ="info" id = "info__birth">
             <h3 class = "list">생년월일<span id ="birth_date"></span></h3>
             <select class = "box" id = "birth-year">
@@ -373,7 +374,7 @@
 
                 회사는 이용자의 회사 서비스에 대한 회원가입을 위하여 다음과 같은 정보를 수집합니다.
 
-                필수 수집 정보: 이메일 주소, 비밀번호, 이름 및 생년월일
+                필수 수집 정보: 이메일 주소, 비밀번호, 이름 및 생년월일
 
 
 
@@ -501,7 +502,7 @@
 
                 제17조(개인정보 자동 수집 장치의 설치·운영 및 거부에 관한 사항)
 
-                회사는 이용자에게 개별적인 맞춤서비스를 제공하기 위해 이용 정보를 저장하고 수시로 불러오는 개인정보 자동 수집장치(이하 '쿠키')를 사용합니다. 쿠키는 웹사이트를 운영하는데 이용되는 서버(http)가 이용자의 웹브라우저(PC 및 모바일을 포함)에게 보내는 소량의 정보이며 이용자의 저장공간에 저장되기도 합니다.  
+                회사는 이용자에게 개별적인 맞춤서비스를 제공하기 위해 이용 정보를 저장하고 수시로 불러오는 개인정보 자동 수집장치(이하 '쿠키')를 사용합니다. 쿠키는 웹사이트를 운영하는데 이용되는 서버(http)가 이용자의 웹브라우저(PC 및 모바일을 포함)에게 보내는 소량의 정보이며 이용자의 저장공간에 저장되기도 합니다.
                 이용자는 쿠키 설치에 대한 선택권을 가지고 있습니다. 따라서 이용자는 웹브라우저에서 옵션을 설정함으로써 모든 쿠키를 허용하거나, 쿠키가 저장될 때마다 확인을 거치거나, 아니면 모든 쿠키의 저장을 거부할 수도 있습니다.
                 다만, 쿠키의 저장을 거부할 경우에는 로그인이 필요한 회사의 일부 서비스는 이용에 어려움이 있을 수 있습니다.
 
@@ -545,7 +546,7 @@
             <button id="signUpButton" onclick="location.href = 'logIn.html'">가입하기</button>
         </div>
     </div>
-    </form>
+</form>
 </body>
-<script src="../static/js/signUp.js"></script>
+<script src="/js/signUp.js"></script>
 </html>

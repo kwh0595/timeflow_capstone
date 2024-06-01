@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="timeflowdb@timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com" uuid="56c2dc44-453a-4ca0-8af7-e5e3d042ecf4">
-      <driver-ref>mysql_aurora_aws</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>software.aws.rds.jdbc.mysql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql:aws://timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com:3306/timeflowdb</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="timeflowdb@timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com" uuid="144f10df-da6c-4143-95d3-2e3e9344a840">
+    <data-source source="LOCAL" name="timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com" uuid="a7c9fd24-facc-4998-b7f8-4cfa6d25b9b5">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com:3306/timeflowdb?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
+      <jdbc-url>jdbc:mysql://timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com:3306/timeflowdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

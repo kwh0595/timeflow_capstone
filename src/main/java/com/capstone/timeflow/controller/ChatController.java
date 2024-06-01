@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Log4j2
 public class ChatController {
 
-    @GetMapping("/chat")
+    @GetMapping("/team/chat")
     public String chatGET(@SessionAttribute(name = "userName", required = false) String userName, Model model){
         log.info("@ChatController, chat GET()");
         System.out.println(userName);
         return "chating";
+    }
+    @GetMapping("/chat")
+    public String chatpage(){
+        return "chat";
     }
 }

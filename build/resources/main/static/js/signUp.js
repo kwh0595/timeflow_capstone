@@ -1,59 +1,61 @@
+//아이디
+let elInputUsername = document.querySelector('#email');
+let elSuccessMessage = document.querySelector('.success-message');
+let elFailureMessage = document.querySelector('.failure-message');
 
-// 가입부분 체크
+//비밀번호
+let elInputPassword = document.querySelector('#password');
+let elStrongPasswordMessage = document.querySelector('.strongPassword-message');
 
-function signUpCheck(){
+//버튼 비활성화
+var elSignUpButton = document.getElementById('signUpButton');
 
-  let email = document.getElementById("email").value
-  let name = document.getElementById("name").value
-  let password = document.getElementById("password").value
-  let passwordCheck = document.getElementById("passwordCheck").value
-  let area = document.getElementById("area").value
-  let gender_man = document.getElementById("gender_man").checked
-  let gender_woman = document.getElementById("gender_woman").checked
-  let check = true;
+function strongPassword(str) {
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,20}$/.test(str);
+}
 
-  // 이메일확인
-  if(email.includes('@')){
-    let emailId = email.split('@')[0]
-    let emailServer = email.split('@')[1]
-    if(emailId === "" || emailServer === ""){
-      document.getElementById("emailError").innerHTML="이메일이 올바르지 않습니다."
-      check = false
+elInputUsername.onkeyup = function () {
+  // 이메일 주소가 올바른 형식인지 확인
+  var isValidEmail = validateEmail(elInputUsername.value);
+
+  // 이메일 주소가 올바른 경우
+  if (isValidEmail) {
+    elSuccessMessage.classList.remove('hide');
+    elFailureMessage.classList.add('hide');
+    elSignUpButton.disabled = false; // 버튼 활성화
+  } else {
+    elSuccessMessage.classList.add('hide');
+    elFailureMessage.classList.remove('hide');
+    elSignUpButton.disabled = true; // 버튼 비활성화
+  }
+}
+
+// 이메일 주소 유효성 검사 함수
+function validateEmail(email) {
+  // 이메일 주소 유효성을 확인하는 코드 작성 (정규표현식 등)
+  // 유효한 이메일 주소인 경우 true 반환, 그렇지 않으면 false 반환
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+elInputPassword.onkeyup = function () {
+  // console.log(elInputPassword.value);
+  // 값을 입력한 경우
+  if (elInputPassword.value.length !== 0) {
+    if(strongPassword(elInputPassword.value)) {
+      elStrongPasswordMessage.classList.add('hide'); // 실패 메시지가 가려져야 함
+      elSignUpButton.disabled=false;
     }
-    else{
-      document.getElementById("emailError").innerHTML=""
+    else {
+      elStrongPasswordMessage.classList.remove('hide'); // 실패 메시지가 보여야 함
+      elSignUpButton.disabled=true;
     }
-  }else{
-    document.getElementById("emailError").innerHTML="이메일이 올바르지 않습니다."
-    check = false
   }
-
-
-  // 이름확인
-  if(name===""){
-    document.getElementById("nameError").innerHTML="이름이 올바르지 않습니다."
-    check = false
-  }else{
-    document.getElementById("nameError").innerHTML=""
-  }
-
-  // 성별체크확인
-  if(!gender_man && !gender_woman){
-    document.getElementById("genderError").innerHTML="성별을 선택해주세요."
-    check = false
-  }else{
-    document.getElementById("genderError").innerHTML=""
-  }
-  
-  if(check){
-    document.getElementById("emailError").innerHTML=""
-    document.getElementById("nameError").innerHTML=""
-    document.getElementById("passwordError").innerHTML=""
-    
-    //비동기 처리이벤트
-    setTimeout(function() {
-      alert("가입이 완료되었습니다.")
-  },0);
+      // 값을 입력하지 않은 경우 (지웠을 때)
+  // 모든 메시지를 가린다.
+  else {
+    elStrongPasswordMessage.classList.add('hide');
+    elSignUpButton.disabled=true;
   }
 };
 
@@ -185,5 +187,31 @@ function Click2(){
   }
   if(agree_data2.length!=0){
     location.replace("search_list.php?id="+agree_data2);
+  }
+}
+function change_btn(event) {
+  var buttons = document.querySelectorAll('.genders');
+  buttons.forEach(button => button.classList.remove('selected')); // 기존 선택된 버튼의 스타일 제거
+
+  var genderText = event.target.textContent;
+  event.target.classList.add('selected'); // 클릭된 버튼에 'selected' 클래스 추가
+  document.getElementById('userSex').value = genderText;
+  document.getElementById('sex').innerText = genderText;
+
+  localStorage.setItem('selectedGender', genderText); // 선택된 성별 localStorage에 저장
+}
+
+window.onload = function() {
+  var savedGender = localStorage.getItem('selectedGender');
+  if (savedGender) {
+    var buttons = document.querySelectorAll('.genders');
+    document.getElementById('userSex').value = savedGender;
+    document.getElementById('sex').innerText = savedGender;
+
+    buttons.forEach(button => {
+      if (button.textContent === savedGender) {
+        button.classList.add('selected'); // 저장된 성별에 해당하는 버튼에 'selected' 클래스 추가
+      }
+    });
   }
 }
