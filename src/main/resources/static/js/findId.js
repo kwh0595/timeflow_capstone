@@ -7,6 +7,7 @@ document.getElementById('findIdButton').addEventListener('click', function(event
   findId();
 });
 
+
 // 출생 연도 옵션 생성
 var birthYearEl = document.getElementById('birthday_year');
 for (var i = 1950; i <= 2024; i++) {
@@ -15,6 +16,7 @@ for (var i = 1950; i <= 2024; i++) {
   option.textContent = i;
   birthYearEl.appendChild(option);
 }
+
 
 // 월 옵션 생성
 var birthMonthEl = document.getElementById('birthday_month');
