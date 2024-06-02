@@ -69,14 +69,13 @@ function validateForm() {
   var month = encodeURIComponent(monthInput);
   var day = encodeURIComponent(dayInput);
 
-// 월과 일이 한 자리 숫자일 경우, 앞에 '0'을 추가합니다.
+  // 월과 일이 한 자리 숫자일 경우, 앞에 '0'을 추가합니다.
   if (month.length === 1) {
     month = '0' + month;
   }
   if (day.length === 1) {
     day = '0' + day;
   }
-
 
   // AJAX 요청 보내기
   var xhr = new XMLHttpRequest();
@@ -85,22 +84,34 @@ function validateForm() {
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var inputName = xhr.responseText.trim();
-      if(inputName){
-        document.querySelector('.found-success .found-id').textContent = inputName;
-        document.querySelector('.found-success').style.display='block';
-        document.querySelector('.found-fail').style.display='none';
+      var foundSuccess = document.querySelector('.found-success');
+      var foundFail = document.querySelector('.found-fail');
+
+      if (foundSuccess && foundFail) {
+        if(inputName){
+          var foundId = foundSuccess.querySelector('.found-id');
+          if (foundId) {
+            foundId.textContent = inputName;
+          }
+          foundSuccess.style.display='block';
+          foundFail.style.display='none';
+        } else {
+          foundFail.style.display='block';
+          foundSuccess.style.display='none';
+        }
       }
-      else{
-        document.querySelector('.found-fail').style.display='block';
-        document.querySelector('.found-success').style.display='none';
-      }
+
+      // AJAX 요청이 완료된 후 페이지 이동
+      window.location.href = 'findIdResult.html';
     }
   };
-  xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + encodeURIComponent(yearInput) + '-' + encodeURIComponent(month) + '-' +encodeURIComponent(day));
+  xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);
+
   // 에러 메시지 초기화
   document.getElementById('name_error_message').innerHTML = "";
   document.getElementById('birthday_error_message').innerHTML = "";
 }
+
 function findId(){
   validateForm();
 }
