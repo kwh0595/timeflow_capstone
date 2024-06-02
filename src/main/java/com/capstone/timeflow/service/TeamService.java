@@ -10,7 +10,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Random;
 
 @Service
@@ -50,14 +54,24 @@ public class TeamService {
         return teamRepository.findByTeamId(teamId).orElse(null);
     }
 
-    @Transactional
-    public void deleteTeam(Long teamId) {
-        try {
-            teamRepository.deleteById(teamId);
-        } catch (EntityNotFoundException e) {
-            // 예외 처리 로직
-            throw e; // 또는 새로운 예외로 변환하여 throw
+    public void deleteTeam(TeamEntity teamEntity, UserEntity userEntity) {
+        // 사용자의 role 확인
+        RoleEntity role = roleRepository.findByTeamIdAndUserId(teamEntity, userEntity);
+        if (role == null || !role.getRole().equals("LEADER")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "팀 삭제 권한이 없습니다.");
         }
+
+        // 팀 삭제 로직 실행
+        deleteTeamAndRelatedData(teamEntity);
+    }
+
+
+    private void deleteTeamAndRelatedData(TeamEntity teamId) {
+        // 관련 데이터 삭제
+        roleRepository.deleteByTeamId(teamId);
+
+        // 팀 삭제
+        teamRepository.deleteByTeamId(teamId);
     }
 
     private String generateInvitationCode() {
