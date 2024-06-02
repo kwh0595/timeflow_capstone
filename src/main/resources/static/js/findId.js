@@ -104,7 +104,7 @@ function validateForm() {
       }
 
       // AJAX 요청이 완료된 후 페이지 이동
-      window.location.href = 'findIdResult.html';
+      window.location.href = "findIdResult.html";
     }
   };
   xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);

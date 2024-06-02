@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
@@ -16,20 +15,25 @@ public class FindIdResultController {
 
     @Autowired
     private FindEmailService findEmailService;
+
+    @GetMapping("/user/findIdResult")
+    public String showFindIdResult(Model model) {
+        return "findIdResult";
+    }
     @PostMapping("/user/findId")
     public String findIdResult(@RequestParam("userName") String userName,
                                @RequestParam("birthday_year") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate userBirth,
-                               Model model) {
+                               RedirectAttributes redirectAttributes) {
 
         try {
             String userEmail = findEmailService.findEmailByNameAndBirthDate(userName, userBirth);
-            model.addAttribute("userEmail", userEmail); // 사용자 이메일 추가
-            model.addAttribute("isSuccess", true); // 성공 상태 추가
-            System.out.println(userEmail);
-            return "findIdResult"; // 사용자 이메일을 출력할 페이지
+            System.out.println("userEmail: "+userEmail);
+            redirectAttributes.addAttribute("userEmail", userEmail);
+            redirectAttributes.addAttribute("isSuccess", true);
+            return "redirect:/user/findIdResult";
         } catch (IllegalArgumentException e) {
-            model.addAttribute("isSuccess", false); // 실패 상태 추가
-            return "findIdResult"; // 오류 메시지를 출력할 페이지
+            redirectAttributes.addAttribute("isSuccess", false);
+            return "redirect:/user/findIdResult";
         }
     }
 }
