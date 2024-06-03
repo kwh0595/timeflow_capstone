@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa; /* 밝은 배경색 추가 */
+}
+
+.find-id-result {
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff; /* 배경색을 흰색으로 설정 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+}
+
+.find-id-result h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.find-id-result p {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    color: #666; /* 글자 색상 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+#foundId {
+    font-weight: bold; /* 아이디를 굵게 표시 */
+    color: #007bff; /* 아이디 색상 파란색으로 설정 */
+}
+
+button#backToLoginButton {
+    display: block; /* 버튼을 블록 요소로 설정 */
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 버튼 글자색 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* 버튼 상단 여백 */
+}
+
+button#backToLoginButton:hover {
+    background-color: #0056b3; /* 버튼 호버 시 색상 변경 */
+}
