@@ -81,14 +81,14 @@ function validateForm() {
 
   // AJAX 요청 보내기
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/user/findId', true);
+  xhr.open('POST', '/user/findIdResult', true);
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var inputName = xhr.responseText.trim();
       var foundSuccess = document.querySelector('.found-success');
       var foundFail = document.querySelector('.found-fail');
-
+      console.log(xhr.responseText);
       if (foundSuccess && foundFail) {
         if(inputName){
           var foundId = foundSuccess.querySelector('.found-id');
@@ -101,10 +101,12 @@ function validateForm() {
           foundFail.style.display='block';
           foundSuccess.style.display='none';
         }
+      } else {
+        console.log("error");
       }
 
       // AJAX 요청이 완료된 후 페이지 이동
-      window.location.href = 'findIdResult.html';
+      window.location.href = "findIdResult";
     }
   };
   xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);
