@@ -36,20 +36,17 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable) // 로컬에서 확인하기 위해 csrf 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/join", "/scheduler","/schedule","/main","/chat",
-                                "/user/signup", "/user/findId", "/user/findIdResult","/team/chat","/ws/team/chat", "/user/findPassword","/setSessionUsername","/getSessionUsername", "/send", "/gpt-chat").permitAll() // 해당 경로에서는 로그인 없이 접근 가능
-                        .requestMatchers("/favicon.ico").permitAll()
-                        .requestMatchers("/login/info").permitAll()
+                        .requestMatchers("/","/user/finId","user/signup","user/findPassword").permitAll()// 해당 경로에서는 로그인 없이 접근 가능
                         .requestMatchers("/team/create").authenticated()
-                        .requestMatchers("/api/schedules").permitAll() // /api/schedules 경로에 대한 접근을 허용
-                        .requestMatchers("/team/delete/{teamId}").authenticated() // 로그인 인증이 필요한 경로 추가
-                        .requestMatchers("/api/schedules/{sid}").permitAll() // /api/schedules/{sid} 수정 삭제 경로에 대한 접근을 허용
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form // 성공하면 메인 페이지로 이동
                         .loginPage("/")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("userMail")
+                        .passwordParameter("userPassword")
                         .permitAll()
-                        .defaultSuccessUrl("/login", true)
+                        .defaultSuccessUrl("/main", true)
                 )
                 .logout(LogoutConfigurer::permitAll);
         return http.build();

@@ -1,8 +1,13 @@
 package com.capstone.timeflow.handler;
 
+import com.capstone.timeflow.controller.GptController;
+import com.capstone.timeflow.dto.ChatGPTRequest;
 import com.capstone.timeflow.dto.ChatGPTResponse;
+import com.capstone.timeflow.service.ChatGptService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,13 +21,16 @@ import java.util.List;
 public class ChatHandler extends TextWebSocketHandler {
     private static List<WebSocketSession> list = new ArrayList<>();
 
+    @Autowired
+    private ChatGptService chatGptService;
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         log.info("payload : " + payload);
         //페이로드란 전송되는 데이터를 의미한다.
 
-        for(WebSocketSession sess: list) {
+        for (WebSocketSession sess : list) {
             sess.sendMessage(message);
         }
     }

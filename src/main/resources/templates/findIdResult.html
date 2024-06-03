@@ -1,19 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>이메일 찾기 결과</title>
+    <meta charset="UTF-8">
+    <title>아이디 찾기</title>
+    <script>
+        async function findUserId() {
+            try {
+                const response = await fetch('/user/findId');
+                const data = await response.json();
+
+                if (data.success) {
+                    document.querySelector('.found-success .found-id').textContent = data.userName;
+                    document.querySelector('.found-success').style.display = 'block';
+                    document.querySelector('.found-fail').style.display = 'none';
+                } else {
+                    document.querySelector('.found-success').style.display = 'none';
+                    document.querySelector('.found-fail').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching user ID:', error);
+                document.querySelector('.found-success').style.display = 'none';
+                document.querySelector('.found-fail').style.display = 'block';
+            }
+        }
+
+        function login() {
+            window.location.href = '/templates/login.html';
+        }
+
+        function joinin() {
+            window.location.href = '/templates/signUp.html';
+        }
+        window.onload = findUserId;
+    </script>
 </head>
 <body>
-    <h1>이메일 찾기 결과</h1>
-
-    <th:block th:if="${isSuccess}">
-        <p>회원님의 이메일은 <span th:text="${userEmail}"></span> 입니다.</p>
-    </th:block>
-
-    <th:block th:unless="${isSuccess}">
-        <p>죄송합니다. 회원님의 정보를 찾을 수 없습니다.</p>
-    </th:block>
-
-    <a href="/user/findId">다시 찾기</a>
+    <div class="found-container">
+        <div class="found-success" style="display:none;">
+            <h4>회원님의 아이디는</h4>
+            <div class="found-id"></div>
+            <h4>입니다.</h4>
+            <button onclick="login()">로그인</button>
+        </div>
+        <div class="found-fail" style="display:none;">
+            <h4>등록된 정보가 없습니다.</h4>
+            <button onclick="joinin()">회원가입</button>
+        </div>
+    </div>
 </body>
 </html>
