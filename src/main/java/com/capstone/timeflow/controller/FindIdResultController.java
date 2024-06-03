@@ -16,24 +16,35 @@ public class FindIdResultController {
     @Autowired
     private FindEmailService findEmailService;
 
-    @GetMapping("/user/findIdResult")
-    public String showFindIdResult(Model model) {
+/*    @GetMapping("/user/findIdResult")
+    public String findIdResult(@RequestParam String userEmail, @RequestParam boolean isSuccess, Model model) {
+
+        model.addAttribute("userEmail", userEmail);
+        model.addAttribute("isSuccess", isSuccess);
+        System.out.println("model = " + model);
         return "findIdResult";
-    }
-    @PostMapping("/user/findId")
-    public String findIdResult(@RequestParam("userName") String userName,
+    }*/
+
+
+    @PostMapping("/user/findIdResult")
+    public String findIdResult2(@RequestParam("userName") String userName,
                                @RequestParam("birthday_year") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate userBirth,
-                               RedirectAttributes redirectAttributes) {
+                               Model model) {
 
         try {
             String userEmail = findEmailService.findEmailByNameAndBirthDate(userName, userBirth);
             System.out.println("userEmail: "+userEmail);
-            redirectAttributes.addAttribute("userEmail", userEmail);
-            redirectAttributes.addAttribute("isSuccess", true);
-            return "redirect:/user/findIdResult";
+            model.addAttribute("userEmail", userEmail);
+            model.addAttribute("isSucce ss", true);
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addAttribute("isSuccess", false);
-            return "redirect:/user/findIdResult";
+            model.addAttribute("isSuccess", false);
         }
+        return "findIdResult";
     }
+
+    @GetMapping("/user/findIdResult")
+    public String showFindIdResultPage() {
+        return "findIdResult"; // "findIdResult"는 GET 요청 시 결과를 보여줄 view 이름입니다.
+    }
+
 }
