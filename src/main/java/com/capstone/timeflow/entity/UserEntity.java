@@ -1,5 +1,6 @@
 package com.capstone.timeflow.entity;
 
+import com.capstone.timeflow.dto.Role;
 import com.capstone.timeflow.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,6 +44,9 @@ public class UserEntity {
     @Column(name = "userJoinDate")
     private LocalDateTime userJoinDate = LocalDateTime.now(); // 현재 시간으로 초기화
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @ManyToOne
     private TeamEntity teamEntity;
 
@@ -51,7 +55,8 @@ public class UserEntity {
         userEntity.setUserName(userDTO.getUserName()); //이름
         userEntity.setUserMail(userDTO.getUserMail()); // 메일
         userEntity.setUserPassword(userDTO.getUserPassword()); //비밀번호
-        userEntity.setUserBirth(userDTO.getUserBirth());    //생년월일
+        userEntity.setUserBirth(userDTO.getUserBirth());
+        userEntity.setRole(Role.ROLE_USER);//생년월일
         // 가입날짜가 null이면 현재 시간을 사용
         if (userDTO.getUserJoinDate() == null) {
             userEntity.setUserJoinDate(LocalDateTime.now());

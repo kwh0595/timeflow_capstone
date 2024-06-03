@@ -27,8 +27,6 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  profiles:
-    include: secret
   # spring mail sender 설정
   mail:
     host: smtp.gmail.com  #메일 서버의 호스트 주소
