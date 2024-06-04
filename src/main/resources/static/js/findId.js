@@ -88,7 +88,7 @@ function validateForm() {
       var inputName = xhr.responseText.trim();
       var foundSuccess = document.querySelector('.found-success');
       var foundFail = document.querySelector('.found-fail');
-      console.log(xhr.responseText);
+
       if (foundSuccess && foundFail) {
         if(inputName){
           var foundId = foundSuccess.querySelector('.found-id');
@@ -101,12 +101,10 @@ function validateForm() {
           foundFail.style.display='block';
           foundSuccess.style.display='none';
         }
-      } else {
-        console.log("error");
       }
 
       // AJAX 요청이 완료된 후 페이지 이동
-      window.location.href = "findIdResult";
+      window.location.href = 'findIdResult';
     }
   };
   xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);
