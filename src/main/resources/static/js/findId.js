@@ -81,7 +81,7 @@ function validateForm() {
 
   // AJAX 요청 보내기
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/user/findId', true);
+  xhr.open('POST', '/user/findIdResult', true);
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -104,7 +104,7 @@ function validateForm() {
       }
 
       // AJAX 요청이 완료된 후 페이지 이동
-      window.location.href = "findIdResult.html";
+      window.location.href = 'findIdResult';
     }
   };
   xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);
