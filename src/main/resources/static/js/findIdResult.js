@@ -1,16 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // AJAX 요청으로 서버에서 아이디를 받아옵니다.
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/user/findIdResult', true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var foundId = xhr.responseText.trim();
-            document.getElementById('foundId').textContent = foundId;
-        }
-    };
-    xhr.send();
+    fetch('/user/findIdResult/result')
+        .then(response => {
+            console.log('응답 상태:', response.status); // HTTP 상태 코드 확인
+            if (!response.ok) {
+                throw new Error('연결 안됨 ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('서버 응답:', data);
+            document.getElementById('foundId').textContent = data.userEmail;
+        })
+        .catch(error => {
+            console.error('Error:', error); // 에러 처리
+        });
 
     document.getElementById('backToLoginButton').addEventListener('click', function() {
-        window.location.href = 'login.html';
+        window.location.href = '/';
     });
 });
