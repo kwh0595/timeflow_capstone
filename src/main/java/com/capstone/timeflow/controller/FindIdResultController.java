@@ -1,8 +1,11 @@
 package com.capstone.timeflow.controller;
 
+import com.capstone.timeflow.dto.UserRequest;
+import com.capstone.timeflow.dto.UserResponse;
 import com.capstone.timeflow.service.FindEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +14,36 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/user/findIdResult")
+@RequestMapping("/user")
 public class FindIdResultController {
 
     @Autowired
     private FindEmailService findEmailService;
 
+    public FindIdResultController(FindEmailService findEmailService) {
+        this.findEmailService = findEmailService;
+    }
+
+    @PostMapping("/findIdResult")
+    public ResponseEntity<UserResponse> findId(@RequestParam("userName") String userName,
+                                               @RequestParam("birthday_year") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate userBirth) {
+        String result = findEmailService.findEmailByNameAndBirthDate(userName, userBirth);
+        System.out.println("result: " + result);
+
+        UserResponse response = new UserResponse();
+        response.setUserEmail(result);
+        System.out.println("response: "+response.getUserEmail());
+
+        return ResponseEntity.ok(response);
+    }
+/*
     @PostMapping
     public String findIdResult(@RequestParam("userName") String userName,
                                @RequestParam("birthday_year") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate userBirth,
                                RedirectAttributes redirectAttributes) {
 
+        String userEmail = findEmailService.findEmailByNameAndBirthDate(userName, userBirth);
         try {
-            String userEmail = findEmailService.findEmailByNameAndBirthDate(userName, userBirth);
             System.out.println("userEmail: "+userEmail);
             redirectAttributes.addAttribute("userName", userName);
             redirectAttributes.addAttribute("userBirth", userBirth);
@@ -35,12 +55,16 @@ public class FindIdResultController {
             redirectAttributes.addAttribute("userName", userName);
             redirectAttributes.addAttribute("userBirth", userBirth);
             redirectAttributes.addAttribute("userEmail", "모델을 받지 못했습니다");
-            //model.addAttribute("isSuccess", false);
+            //model.addAttribute("isSuccess", false);DispatcherServlet        : POST "/user/findIdResult", parameters={userName:[김여정], birthday_year:[2002-06-19]}
+            //2024-06-05T00:00:02.653+09:00 DEBUG 9656 --- [io-8082-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.capstone.timeflow.controller.FindIdResultController#findId(String, LocalDate)
+            //Hibernate: select ue1_0.user_id,ue1_0.role,ue1_0.team_entity_team_id,ue1_0.user_age,ue1_0.user_birth,ue1_0.user_join_date,ue1_0.user_mail,ue1_0.user_name,ue1_0.user_password,ue1_0.user_sex from user ue1_0 where ue1_0.user_name=? and ue1_0.user_birth=?
+            //result: ehxhfl643@naver.com
+            //response: com.capstone.timeflow.dto.UserResponse@7a681de0
         }
-        return "redirect:/user/findIdResult/result";
+        return "redirect:/user/findIdResult";
     }
 
-    @GetMapping("/result")
+    @GetMapping
     public String showFindIdResultPage(Model model, @RequestParam(required = false) String userName,
                                        @RequestParam(required = false) LocalDate userBirth,
                                        @RequestParam(required = false) String userEmail) {
@@ -50,11 +74,12 @@ public class FindIdResultController {
             model.addAttribute("userBirth", userBirth);
             model.addAttribute("userEmail", "정보가 없습니다."); // 기본 메시지 설정
         } else {
-            System.out.println("good");
+            System.out.println(userName + userBirth + userEmail);
             model.addAttribute("userName", userName);
             model.addAttribute("userBirth", userBirth);
             model.addAttribute("userEmail", userEmail);
         }
         return "findIdResult"; // "findIdResult"는 GET 요청 시 결과를 보여줄 view 이름입니다.
     }
+*/
 }

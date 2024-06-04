@@ -1,5 +1,6 @@
 package com.capstone.timeflow.service;
 
+import com.capstone.timeflow.dto.UserRequest;
 import com.capstone.timeflow.entity.UserEntity;
 import com.capstone.timeflow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
