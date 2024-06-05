@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/user/findIdResult/result')
+    fetch('/user/findIdResult')
         .then(response => {
             console.log('응답 상태:', response.status); // HTTP 상태 코드 확인
             if (!response.ok) {

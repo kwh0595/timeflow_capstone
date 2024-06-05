@@ -7,7 +7,6 @@ document.getElementById('findIdButton').addEventListener('click', function(event
   findId();
 });
 
-
 // 출생 연도 옵션 생성
 var birthYearEl = document.getElementById('birthday_year');
 for (var i = 1950; i <= 2024; i++) {
@@ -16,7 +15,6 @@ for (var i = 1950; i <= 2024; i++) {
   option.textContent = i;
   birthYearEl.appendChild(option);
 }
-
 
 // 월 옵션 생성
 var birthMonthEl = document.getElementById('birthday_month');
@@ -33,7 +31,7 @@ function updateDays() {
   var month = document.getElementById('birthday_month').value;
   var dayEl = document.getElementById('birthday_day');
   dayEl.innerHTML = '<option disabled selected>일</option>';
-  var daysInMonth = new Date(year, month-1, 0).getDate();
+  var daysInMonth = new Date(year, month, 0).getDate();
   for (var i = 1; i <= daysInMonth; i++) {
     var option = document.createElement('option');
     option.value = i;
@@ -84,29 +82,30 @@ function validateForm() {
   xhr.open('POST', '/user/findIdResult', true);
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      var inputName = xhr.responseText.trim();
-      var foundSuccess = document.querySelector('.found-success');
-      var foundFail = document.querySelector('.found-fail');
-
-      if (foundSuccess && foundFail) {
-        if(inputName){
-          var foundId = foundSuccess.querySelector('.found-id');
-          if (foundId) {
-            foundId.textContent = inputName;
-          }
-          foundSuccess.style.display='block';
-          foundFail.style.display='none';
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        if (response.userEmail) {
+          popupMessage.textContent = '아이디 찾기 성공: ' + response.userEmail;
         } else {
-          foundFail.style.display='block';
-          foundSuccess.style.display='none';
+          popupMessage.textContent = '아이디를 찾을 수 없습니다.';
         }
+      } else if (xhr.status === 404) {
+        var errorResponse = JSON.parse(xhr.responseText);
+        console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
+        popupMessage.textContent = errorResponse.message;
+      } else if (xhr.status === 500) {
+        var errorResponse = JSON.parse(xhr.responseText);
+        console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
+        popupMessage.textContent = errorResponse.message;
+      } else {
+        console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
+        popupMessage.textContent = '알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.';
       }
-
-      // AJAX 요청이 완료된 후 페이지 이동
-      window.location.href = 'findIdResult';
+      popupMessage.style.display = 'block';
     }
   };
+
   xhr.send('userName=' + encodeURIComponent(nameInput) + '&birthday_year=' + year + '-' + month + '-' + day);
 
   // 에러 메시지 초기화
@@ -114,6 +113,6 @@ function validateForm() {
   document.getElementById('birthday_error_message').innerHTML = "";
 }
 
-function findId(){
+function findId() {
   validateForm();
 }
