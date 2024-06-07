@@ -36,7 +36,7 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable) // 로컬에서 확인하기 위해 csrf 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/user/finId","user/signup","user/findPassword").permitAll()// 해당 경로에서는 로그인 없이 접근 가능
+                        .requestMatchers("/","/user/findId","/user/findIdResult","user/signup","user/findPassword").permitAll()// 해당 경로에서는 로그인 없이 접근 가능
                         .requestMatchers("/team/create").authenticated()
                         .anyRequest().authenticated()
                 )
