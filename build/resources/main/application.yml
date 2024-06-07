@@ -4,7 +4,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://timeflowdb.cn60c2i6arhm.ap-southeast-2.rds.amazonaws.com:3306/timeflowdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-
     username: admin
     password: 20020619
   thymeleaf:

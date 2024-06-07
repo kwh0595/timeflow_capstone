@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     Optional<TeamEntity> findByJoinCode(String joinCode);
     Optional<TeamEntity> findByTeamId(Long teamId);
+
+    void deleteByTeamId(TeamEntity teamId);
 }

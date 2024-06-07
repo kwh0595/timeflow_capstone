@@ -40,7 +40,7 @@ function renderCalendar() {
     calendarDates.appendChild(dateElement);
   }
 
-  // 현재 달의 날짜
+  //현재 달의 날짜
   for (let i = 1; i <= daysInMonth; i++) {
     const dateElement = document.createElement("div");
     dateElement.classList.add("date");
