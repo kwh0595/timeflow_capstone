@@ -3,7 +3,6 @@ package com.capstone.timeflow.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 //
@@ -19,7 +18,7 @@ public class ChatGPTResponse {
     public static class Choice {
         //선택지의 인덱스와 모델이 생성한 메세지 저장
         private int index;
-        private Message message;
+        private GptMessage gptMessage;
 
     }
 }
