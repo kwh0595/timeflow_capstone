@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +20,7 @@ public class ChatGptService {
     private String apiURL; // 실제 API 엔드포인트로 변경
     @Value("${gpt_model}")
     private String model = "gpt-3.5-turbo"; // 실제 모델명으로 변경
+
 
     public ChatGPTResponse chat(String prompt) {
         ChatGPTRequest request = new ChatGPTRequest(model, prompt);

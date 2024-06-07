@@ -83,25 +83,39 @@ function validateForm() {
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
+      var button = document.createElement('button'); // '확인' 버튼 생성
+      button.textContent = '확인'; // 버튼 텍스트 설정
+      button.onclick = function() {
+        // form 태그를 동적으로 생성하여 페이지 이동
+        var form = document.createElement('form');
+        form.method = 'GET';
+        form.action = 'login';
+        document.body.appendChild(form);
+        form.submit();
+      };
+
       if (xhr.status === 200) {
         var response = JSON.parse(xhr.responseText);
         if (response.userEmail) {
-          popupMessage.textContent = '아이디 찾기 성공: ' + response.userEmail;
+          popupMessage.textContent = '아이디 찾기에 성공했습니다: ' + response.userEmail + ' ';
         } else {
-          popupMessage.textContent = '아이디를 찾을 수 없습니다.';
+          popupMessage.textContent = '아이디를 찾을 수 없습니다. ';
         }
       } else if (xhr.status === 404) {
         var errorResponse = JSON.parse(xhr.responseText);
         console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
-        popupMessage.textContent = errorResponse.message;
+        popupMessage.textContent = errorResponse.message + ' ';
       } else if (xhr.status === 500) {
         var errorResponse = JSON.parse(xhr.responseText);
         console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
-        popupMessage.textContent = errorResponse.message;
+        popupMessage.textContent = errorResponse.message + ' ';
       } else {
         console.log('xhr.status', xhr.status, 'xhr.responseText:', xhr.responseText);
-        popupMessage.textContent = '알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.';
+        popupMessage.textContent = '알 수 없는 오류가 발생했습니다. 다시 시도해주세요. ';
       }
+
+      // '확인' 버튼을 팝업 메시지에 추가
+      popupMessage.appendChild(button);
       popupMessage.style.display = 'block';
     }
   };

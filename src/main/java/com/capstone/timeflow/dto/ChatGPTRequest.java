@@ -8,11 +8,11 @@ import java.util.List;
 @Data
 public class ChatGPTRequest {
     private String model;
-    private List<Message> messages;
+    private List<GptMessage> gptMessages;
     //사용자의 입력은 message라는 객체로 변환되어 리스트에 추가됨
     public ChatGPTRequest(String model, String prompt) {
         this.model = model;
-        this.messages =  new ArrayList<>();
-        this.messages.add(new Message("user", prompt));
+        this.gptMessages =  new ArrayList<>();
+        this.gptMessages.add(new GptMessage("user", prompt));
     }
 }
