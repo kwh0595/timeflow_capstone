@@ -7,10 +7,17 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
-  background-color: #ffffff;
-  overflow: auto; /* 화면 스크롤 가능하도록 설정 */
-  /* overflow: hidden; */
-  padding-top: 25px; /* 화면 상단 여백 추가 */
+  background-color: rgb(240, 240, 241);
+  overflow: hidden;
+  padding-top: 5px;
+}
+
+.scheduler-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 중앙 정렬을 위해 추가 */
+  width: 80%; /* 원하는 너비로 설정 */
+  margin: 0 auto; /* 좌우 마진 자동으로 설정하여 중앙 정렬 */
 }
 
 /* 상단 날짜 표시 박스 스타일 */
@@ -22,9 +29,13 @@ body {
   padding: 20px;
   gap: 15px;
   background: #FFFFFF;
-  border: 1px solid  #9b9a9a;
+  border: 1px solid #9b9a9a;
   border-radius: 25px;
   margin-bottom: 20px;
+  width: 90vw; /* 뷰포트 너비의 90% */
+  max-width: 700px; /* 최대 너비 700px */
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* WEEK OF — */
@@ -71,9 +82,9 @@ body {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: auto repeat(6, 1fr);
-  width: 95%;
-  max-width: 1200px;
-  height: 90vh; /* 크기 조정 */
+  width: 95vw; /* 뷰포트 너비의 95% */
+  max-width: 1200px; /* 최대 너비 1200px */
+  height: 80vh; /* 뷰포트 높이의 80% */
   margin: 0 auto;
 }
 
@@ -82,15 +93,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px; /* 요일 칸 높이 */
+  height: 6vh; /* 뷰포트 높이의 6% */
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
   color: #FFFFFF;
-  border: 1px solid #CACACA;
-  background-color: #8fd6eb;
+  border: 1px solid #9d9c9c;
+  background-color: #a1baf8;
   box-sizing: border-box;
 }
 
@@ -105,13 +116,33 @@ body {
   font-weight: 500;
   font-size: 24px; /* 글씨 크기 */
   line-height: 40px;
-  color: #acabab;
-  border: 1px solid #f0eded;
+  color: #9d9c9c;
+  border: 1px solid #ffffff;
   background-color: #FFFFFF;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+
+/* 가로줄 스타일 */
+.calendar-date::before,
+.calendar-date::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #b0b0b0; /* 가로줄 색상 */
+}
+
+/* 세로줄 스타일 */
+.calendar-date::before {
+  top: 0;
+}
+
+.calendar-date::after {
+  bottom: 0;
 }
 
 /* 오늘 날짜 하이라이트 */
@@ -122,7 +153,7 @@ body {
 
 /* 클릭된 날짜 하이라이트 */
 .selected {
-  background-color: #fedbc4;
+  background-color: #a7e2fb;
   color: #000000;
 }
 
@@ -135,9 +166,8 @@ body {
   border: 1px solid #CACACA;
   background-color: #FFFFFF;
   position: absolute; /* 절대 위치 */
-  top: 30px; /* 날짜 아래에 위치하도록 조정 */
-  left: 5px; /* 좌측 정렬 */
-  right: 5px; /* 우측 정렬 */
+  max-width: 300px; /* 최대 너비 지정 */
+  min-width: 200px; /* 최소 너비 지정 */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
@@ -155,16 +185,43 @@ body {
 .date-input:focus,
 .status-select:focus {
   outline: none;
-  border: 1px solid #007bff;
+  border: 1px solid #adadad;
 }
 
 /* 일정 텍스트 스타일 */
 .event-text {
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 14px;
   color: #000;
   cursor: pointer;
 }
+
+/* 일정 버튼 스타일 */
+.event-button,
+.edit-button,
+.delete-button {
+  padding: 5px 10px;
+  margin: 5px 0;
+  border: none;
+  /*background-color: #ffffff;*/
+  color: #000000;
+  cursor: pointer;
+  text-align: left;
+}
+
+.event-button:hover,
+.edit-button:hover,
+.delete-button:hover {
+  background-color: #adadad;
+}
+
+/* 수정/삭제 버튼 컨테이너 스타일 */
+.action-buttons-container {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
 
 .event-details {
   padding: 10px;
@@ -264,6 +321,11 @@ body {
 .calendar-container .calendar-date:last-child {
   border-radius: 0 0 8px 0;
 }
+
+
+
+
+
 
 
 
