@@ -1,6 +1,7 @@
 package com.capstone.timeflow.config;
 
 
+import com.capstone.timeflow.handler.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -46,7 +48,7 @@ public class SecurityConfig{
                         .usernameParameter("userMail")
                         .passwordParameter("userPassword")
                         .permitAll()
-                        .defaultSuccessUrl("/main", true)
+                        .successHandler(new CustomAuthenticationSuccessHandler())
                 )
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
