@@ -4,10 +4,13 @@ import com.capstone.timeflow.dto.UserDTO;
 import com.capstone.timeflow.entity.UserEntity;
 
 import com.capstone.timeflow.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +29,11 @@ public class UserServiceImpl implements UserService{
            String encodedPassword = bCryptPasswordEncoder.encode(userDTO.getUserPassword());
            userEntity.setUserPassword(encodedPassword);//암호화된 비밀번호를 엔티티에 저장
            userRepository.save(userEntity); //사용자 레포지토리에 암호화된 비밀번호 저장
+    }
+    public UserEntity updateUser(String name, UserDTO userDTO) {
+        UserEntity user = userRepository.findByUserName(name)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUserName(userDTO.getUserName());
+        return userRepository.save(user);
     }
 }
