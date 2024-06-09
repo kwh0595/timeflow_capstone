@@ -5,77 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Page</title>
     <link rel="stylesheet" href="/css/mypage.css">
+    <script src="/js/mypage.js" defer></script>
 </head>
 <body>
-    <div class="navigation-bar">
-        <div class="top-nav"></div>
-        <div class="left-nav">
-            <button>My Tasks</button>
-            <button>My Team</button>
-            <button onclick="redirectToMainPage()">Edit Schedule</button>
-            <button>Chat</button>
-            <button class="sign-out" onclick="signOut()">Sign out</button>
-        </div>
+<div class="navigation-bar">
+    <div class="top-nav"></div>
+    <div class="left-nav">
+        <button>My Tasks</button>
+        <button>My Team</button>
+        <button onclick="redirectToMainPage()">Edit Schedule</button>
+        <button>Chat</button>
+        <button class="sign-out" onclick="signOut()">Sign out</button>
     </div>
-    <div class="profile">
-        <h2>User Profile</h2>
-        <hr>
-        <p class="name">Name: <strong>Eojin Kim</strong></p>
-        <p class="intro">A short introduction about myself.</p>
-        <hr>
-        <div class="field">
-            <label for="name">Name:</label>
-            <input id="name" type="text" value="Eojin Kim" disabled>
-            <button onclick="enableEdit('name')">Edit</button>
-        </div>
-        <hr>
-        <div class="field">
-            <label for="email">Email Address:</label>
-            <input id="email" type="text" value="kej1018333@gmail.com" disabled>
-            <button onclick="enableEdit('email')">Edit</button>
-        </div>
-        <hr>
-        <div class="field">
-            <label for="team">Team:</label>
-            <input id="team" type="text" value="TimeFlow" disabled>
-            <button onclick="enableEdit('team')">Edit</button>
-        </div>
-        <button class="save-changes-button" onclick="saveChanges()">Save Changes</button>
-
+</div>
+<div class="profile">
+    <h2>User Profile</h2>
+    <hr>
+    <p class="name">Name: <strong id="displayName">Eojin Kim</strong></p>
+    <p class="intro">A short introduction about myself.</p>
+    <hr>
+    <div class="field">
+        <label for="name">Name:</label>
+        <input id="name" type="text" disabled>
+        <button onclick="enableEdit('name')">Edit</button>
     </div>
-
-    <script>
-        // Sign out 함수
-        function signOut() {
-            alert("로그아웃 합니다...");
-            setTimeout(function() {
-                window.location.href = 'login.html';
-            }, 2000);
-        }
-    
-        // Edit Schedule 페이지로 리다이렉션
-        function redirectToMainPage() {
-            window.location.href = 'main.html';
-        }
-    
-        // 필드 편집 활성화 함수
-        function enableEdit(fieldId) {
-            let inputField = document.getElementById(fieldId);
-            inputField.disabled = false;
-            inputField.focus();
-            document.querySelector('.save-changes-button').style.display = 'block';
-        }
-    
-        // 변경 사항 저장 및 입력란 비활성화 함수
-        function saveChanges() {
-            document.querySelectorAll('.field input').forEach(input => {
-                input.disabled = true;
-            });
-            //document.querySelector('.save-changes-button').style.display = 'none'; // 필요에 따라 버튼을 숨기거나 유지할 수 있습니다.
-        }
-    </script>
-    
+    <hr>
+    <div class="field">
+        <label for="email">Email Address:</label>
+        <input id="email" type="text" disabled>
+    </div>
+    <hr>
+    <div class="field">
+        <label for="team">Team:</label>
+        <input id="team" type="text" disabled>
+    </div>
+    <hr>
+    <div class="field">
+        <label for="password">Password:</label>
+        <button class="set-new-password-button link-button" onclick="location.href='/user/mypage/newpassword'">새 비밀번호 변경 &rarr;</button>
+    </div>
+    <button class="save-changes-button" onclick="saveChanges()">Save Changes</button>
+</div>
 </body>
 </html>
-
-

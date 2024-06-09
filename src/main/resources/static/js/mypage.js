@@ -1,120 +1,27 @@
-document.querySelectorAll('.field button').forEach(button => {
-    button.addEventListener('click', function() {
-        let inputField = this.previousElementSibling;
-        inputField.disabled = !inputField.disabled;
-        if (inputField.disabled) {
-            // 로직을 추가하여 서버에 변경사항 저장
-            console.log(inputField.value); // 예시 로그
-        } else {
-            inputField.focus();
+// Sign out 함수
+function signOut() {
+    alert("로그아웃 합니다...");
+
+    fetch('/api/logout', {
+        method: 'POST', // 로그아웃 요청을 서버로 보냄
+        headers: {
+            'Content-Type': 'application/json'
         }
-    });
-});
-
-function enableEdit(id) {
-    var input = document.getElementById(id);
-    if(input.disabled) {
-        input.disabled = false;
-        input.focus(); // 입력창에 자동으로 커서를 위치
-    } else {
-        input.disabled = true;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // 'Edit' 버튼에 대한 이벤트 리스너 설정
-    document.querySelectorAll('.edit-button').forEach(button => {
-        button.addEventListener('click', function() {
-            let inputField = this.closest('.field').querySelector('input');
-            // 입력 필드 활성화
-            inputField.disabled = false;
-            // 'Save Changes' 버튼 활성화
-            document.querySelector('.save-changes-button').disabled = false;
-        });
-    });
-
-    // 'Save Changes' 버튼에 대한 이벤트 리스너 설정
-    document.querySelector('.save-changes-button').addEventListener('click', () => {
-        // 모든 입력 필드 비활성화
-        document.querySelectorAll('.field input').forEach(input => {
-            input.disabled = true;
-        });
-    });
-});
-
-//------------------jQuery Ajax 요청 부분---------------------
-$(document).ready(function() {
-    // 페이지가 로드되면 사용자 정보를 가져옵니다.
-    getUserInfo();
-
-    // 'Save Changes' 버튼 클릭 이벤트 리스너 설정
-    $('.save-changes-button').click(function() {
-        saveChanges();
-    });
-
-    // 'Delete Account' 버튼 클릭 이벤트 리스너 설정
-    $('.delete-account-button').click(function() {
-        deleteAccount();
-    });
-});
-
-// 사용자 정보를 가져오는 함수
-function getUserInfo() {
-    $.ajax({
-        url: '/api/user', // 백엔드 엔드포인트
-        method: 'GET',
-        success: function(response) {
-            $('#name').val(response.name);
-            $('#email').val(response.email);
-            $('#team').val(response.team);
-        },
-        error: function(error) {
-            console.error('Failed to fetch user info:', error);
-        }
-    });
-}
-
-// 변경 사항을 저장하는 함수
-function saveChanges() {
-    let updatedUser = {
-        name: $('#name').val(),
-        email: $('#email').val(),
-        team: $('#team').val()
-    };
-
-    $.ajax({
-        url: '/api/user', // 백엔드 엔드포인트
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(updatedUser),
-        success: function(response) {
-            alert('Changes saved successfully');
-            // 모든 입력 필드를 비활성화합니다.
-            $('.field input').prop('disabled', true);
-        },
-        error: function(error) {
-            console.error('Failed to save changes:', error);
-            alert('Failed to save changes');
-        }
-    });
-}
-
-// 계정을 삭제하는 함수
-function deleteAccount() {
-    if (confirm('Are you sure you want to delete your account?')) {
-        $.ajax({
-            url: '/api/user', // 백엔드 엔드포인트
-            method: 'DELETE',
-            success: function(response) {
-                alert('Account deleted successfully');
-                window.location.href = 'login.html';
-            },
-            error: function(error) {
-                console.error('Failed to delete account:', error);
-                alert('Failed to delete account');
+    })
+        .then(response => {
+            if (response.ok) {
+                setTimeout(function() {
+                    window.location.href = '/'; // 로그아웃 후 로그인 페이지로 이동
+                }, 2000);
+            } else {
+                alert("로그아웃에 실패했습니다.");
             }
-        });
-    }
+        })
+        .catch(error => console.error('Error:', error));
+}
+// Edit Schedule 페이지로 리다이렉션
+function redirectToMainPage() {
+    window.location.href = 'main.html';
 }
 
 // 필드 편집 활성화 함수
@@ -125,23 +32,80 @@ function enableEdit(fieldId) {
     document.querySelector('.save-changes-button').style.display = 'block';
 }
 
-// Edit 버튼 클릭 이벤트 리스너
+// 변경 사항 저장 및 입력란 비활성화 함수
+function saveChanges() {
+    let updatedUser = {
+        userName: document.getElementById('name').value,
+       // password: document.getElementById('password').value,
+    };
+
+    // 이름을 즉시 업데이트
+    document.getElementById('displayName').innerText = updatedUser.userName; // 큰 글자로 표시된 이름 업데이트
+
+    fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedUser)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Changes saved successfully'); // 성공 메시지 표시
+            // 모든 입력 필드를 비활성화
+            document.querySelectorAll('.field input').forEach(input => {
+                input.disabled = true; // 입력 필드 비활성화
+            });
+            // 저장 버튼 숨기기
+            document.querySelector('.save-changes-button').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Failed to save changes:', error); // 오류 메시지 콘솔에 출력
+            alert('Failed to save changes'); // 실패 메시지 표시
+        });
+}
+
+// 사용자 정보를 가져오는 함수
+function getUserInfo() {
+    fetch('/api/user')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('name').value = data.userName; // 이름 값 설정
+            document.getElementById('email').value = data.userMail; // 이메일 값 설정
+            document.getElementById('team').value = data.team; // 팀 값 설정
+            document.getElementById('displayName').innerText = data.userName; // 큰 글자로 표시된 이름 설정
+        })
+        .catch(error => {
+            console.error('Failed to fetch user info:', error); // 오류 메시지 콘솔에 출력
+        });
+}
+
+// DOMContentLoaded 이벤트가 발생하면 사용자 정보를 가져옵니다
+document.addEventListener('DOMContentLoaded', () => {
+    getUserInfo(); // 사용자 정보 가져오기
+});
+
+// 필드 편집 활성화 함수
 document.querySelectorAll('.field button').forEach(button => {
     button.addEventListener('click', function() {
-        let inputField = this.previousElementSibling;
-        inputField.disabled = !inputField.disabled;
-        if (!inputField.disabled) {
-            inputField.focus();
-            document.querySelector('.save-changes-button').style.display = 'block';
-        }
+        let inputField = this.previousElementSibling; // 이전 형제 요소인 입력 필드 가져오기
+        inputField.disabled = false; // 입력 필드 활성화
+        inputField.focus(); // 입력 필드에 포커스 맞추기
+        document.querySelector('.save-changes-button').style.display = 'block'; // 저장 버튼 표시
     });
 });
 
-
-
-
-
-
-
-
-
+// Save Changes 버튼 클릭 이벤트 리스너
+document.querySelector('.save-changes-button').addEventListener('click', function() {
+    saveChanges(); // 변경 사항 저장 함수 호출
+});

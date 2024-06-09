@@ -81,7 +81,7 @@ body {
   margin: 5px 0;
   font-size: 16px;
   box-sizing: border-box;
-  }
+}
 
 .field input, .field button {
   margin: 5px 0; /* 입력칸과 버튼 사이의 간격 */
@@ -92,8 +92,8 @@ button:hover {
 }
 
 .edit-button {
-  padding: 5px 10px; 
-  font-size: 12px; 
+  padding: 5px 10px;
+  font-size: 12px;
 }
 
 button:hover {
@@ -101,30 +101,40 @@ button:hover {
 }
 
 .save-changes-button {
-  background-color: white; 
-  color: black; 
-  border: 1px solid #ccc; 
-  padding: 10px 20px; 
-  text-align: center; 
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  text-align: center;
   text-decoration: none;
-  display: inline-block; 
-  font-size: 15px; 
-  margin: 5px 5px; 
-  cursor: pointer; 
-  border-radius: 25px; 
+  display: inline-block;
+  font-size: 15px;
+  margin: 5px 5px;
+  cursor: pointer;
+  border-radius: 25px;
   position: fixed;
-  right: 40px; 
-  bottom: 40px; 
+  right: 40px;
+  bottom: 40px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .save-changes {
-  margin-top: 20px; 
+  margin-top: 20px;
   padding: 10px 20px;
   position: fixed;
   right: 20px;
-  bottom: 40px; 
+  bottom: 40px;
+}
+.link-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline;
 }
 
-
+.link-button:hover {
+  color: #000000; / 마우스 오버 시 색상 변경 */
+}
 
