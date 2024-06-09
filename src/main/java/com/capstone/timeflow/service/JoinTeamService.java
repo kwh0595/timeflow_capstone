@@ -1,15 +1,12 @@
 package com.capstone.timeflow.service;
 
-import com.capstone.timeflow.dto.TeamDTO;
-import com.capstone.timeflow.entity.RoleEntity;
+import com.capstone.timeflow.entity.JoinTeamEntity;
 import com.capstone.timeflow.entity.TeamEntity;
 import com.capstone.timeflow.entity.UserEntity;
 import com.capstone.timeflow.initialdata.enumRole;
 import com.capstone.timeflow.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class JoinTeamService {
@@ -35,7 +32,7 @@ public class JoinTeamService {
         }
 
         // 새로운 Role 객체를 생성하여 사용자를 팀에 추가
-        RoleEntity newRole = new RoleEntity();
+        JoinTeamEntity newRole = new JoinTeamEntity();
         newRole.setUserId(user); // UserEntity 객체를 설정
         newRole.setTeamId(team); // TeamEntity 객체를 설정
         newRole.setRole(enumRole.MEMBER); // 기본적으로 'Member' 역할을 할당

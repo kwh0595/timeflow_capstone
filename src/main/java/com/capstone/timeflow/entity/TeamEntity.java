@@ -20,13 +20,13 @@ public class TeamEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private String teamName;
 
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime teamCreationDate;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false)
     private String joinCode;
 
     public TeamEntity() {

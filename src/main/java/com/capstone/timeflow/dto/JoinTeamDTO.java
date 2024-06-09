@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor //기본생성자
 @AllArgsConstructor //모든 필드를 가지는 생성자
-public class RoleDTO {
+public class JoinTeamDTO {
     private Long userId;
     private Long teamId;
     private String role;
 }
-

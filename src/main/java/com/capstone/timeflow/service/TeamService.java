@@ -1,17 +1,13 @@
 package com.capstone.timeflow.service;
 
-import com.capstone.timeflow.entity.RoleEntity;
+import com.capstone.timeflow.entity.JoinTeamEntity;
 import com.capstone.timeflow.entity.TeamEntity;
 import com.capstone.timeflow.entity.UserEntity;
 import com.capstone.timeflow.initialdata.enumRole;
 import com.capstone.timeflow.repository.RoleRepository;
 import com.capstone.timeflow.repository.TeamRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,7 +36,7 @@ public class TeamService {
 
         // 사용자를 팀의 리더로 설정
         // 팀 생성자를 팀의 리더로 설정
-        RoleEntity roleEntity = new RoleEntity(creator, team, enumRole.LEADER);
+        JoinTeamEntity roleEntity = new JoinTeamEntity(creator, team, enumRole.LEADER);
         roleRepository.save(roleEntity);
 
         return team;
@@ -56,7 +52,7 @@ public class TeamService {
 
     public void deleteTeam(TeamEntity teamEntity, UserEntity userEntity) {
         // 사용자의 role 확인
-        RoleEntity role = roleRepository.findByTeamIdAndUserId(teamEntity, userEntity);
+        JoinTeamEntity role = roleRepository.findByTeamIdAndUserId(teamEntity, userEntity);
         if (role == null || !role.getRole().equals("LEADER")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "팀 삭제 권한이 없습니다.");
         }

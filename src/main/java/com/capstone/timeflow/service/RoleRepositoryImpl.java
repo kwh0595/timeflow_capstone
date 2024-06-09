@@ -15,7 +15,7 @@ public abstract class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public boolean existsByTeamIdAndUserId(TeamEntity teamId, UserEntity userId) {
-        String query = "SELECT COUNT(r) > 0 FROM RoleEntity r WHERE r.teamId = :teamId AND r.userId = :userId";
+        String query = "SELECT COUNT(r) > 0 FROM JoinTeamEntity r WHERE r.teamId = :teamId AND r.userId = :userId";
         return (boolean) entityManager.createQuery(query)
                 .setParameter("teamId", teamId)
                 .setParameter("userId", userId)
@@ -24,7 +24,7 @@ public abstract class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public void deleteByTeamId(TeamEntity teamId) {
-        String deleteQuery = "DELETE FROM RoleEntity r WHERE r.teamId.id = :teamId";
+        String deleteQuery = "DELETE FROM JoinTeamEntity r WHERE r.teamId.id = :teamId";
         entityManager.createQuery(deleteQuery)
                 .setParameter("teamId", teamId)
                 .executeUpdate();
