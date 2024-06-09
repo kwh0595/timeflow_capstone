@@ -1,11 +1,24 @@
 // Sign out 함수
 function signOut() {
     alert("로그아웃 합니다...");
-    setTimeout(function() {
-        window.location.href = '/';
-    }, 2000);
-}
 
+    fetch('/api/logout', {
+        method: 'POST', // 로그아웃 요청을 서버로 보냄
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                setTimeout(function() {
+                    window.location.href = '/'; // 로그아웃 후 로그인 페이지로 이동
+                }, 2000);
+            } else {
+                alert("로그아웃에 실패했습니다.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
 // Edit Schedule 페이지로 리다이렉션
 function redirectToMainPage() {
     window.location.href = 'main.html';

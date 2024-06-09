@@ -24,15 +24,4 @@ public class UserController {
         userService.save(userDTO);
         return "login";
     }
-    //마이페이지에서 이름 수정
-    @PutMapping("/api/user")
-    public ResponseEntity<UserEntity> updateUser(@RequestBody UserDTO userDTO, HttpSession session) {
-        if (userDTO.getUserName() == null) {
-            return ResponseEntity.badRequest().body(null); // 또는 적절한 오류 메시지와 함께 다른 처리를 할 수 있습니다.
-        }
-        UserEntity updatedUser = userService.updateUser((String) session.getAttribute("userName"),userDTO);
-        session.setAttribute("userName", updatedUser.getUserName());
-        System.out.println(session.getAttribute("userName"));
-        return ResponseEntity.ok(updatedUser);
-    }
 }

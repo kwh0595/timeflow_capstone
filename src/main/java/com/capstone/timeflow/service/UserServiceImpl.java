@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService{
     private  final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
    // 회원가입 메서드
     public void save(UserDTO userDTO){
 
@@ -35,5 +34,24 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setUserName(userDTO.getUserName());
         return userRepository.save(user);
+    }
+    public boolean isPasswordCorrect(String username, String password) {
+        Optional<UserEntity> user = userRepository.findByUserName(username);
+        if (user.isPresent()) {
+            //해싱된 비밀번호와 입력된 비밀번호를 비교
+            return bCryptPasswordEncoder.matches(password, user.get().getUserPassword());
+        }
+        return false;
+    }
+    @Override
+    public boolean updatePassword(String username, String newPassword) {
+        Optional<UserEntity> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+            user.setUserPassword(bCryptPasswordEncoder.encode(newPassword)); // 비밀번호 해시화
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

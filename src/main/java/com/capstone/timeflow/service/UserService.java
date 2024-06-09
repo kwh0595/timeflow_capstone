@@ -6,5 +6,7 @@ import com.capstone.timeflow.entity.UserEntity;
 public interface UserService {
     void save(UserDTO userDTO);
     UserEntity updateUser(String name, UserDTO userDTO);
+    boolean isPasswordCorrect(String username, String password);
+    boolean updatePassword(String username, String newPassword);
 }
 
