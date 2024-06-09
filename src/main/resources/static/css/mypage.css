@@ -125,4 +125,16 @@ button:hover {
   right: 20px;
   bottom: 40px;
 }
+.link-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline;
+}
+
+.link-button:hover {
+  color: #000000; / 마우스 오버 시 색상 변경 */
+}
 
