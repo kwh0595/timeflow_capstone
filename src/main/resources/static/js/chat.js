@@ -41,18 +41,66 @@ let teamNames = [];
 // 초대코드와 팀 이름을 연결하는 객체
 let teams = {};
 
-// 팀 생성 버튼 클릭 시 코드 생성 및 팝업창 열기
+// 팀 이름을 서버로 보내는 함수
+function sendTeamNameToServer(teamName) {
+  return $.ajax({
+    url: "team/create",
+    method: "POST",
+    contentType: "application/x-www-form-urlencoded", // 폼 인코딩 형식으로 전송
+    data: { teamName: teamName } // 객체 형태로 전송
+    //dataType: "json" // json으로 받을게
+  });
+}
+
+//초대 코드 받아오는 통신하는 함수
+function fetchRandomCode() {
+  return $.ajax({
+    url: "chat", // 서버의 URL
+    method: "GET", // 요청 방식
+    dataType: "json" // 서버로부터 받을 데이터의 타입
+  });
+}
+
+function displayInviteCode() {
+  fetchRandomCode().done(function(code) {
+    document.getElementById("generated-code").textContent = code.joinCode;
+  }).fail(function(jqXHR, textStatus, errorThrown) {
+    console.error("Failed to fetch invite code: ", textStatus, errorThrown);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  displayInviteCode();
+})
+
 document.querySelector(".create-team-button").addEventListener("click", function() {
   let teamName = document.querySelector("#room-name-input").value.trim(); // 팀 이름 입력값 저장
   if (teamName !== "") {
-    var generatedCode = generateRandomCode();
-    document.getElementById("generated-code").textContent = generatedCode;
-    teamNames.push(teamName); // 팀 이름 배열에 추가
-    teams[generatedCode] = teamName; // 초대코드와 팀 이름 연결하여 저장
-    addTeamToList(); // My Team 목록에 팀 이름 추가
-    closePopup('popup'); // 팝업 닫기
-    openPopup("code-popup"); // 코드 팝업 열기
-    document.querySelector("#room-name-input").value = ''; // 입력란 초기화
+    // 서버로 팀 이름 전송
+    sendTeamNameToServer(teamName).done(function(response) {
+      console.log("팀 이름이 서버로 성공적으로 전송되었습니다.", response);
+
+      // 팀 이름 전송 후 초대코드 받아오기 요청
+      fetchRandomCode().done(function(response) {
+        document.getElementById("generated-code").textContent = response.joinCode;
+        teamNames.push(response.teamName); // 팀 이름 배열에 추가
+        teams[response.joinCode] = teamName; // 초대코드와 팀 이름 연결하여 저장
+        addTeamToList(); // My Team 목록에 팀 이름 추가
+        closePopup('popup'); // 팝업 닫기
+        openPopup("code-popup"); // 코드 팝업 열기
+        document.querySelector("#room-name-input").value = ''; // 입력란 초기화
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        // 서버로부터 응답 실패일 때
+        console.log("jqXHR:", jqXHR);
+        console.log("textStatus:", textStatus);
+        console.log("errorThrown:", errorThrown);
+        alert("팀 이름을 서버로 전송하는데 실패했습니다: " + textStatus);
+      });
+
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      // 서버로부터 응답 실패일 때
+      alert("팀 이름을 서버로 전송하는데 실패했습니다: " + textStatus);
+    });
   }
 });
 
@@ -61,31 +109,13 @@ function addTeamToList() {
   const teamListContainer = document.querySelector('.team-list');
   teamListContainer.innerHTML = ''; // 기존 목록 초기화
   teamNames.forEach(function(name) {
-    const teamItem = document.createElement('p');
+    const teamItem = document.createElement('button'); // 버튼 요소 생성
     teamItem.textContent = name;
+    teamItem.classList.add('team-button'); // 필요 시 클래스 추가
     teamListContainer.appendChild(teamItem);
   });
 }
 
-// 코드 생성 함수
-function generateRandomCode() {
-  var numbers = "0123456789";
-  var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var code = "";
-  // 숫자 랜덤 3개 생성
-  for (var i = 0; i < 3; i++) {
-    code += numbers.charAt(Math.floor(Math.random() * numbers.length));
-  }
-  // 영문 랜덤 3개 생성
-  for (var i = 0; i < 3; i++) {
-    code += letters.charAt(Math.floor(Math.random() * letters.length));
-  }
-  // 생성된 코드를 섞기 위해 배열로 변환 후 셔플
-  code = code.split('').sort(function() {
-    return 0.5 - Math.random();
-  }).join('');
-  return code;
-}
 
 // 코드 복사 함수
 function copyCode() {
@@ -116,26 +146,6 @@ function checkInviteCode() {
   } else {
     inviteErrorMsg.style.display = "block"; // 오류 메시지 표시
   }
-}
-
-// 초대코드 유효성 검사 함수
-function isValidInviteCode(code) {
-  // 초대코드가 비어 있는 경우 유효하지 않음
-  if (code === "") {
-    return false;
-  }
-  // 영문과 숫자가 섞여 있는지 확인
-  var hasLetter = false;
-  var hasNumber = false;
-  for (var i = 0; i < code.length; i++) {
-    var charCode = code.charCodeAt(i);
-    if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
-      hasLetter = true;
-    } else if (charCode >= 48 && charCode <= 57) {
-      hasNumber = true;
-    }
-  }
-  return hasLetter && hasNumber;
 }
 
 // 초대코드 확인 버튼 클릭 시 호출
