@@ -46,24 +46,24 @@ function sendTeamNameToServer(teamName) {
   return $.ajax({
     url: "team/create",
     method: "POST",
-    contentType: "application/x-www-form-urlencoded", // 폼 인코딩 형식으로 전송
-    data: { teamName: teamName } // 객체 형태로 전송
-    //dataType: "json" // json으로 받을게
+    //contentType: "application/x-www-form-urlencoded", // 폼 인코딩 형식으로 전송
+    data: { teamName: teamName }, // 객체 형태로 전송
+    dataType: "text"
   });
 }
 
 //초대 코드 받아오는 통신하는 함수
 function fetchRandomCode() {
   return $.ajax({
-    url: "chat", // 서버의 URL
+    url: "team/create", // 서버의 URL
     method: "GET", // 요청 방식
     dataType: "json" // 서버로부터 받을 데이터의 타입
   });
 }
 
 function displayInviteCode() {
-  fetchRandomCode().done(function(code) {
-    document.getElementById("generated-code").textContent = code.joinCode;
+  sendTeamNameToServer().done(function(codeResponse) {
+    document.getElementById("generated-code").textContent = codeResponse.joinCode;
   }).fail(function(jqXHR, textStatus, errorThrown) {
     console.error("Failed to fetch invite code: ", textStatus, errorThrown);
   });
@@ -77,29 +77,21 @@ document.querySelector(".create-team-button").addEventListener("click", function
   let teamName = document.querySelector("#room-name-input").value.trim(); // 팀 이름 입력값 저장
   if (teamName !== "") {
     // 서버로 팀 이름 전송
-    sendTeamNameToServer(teamName).done(function(response) {
-      console.log("팀 이름이 서버로 성공적으로 전송되었습니다.", response);
-
-      // 팀 이름 전송 후 초대코드 받아오기 요청
-      fetchRandomCode().done(function(response) {
-        document.getElementById("generated-code").textContent = response.joinCode;
-        teamNames.push(response.teamName); // 팀 이름 배열에 추가
-        teams[response.joinCode] = teamName; // 초대코드와 팀 이름 연결하여 저장
-        addTeamToList(); // My Team 목록에 팀 이름 추가
-        closePopup('popup'); // 팝업 닫기
-        openPopup("code-popup"); // 코드 팝업 열기
-        document.querySelector("#room-name-input").value = ''; // 입력란 초기화
-      }).fail(function(jqXHR, textStatus, errorThrown) {
-        // 서버로부터 응답 실패일 때
-        console.log("jqXHR:", jqXHR);
-        console.log("textStatus:", textStatus);
-        console.log("errorThrown:", errorThrown);
-        alert("팀 이름을 서버로 전송하는데 실패했습니다: " + textStatus);
-      });
-
+    // 여기서 초대코드 받아오는 함수를 호출합니다.
+    sendTeamNameToServer(teamName).done(function(codeResponse) {
+      console.log("joinCode를 받아왔다 ~~~ : ", codeResponse)
+      document.getElementById("generated-code").textContent = codeResponse;
+      teamNames.push(teamName); // 팀 이름 배열에 추가
+      teams[codeResponse] = teamName; // 초대코드와 팀 이름 연결하여 저장
+      addTeamToList(); // My Team 목록에 팀 이름 추가
+      closePopup('popup'); // 팝업 닫기
+      openPopup("code-popup"); // 코드 팝업 열기
+      document.querySelector("#room-name-input").value = ''; // 입력란 초기화
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      // 서버로부터 응답 실패일 때
-      alert("팀 이름을 서버로 전송하는데 실패했습니다: " + textStatus);
+      console.log("jqXHR:", jqXHR);
+      console.log("textStatus:", textStatus);
+      console.log("errorThrown:", errorThrown);
+      alert("초대 코드를 받아오는데 실패했습니다: " + textStatus);
     });
   }
 });
@@ -128,6 +120,12 @@ function copyCode() {
         console.error("Failed to copy code to clipboard: ", error);
       });
   closePopup("code-popup");
+}
+
+function isValidInviteCode(inviteCode) {
+  // 초대코드가 5~10자리 알파벳 대소문자로만 구성되어 있는지 확인하는 정규 표현식
+  var inviteCodePattern = /^[A-Za-z]{5,10}$/;
+  return inviteCodePattern.test(inviteCode);
 }
 
 // 초대코드 확인 함수
