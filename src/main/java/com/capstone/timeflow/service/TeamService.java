@@ -29,7 +29,7 @@ public class TeamService {
     public TeamEntity createTeam(String name, UserEntity creator) {
         TeamEntity team = new TeamEntity();
         team.setTeamName(name);
-        team.setJoinCode(joinCodeService.joinCodeGenerate((int)(Math.random()*10)));
+        team.setJoinCode(joinCodeService.joinCodeGenerate((int)(Math.random() * 6) + 5));
 
         // 팀 저장
         team = teamRepository.save(team);

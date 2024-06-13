@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // JoinTeamController.java
 @RestController
@@ -22,11 +19,13 @@ public class TeamJoinController {
     @Autowired
     private SessionUser sessionUser;
 
-    @PostMapping("/join")
-    public ResponseEntity<String> joinTeam(@RequestParam String joinCode, HttpSession session) {
+    @GetMapping("/join")
+    public ResponseEntity<Boolean> joinTeam(@RequestParam String joinCode, HttpSession session) {
         // 세션에서 사용자 ID 가져오기
         // 이 예시에서는 세션에 사용자가 'userId'로 저장되어 있다고 가정
         Long userId = (Long) session.getAttribute("userId");
+        System.out.println("userId : "+ userId);
+        System.out.println("joinCode : "+ joinCode);
 
         UserEntity user;
         if (userId != null) {
@@ -36,17 +35,19 @@ public class TeamJoinController {
             throw new IllegalStateException("로그인되지 않은 사용자입니다.");
         }
 
-
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login is required.");
+            return ResponseEntity.ok(false);
         }
 
-        boolean success = joinTeamService.addUserToTeam(joinCode, user);
+        boolean isSuccess = joinTeamService.addUserToTeam(joinCode, user);
+        System.out.println("success : "+ isSuccess);
 
-        if (!success) {
-            return ResponseEntity.badRequest().body("Invalid joinCode or already a member of the team.");
+        if (!isSuccess) {
+            System.out.println("이미 가입한 사용자입니다.");
+            return ResponseEntity.ok(isSuccess);
         }
 
-        return ResponseEntity.ok("Successfully joined the team.");
+        System.out.println("joinSuccess");
+        return ResponseEntity.ok(isSuccess);
     }
 }

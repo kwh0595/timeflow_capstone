@@ -52,18 +52,9 @@ function sendTeamNameToServer(teamName) {
   });
 }
 
-//초대 코드 받아오는 통신하는 함수
-function fetchRandomCode() {
-  return $.ajax({
-    url: "team/create", // 서버의 URL
-    method: "GET", // 요청 방식
-    dataType: "json" // 서버로부터 받을 데이터의 타입
-  });
-}
-
 function displayInviteCode() {
   sendTeamNameToServer().done(function(codeResponse) {
-    document.getElementById("generated-code").textContent = codeResponse.joinCode;
+    document.getElementById("generated-code").textContent = codeResponse;
   }).fail(function(jqXHR, textStatus, errorThrown) {
     console.error("Failed to fetch invite code: ", textStatus, errorThrown);
   });
@@ -108,7 +99,6 @@ function addTeamToList() {
   });
 }
 
-
 // 코드 복사 함수
 function copyCode() {
   var generatedCode = document.getElementById("generated-code").textContent;
@@ -122,28 +112,30 @@ function copyCode() {
   closePopup("code-popup");
 }
 
-function isValidInviteCode(inviteCode) {
-  // 초대코드가 5~10자리 알파벳 대소문자로만 구성되어 있는지 확인하는 정규 표현식
-  var inviteCodePattern = /^[A-Za-z]{5,10}$/;
-  return inviteCodePattern.test(inviteCode);
-}
 
 // 초대코드 확인 함수
 function checkInviteCode() {
   var inviteCode = document.getElementById("invite-code").value.trim();
   var inviteErrorMsg = document.getElementById("invite-error-msg");
-  var isValid = isValidInviteCode(inviteCode);
 
-  if (isValid && teams[inviteCode]) {
-    if (!teamNames.includes(teams[inviteCode])) {
-      teamNames.push(teams[inviteCode]);
-      addTeamToList();
+  $.ajax({
+    url :"team/join",
+    dataType: "json",
+    method: "GET",
+    data: { joinCode: inviteCode },
+    success: function(response){
+      console.log(response)
+
+      if(response){
+        console.log("초대 코드 유효함");
+      } else{
+        console.log("초대 코드 유효하지 않음")
+      }
+    },
+    error:function(jqXHR, textStauts, errorThrown){
+      console.error("초대코드 아예 안받아짐 ")
     }
-    closePopup("invite-popup");
-    inviteErrorMsg.style.display = "none"; // 오류 메시지 숨기기
-  } else {
-    inviteErrorMsg.style.display = "block"; // 오류 메시지 표시
-  }
+  })
 }
 
 // 초대코드 확인 버튼 클릭 시 호출
