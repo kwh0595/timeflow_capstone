@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> <!-- 문서의 문자 인코딩을 UTF-8로 설정 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 반응형 웹을 위한 뷰포트 설정 -->
-  <title>Main Page</title> <!-- 페이지 제목 -->
-  <link rel="stylesheet" href="/css/main.css"> <!-- 메인 CSS 파일을 링크 -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 라이브러리 링크 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Page</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <!--    <link rel="stylesheet" href="/css/main.css"> //메인 CSS 파일을 링크-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<!-- 전체 컨테이너 -->
 <div class="container">
-  <!-- 채팅 영역 -->
   <div class="chat" id="chat"></div>
-  <!-- 스케줄러 영역 -->
   <div class="scheduler" id="scheduler"></div>
 </div>
 
@@ -49,6 +47,7 @@
                 const scripts = container.querySelectorAll('script');
                 let scriptsLoaded = 0;
 
+                //콜백 함수
                 const scriptLoadHandler = () => {
                   scriptsLoaded++;
                   if (scriptsLoaded === scripts.length) {
@@ -86,116 +85,6 @@
     });
   });
 </script>
-<!--마이페이지 넘어가는 부분 여기입니다-->
 <button class="mypage-button" onclick="location.href='/user/mypage'">마이페이지</button>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"> //문서의 문자 인코딩을 UTF-8로 설정
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> //반응형 웹을 위한 뷰포트 설정
-<title>Main Page</title> //페이지 제목
-<link rel="stylesheet" href="/css/main.css"> //메인 CSS 파일을 링크
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> //jQuery 라이브러리 링크
-<style>
-
-  .container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-  }
-
-  .chat {
-    flex: 0 0 30%;
-    border-right: 1px solid #ccc;
-  }
-
-  .scheduler {
-    flex: 0 0 70%;
-  }
-</style>
-</head>
-<body>
-// 전체 컨테이너
-<div class="container">
-  //채팅 영역
-  <div class="chat" id="chat"></div>
-  //스케줄러 영역
-  <div class="scheduler" id="scheduler"></div>
-</div>
-
-<script>
-  // DOM이 완전히 로드되었을 때 실행
-  document.addEventListener("DOMContentLoaded", function() {
-    // URL과 엘리먼트 ID를 받아 콘텐츠를 로드하는 함수
-    function loadContent(url, elementId) {
-      fetch(url) // URL에서 콘텐츠를 가져옴
-              .then(response => {
-                // 응답이 성공적이지 않으면 에러를 던짐
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text(); // 응답을 텍스트로 변환
-              })
-              .then(data => {
-                // 임시로 데이터를 담을 div 생성
-                const container = document.createElement('div');
-                container.innerHTML = data;
-                // 대상 엘리먼트에 데이터 삽입
-                document.getElementById(elementId).innerHTML = container.innerHTML;
-
-                // CSS 파일을 로드하고 적용
-                const styles = container.querySelectorAll('link[rel="stylesheet"]');
-                styles.forEach(style => {
-                  const newStyle = document.createElement('link');
-                  newStyle.rel = 'stylesheet';
-                  newStyle.href = style.href;
-                  document.head.appendChild(newStyle);
-                });
-
-                // JS 파일을 로드하고 실행
-                const scripts = container.querySelectorAll('script');
-                scripts.forEach(script => {
-                  const newScript = document.createElement('script');
-                  if (script.src) {
-                    newScript.src = script.src;
-                    newScript.async = false; // 스크립트가 로드된 순서대로 실행되도록 설정
-                    document.body.appendChild(newScript);
-                  } else {
-                    newScript.textContent = script.textContent;
-                    document.body.appendChild(newScript);
-                  }
-                });
-              })
-              .catch(error => {
-                // 에러 발생 시 콘솔에 로그를 남기고, 해당 엘리먼트에 에러 메시지 표시
-                console.error('Error loading content:', error);
-                document.getElementById(elementId).innerHTML = `<p>Failed to load ${elementId} content.</p>`;
-              });
-    }
-
-    // chat.html과 scheduler.html을 각각 로드
-    loadContent('chat', 'chat');
-    loadContent('scheduler', 'scheduler');
-  });
-</script>
-</body>
-</html>
--->

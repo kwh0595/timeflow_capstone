@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
 body {
   font-family: 'Noto Sans KR', Arial, sans-serif;
   margin: 0;
@@ -10,36 +12,39 @@ body {
   display: flex;
   height: 100%;
   width: 100%;
+  padding: 2px; /* 컨테이너 전체에 여백 추가 */
 }
 
 .chat {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  width: 30%; /* 너비를 비율로 조정 */
-  height: 100%;
+  width: 23%; /* 너비를 비율로 조정 */
+  max-height: calc(100% - 4px); /* 위아래 2px씩 여백 */
   border-right: 1px solid #ccc;
+  padding: 10px 2px; /* 상하좌우 여백 2px */
+  box-sizing: border-box; /* padding 포함하여 너비 계산 */
+  overflow-y: hidden; /* 세로 스크롤 가능하도록 설정 */
 }
 
 .scheduler {
+  width: 77%; /* 너비를 비율로 조정 */
   flex-grow: 1;
-  height: 100%;
+  height: calc(100% - 4px); /* 위아래 2px씩 여백 */
+  padding: 2px 2px; /* 상하좌우 여백 2px */
+  box-sizing: border-box; /* padding 포함하여 너비 계산 */
 }
 
 .chat, .scheduler {
   border: none;
 }
 
-
 button:hover {
   background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
 }
 
-button:hover {
-  background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
-}
-
-/*마이페이지 버튼*/
+/* 마이페이지 버튼 */
 .mypage-button {
   background-color: white;
   color: black;
@@ -65,11 +70,3 @@ button:hover {
   right: 20px;
   bottom: 40px;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
-
-
-
-
-
