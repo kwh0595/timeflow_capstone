@@ -1,3 +1,4 @@
+/*
 package com.capstone.timeflow.controller;
 
 import com.capstone.timeflow.dto.ErrorResponse;
@@ -58,11 +59,14 @@ public class FindIdResultController {
     }
 
 
+*/
 /*    @GetMapping("/findIdResult")
     public String findIdResult() {
         System.out.println("GET /FINDIDRESULT");
         return "findIdResult";
-    }*/
+    }*//*
+
+*/
 /*
     @PostMapping
     public String findIdResult(@RequestParam("userName") String userName,
@@ -108,5 +112,6 @@ public class FindIdResultController {
         }
         return "findIdResult"; // "findIdResult"는 GET 요청 시 결과를 보여줄 view 이름입니다.
     }
-*/
-}
+*//*
+
+}*/

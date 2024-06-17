@@ -4,7 +4,7 @@ import com.capstone.timeflow.entity.JoinTeamEntity;
 import com.capstone.timeflow.entity.TeamEntity;
 import com.capstone.timeflow.entity.UserEntity;
 import com.capstone.timeflow.initialdata.enumRole;
-import com.capstone.timeflow.repository.RoleRepository;
+import com.capstone.timeflow.repository.JoinTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class JoinTeamService {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private JoinTeamRepository joinTeamRepository;
 
     @Autowired
     private TeamService teamService;
@@ -25,7 +25,7 @@ public class JoinTeamService {
         }
 
         // 이미 팀에 가입되어 있는지 확인
-        boolean isAlreadyMember = roleRepository.existsByTeamIdAndUserId(team, user);
+        boolean isAlreadyMember = joinTeamRepository.existsByTeamIdAndUserId(team, user);
         if (isAlreadyMember) {
             // 이미 멤버인 경우 추가하지 않고 true 반환
             return true;
@@ -36,7 +36,7 @@ public class JoinTeamService {
         newRole.setUserId(user); // UserEntity 객체를 설정
         newRole.setTeamId(team); // TeamEntity 객체를 설정
         newRole.setRole(enumRole.MEMBER); // 기본적으로 'Member' 역할을 할당
-        roleRepository.save(newRole);
+        joinTeamRepository.save(newRole);
 
         return true;
     }

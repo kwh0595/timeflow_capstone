@@ -88,9 +88,9 @@ document.querySelector(".create-team-button").addEventListener("click", function
 });
 
 // My Team 목록에 팀 이름 추가하는 함수
-function addTeamToList() {
+function addTeamToList(teams) {
   const teamListContainer = document.querySelector('.team-list');
-  teamListContainer.innerHTML = ''; // 기존 목록 초기화
+  teamListContainer.innerHTML = '';// 기존 목록 초기화
   teamNames.forEach(function(name) {
     const teamItem = document.createElement('button'); // 버튼 요소 생성
     teamItem.textContent = name;
@@ -112,7 +112,6 @@ function copyCode() {
   closePopup("code-popup");
 }
 
-
 // 초대코드 확인 함수
 function checkInviteCode() {
   var inviteCode = document.getElementById("invite-code").value.trim();
@@ -125,9 +124,9 @@ function checkInviteCode() {
     data: { joinCode: inviteCode },
     success: function(response){
       console.log(response)
-
       if(response){
         console.log("초대 코드 유효함");
+        getChatListFromServer();
       } else{
         console.log("초대 코드 유효하지 않음")
       }
@@ -135,10 +134,41 @@ function checkInviteCode() {
     error:function(jqXHR, textStauts, errorThrown){
       console.error("초대코드 아예 안받아짐 ")
     }
-  })
+  });
+}
+
+function getChatListFromServer(){
+  var teams = localStorage.getItem('teams');
+  $.ajax({
+    type: 'GET',
+    url: 'team/teams',
+    data: {teams: teams},
+    success: function(response){
+      localStorage.setItem('team-list', JSON.stringify(response));
+      console.log("채팅 리스트 변수에 저장 완료");
+      console.log(response);
+      addJoinTeamToList(response);
+    },
+    error: function(xhr, status, error){
+      console.error("채팅 리스트 가져오는 도중 오류", error);
+    }
+  });
 }
 
 // 초대코드 확인 버튼 클릭 시 호출
 document.querySelector(".confirm-button").addEventListener("click", function() {
   checkInviteCode();
 });
+
+function addJoinTeamToList(teams){
+  const teamListContainer = document.querySelector('.team-list');
+  teamListContainer.innerHTML='';
+  teams.forEach(function (team){
+    if(team.teamName){
+      const teamItem = document.createElement('button');
+      teamItem.textContent = team.teamName;
+      teamItem.classList.add('team-button');
+      teamListContainer.appendChild(teamItem);
+    }
+  });
+}

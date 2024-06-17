@@ -1,4 +1,6 @@
+/*
 package com.capstone.timeflow.controller;
+
 
 import com.capstone.timeflow.service.FindPWService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,4 +20,4 @@ public class FindPWResultController {
         System.out.println("성공");
         return "findPassword";
     }
-}
+}*/

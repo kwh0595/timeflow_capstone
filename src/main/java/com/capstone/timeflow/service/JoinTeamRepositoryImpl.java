@@ -2,13 +2,13 @@ package com.capstone.timeflow.service;
 
 import com.capstone.timeflow.entity.TeamEntity;
 import com.capstone.timeflow.entity.UserEntity;
-import com.capstone.timeflow.repository.RoleRepository;
+import com.capstone.timeflow.repository.JoinTeamRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public abstract class RoleRepositoryImpl implements RoleRepository {
+public abstract class JoinTeamRepositoryImpl implements JoinTeamRepository {
 
     @PersistenceContext
     private EntityManager entityManager;

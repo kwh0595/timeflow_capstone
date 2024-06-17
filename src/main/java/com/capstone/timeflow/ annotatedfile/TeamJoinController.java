@@ -1,3 +1,4 @@
+/*
 package com.capstone.timeflow.controller;
 
 import com.capstone.timeflow.entity.UserEntity;
@@ -50,4 +51,4 @@ public class TeamJoinController {
         System.out.println("joinSuccess");
         return ResponseEntity.ok(isSuccess);
     }
-}
+}*/
