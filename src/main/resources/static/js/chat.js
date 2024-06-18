@@ -34,11 +34,7 @@ window.onload = function() {
     popup.style.display = "none";
   });
 };
-function fetchUserTeams(){
-  $.ajax({
 
-  })
-}
 // 팀 이름 저장 배열
 let teamNames = [];
 
@@ -78,7 +74,7 @@ document.querySelector(".create-team-button").addEventListener("click", function
       document.getElementById("generated-code").textContent = codeResponse;
       teamNames.push(teamName); // 팀 이름 배열에 추가
       teams[codeResponse] = teamName; // 초대코드와 팀 이름 연결하여 저장
-      addTeamToList(); // My Team 목록에 팀 이름 추가
+      getChatListFromServer();
       closePopup('popup'); // 팝업 닫기
       openPopup("code-popup"); // 코드 팝업 열기
       document.querySelector("#room-name-input").value = ''; // 입력란 초기화
@@ -90,21 +86,6 @@ document.querySelector(".create-team-button").addEventListener("click", function
     });
   }
 });
-
-// My Team 목록에 팀 이름 추가하는 함수
-function addTeamToList(teams) {
-  const teamListContainer = document.querySelector('.team-list');
-  teamListContainer.innerHTML = ''; // 기존 목록 초기화
-  teamNames.forEach(function(name) {
-    const teamItem = document.createElement('button'); // 버튼 요소 생성
-    teamItem.textContent = name;
-    teamItem.classList.add('team-button');// 필요 시 클래스 추가
-    teamItem.addEventListener('click', function(){
-      showPopup(name);
-    });
-    teamListContainer.appendChild(teamItem);
-  });
-}
 
 // 코드 복사 함수
 function copyCode() {

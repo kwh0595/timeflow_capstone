@@ -7,11 +7,131 @@
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            overflow: hidden;
+        }
+
+        #main-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .ch1 {
+            align-items: flex-start;
+        }
+
+        .ch2 {
+            align-items: flex-end;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .ch2 .icon {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+
+        .sender {
+            font-size: 0.8em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .textbox {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f1f1f1;
+            word-wrap: break-word;
+        }
+
+        .ch2 .textbox {
+            background-color: #d1e7dd;
+        }
+
+        .send-area {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .send-area label {
+            display: none;
+        }
+
+        .send-area input[type="text"] {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .send-area button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .send-area button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
 </head>
 <body>
 <div class="modal">
     <div class="modal-content">
-        <span class="close-button">&times;</span>
         <div id="main-content">
             <div id="chatting" class="chat-container">
                 <!-- 채팅 메시지가 여기에 추가됩니다 -->
