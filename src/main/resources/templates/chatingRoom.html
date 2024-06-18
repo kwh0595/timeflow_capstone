@@ -1,42 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>채팅방</title>
-    <script>
-        function getTeamNameFromURL(){
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('team');
-        }
-        function displayTeamName() {
-            const teamName = getTeamNameFromURL();
-            if (teamName) {
-                document.getElementById('team-name').textContent = teamName;
-            }
-        }
-        window.onload=displayTeamName;
-    </script>
-    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <p id="team-name"></p>
-    <div id="main-content">
-        <form id="chat-form">
-            <div class = "send-area">
-                <label>내용</label>
-                <input type = "text" id="message" placeholder="메시지 내용">
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="main-content">
+            <form id="chat-form">
+                <div class="send-area">
+                    <label>내용</label>
+                    <input type="text" id="message" placeholder="메시지 내용">
 
-                <button id="send" type="submit" class="btn btn-4">전송</button>
-            </div>
-        </form>
+                    <button id="send" type="submit" class="btn btn-4">Send</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 </body>
 <script th:inline="javascript">
     // WebSocket 연결을 관리하는 클라이언트
     let stompClient = null;
+    var teamId = [[${teamId}]];
+    var chatList = [[${chatList}]];
+    var userName = [[${userName}]];
+
 
     // 웹 소켓 연결 생성
     function connect() {
@@ -45,13 +40,13 @@
 
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            //loadChat(chatList); // 저장된 채팅 불러오기
+            loadChat(chatList)
 
-            // 구독 설정
-            stompClient.subscribe('/room/' + chatBoxId, function (chatMessage) {
-                console.log(JSON.parse(chatMessage.body));
+            stompClient.subscribe('/team/' +teamId, function(chatMessage){
                 showChat(JSON.parse(chatMessage.body));
             });
+        }, function (error) {
+            console.error('Error connecting: ' + error);
         });
     }
 
@@ -61,10 +56,94 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    function disconnect() {
-        if (stompClient !== null) {
-            stompClient.disconnect();
+    // 입력된 채팅 전송
+    function sendChat(){
+        if($("#message").val()!=""){
+            stompClient.send("/send/" +teamId, {},
+            JSON.stringify({
+                'userName':userName,
+                'messageType' : 'TALK',
+                'message': $("#message").val()
+            }));
+            $("#message").val('');
         }
-        console.log("Disconnected");
     }
+
+    // 저장된 채팅 불러와 화면에 표시
+    function loadChat(chatList){
+        if(chatList!=null){
+            for(let chat of chatList){
+                let chatHtml = '';
+                if(chat.sender!==userName){
+                    chatHtml = `<div class="chat ch1">
+                    <div class="icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="sender">${chat.sender}</div>
+                    <div class="textbox">${chat.message}</div>
+                </div>`;
+                }  else if (chat.sender === userName) {
+                    chatHtml = `<div class="chat ch2">
+                    <div class="icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="sender">${chat.sender}</div>
+                    <div class="textbox">${chat.message}</div>
+                </div>`;
+                }
+                $("#chatting").append(chatHtml);
+            }
+        }
+    }
+
+    // 실시간으로 받은 채팅을 화면에 표시
+    function showchat(chatMessage){
+        let chatHtml = '';
+        if (chatMessage.sender !== userName) {
+            chatHtml = `<div class="chat ch1">
+            <div class="icon"><i class="fa-solid fa-user"></i></div>
+            <div class="sender">${chatMessage.sender}</div>
+            <div class="textbox">${chatMessage.message}</div>
+        </div>`;
+        } else if (chatMessage.sender === userName) {
+            chatHtml = `<div class="chat ch2">
+            <div class="icon"><i class="fa-solid fa-user"></i></div>
+            <div class="sender">${chatMessage.sender}</div>
+            <div class="textbox">${chatMessage.message}</div>
+        </div>`;
+        }
+        $("#chatting").append(chatHtml);
+        scrollChatToBottom(); // 스크롤 항상 아래로 유지
+    }
+
+    // 폼 제출 시 기본 동작 방지
+    $(function () {
+        $("#chat-form").on('submit', function (e) {
+            e.preventDefault();
+        });
+        // 버튼 클릭 이벤트에 함수 할당
+        $("#send").click(function () {
+            sendChat();
+        });
+    });
+</script>
+<script>
+    //창 키면 바로 연결
+    window.onload = function (){
+        connect();
+    }
+
+    window.BeforeUnloadEvent = function (){
+        disconnect();
+    }
+</script>
+<script>
+    var modal = document.querySelector(".modal");
+    var closeButton = document.querySelector(".close-button");
+
+    //console.log(modal);
+
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+
+    closeButton.addEventListener("click", toggleModal);
+</script>
+
 </html>
