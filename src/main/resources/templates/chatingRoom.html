@@ -13,11 +13,13 @@
     <div class="modal-content">
         <span class="close-button">&times;</span>
         <div id="main-content">
+            <div id="chatting" class="chat-container">
+                <!-- 채팅 메시지가 여기에 추가됩니다 -->
+            </div>
             <form id="chat-form">
                 <div class="send-area">
                     <label>내용</label>
                     <input type="text" id="message" placeholder="메시지 내용">
-
                     <button id="send" type="submit" class="btn btn-4">Send</button>
                 </div>
             </form>
@@ -32,7 +34,6 @@
     var chatList = [[${chatList}]];
     var userName = [[${userName}]];
 
-
     // 웹 소켓 연결 생성
     function connect() {
         var socket = new SockJS('/ws/chat');
@@ -43,6 +44,7 @@
             loadChat(chatList)
 
             stompClient.subscribe('/team/' +teamId, function(chatMessage){
+                console.log(chatMessage)
                 showChat(JSON.parse(chatMessage.body));
             });
         }, function (error) {
@@ -60,11 +62,11 @@
     function sendChat(){
         if($("#message").val()!=""){
             stompClient.send("/send/" +teamId, {},
-            JSON.stringify({
-                'userName':userName,
-                'messageType' : 'TALK',
-                'message': $("#message").val()
-            }));
+                JSON.stringify({
+                    'sender': userName,
+                    'messageType' : 'TALK',
+                    'message': $("#message").val()
+                }));
             $("#message").val('');
         }
     }
@@ -80,7 +82,7 @@
                     <div class="sender">${chat.sender}</div>
                     <div class="textbox">${chat.message}</div>
                 </div>`;
-                }  else if (chat.sender === userName) {
+                }  else{
                     chatHtml = `<div class="chat ch2">
                     <div class="icon"><i class="fa-solid fa-user"></i></div>
                     <div class="sender">${chat.sender}</div>
@@ -93,7 +95,8 @@
     }
 
     // 실시간으로 받은 채팅을 화면에 표시
-    function showchat(chatMessage){
+    function showChat(chatMessage){
+        console.log("chatMessage.sender:", chatMessage.sender);
         let chatHtml = '';
         if (chatMessage.sender !== userName) {
             chatHtml = `<div class="chat ch1">
@@ -101,7 +104,7 @@
             <div class="sender">${chatMessage.sender}</div>
             <div class="textbox">${chatMessage.message}</div>
         </div>`;
-        } else if (chatMessage.sender === userName) {
+        } else {
             chatHtml = `<div class="chat ch2">
             <div class="icon"><i class="fa-solid fa-user"></i></div>
             <div class="sender">${chatMessage.sender}</div>
