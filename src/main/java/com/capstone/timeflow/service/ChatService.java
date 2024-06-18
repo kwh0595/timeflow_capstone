@@ -1,7 +1,14 @@
 package com.capstone.timeflow.service;
 
-import com.capstone.timeflow.dto.ChatRoom;
-import jakarta.annotation.PostConstruct;
+import com.capstone.timeflow.dto.ChatGPTResponse;
+import com.capstone.timeflow.entity.ChatEntity;
+import com.capstone.timeflow.entity.JoinTeamEntity;
+import com.capstone.timeflow.entity.TeamEntity;
+import com.capstone.timeflow.entity.UserEntity;
+import com.capstone.timeflow.repository.ChatRepository;
+
+import com.capstone.timeflow.repository.TeamRepository;
+import com.capstone.timeflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,33 +19,23 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatService {
+    private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
+    private final ChatRepository chatRepository;
 
-    private Map<String, ChatRoom> chatRooms;
+    private final ChatGptService chatGptService;
 
-    @PostConstruct
-    //의존관게 주입완료되면 실행되는 코드
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
+
+    public ChatEntity createChat(Long teamId, String sender, String message) {
+        TeamEntity team = teamRepository.findByTeamId(teamId).orElseThrow();  //방 찾기 -> 없는 방일 경우 여기서 예외처리
+        return chatRepository.save(ChatEntity.createChat(team, sender, message));
     }
 
-    //채팅방 불러오기
-    public List<ChatRoom> findAllRoom() {
-        //채팅방 최근 생성 순으로 반환
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
-
-        return result;
+    public List<ChatEntity> findAllChatByTeamId(Long teamId) {
+        return chatRepository.findAllByTeam_TeamId(teamId);
     }
-
-    //채팅방 하나 불러오기
-    public ChatRoom findById(String roomId) {
-        return chatRooms.get(roomId);
-    }
-
-    //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
+    //gpt응답 받아오는 메서드
+    public ChatGPTResponse getGptResponse(String prompt) {
+        return chatGptService.chat(prompt);
     }
 }

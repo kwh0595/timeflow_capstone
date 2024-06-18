@@ -34,7 +34,11 @@ window.onload = function() {
     popup.style.display = "none";
   });
 };
+function fetchUserTeams(){
+  $.ajax({
 
+  })
+}
 // 팀 이름 저장 배열
 let teamNames = [];
 
@@ -90,11 +94,14 @@ document.querySelector(".create-team-button").addEventListener("click", function
 // My Team 목록에 팀 이름 추가하는 함수
 function addTeamToList(teams) {
   const teamListContainer = document.querySelector('.team-list');
-  teamListContainer.innerHTML = '';// 기존 목록 초기화
+  teamListContainer.innerHTML = ''; // 기존 목록 초기화
   teamNames.forEach(function(name) {
     const teamItem = document.createElement('button'); // 버튼 요소 생성
     teamItem.textContent = name;
-    teamItem.classList.add('team-button'); // 필요 시 클래스 추가
+    teamItem.classList.add('team-button');// 필요 시 클래스 추가
+    teamItem.addEventListener('click', function(){
+      showPopup(name);
+    });
     teamListContainer.appendChild(teamItem);
   });
 }
@@ -168,7 +175,14 @@ function addJoinTeamToList(teams){
       const teamItem = document.createElement('button');
       teamItem.textContent = team.teamName;
       teamItem.classList.add('team-button');
+      teamItem.addEventListener('click', function(){
+        showPopup(team.teamId);
+      });
       teamListContainer.appendChild(teamItem);
     }
   });
+}
+function showPopup(teamId) {
+  const popupUrl = `/team/${teamId}`;
+  window.open(popupUrl, "popupWindow", "width=400,height=700,left=100,top=50");
 }
