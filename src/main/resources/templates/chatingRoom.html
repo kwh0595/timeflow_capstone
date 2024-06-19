@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>채팅방</title>
+    <title>[[${teamName}]]</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f7f7;
+            background-color: white; /* 반투명 배경 추가 */
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,35 +18,19 @@
             align-items: center;
             height: 100vh;
         }
-        .modal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            max-width: 90%;
-            overflow: hidden;
-        }
 
         #main-content {
             display: flex;
             flex-direction: column;
             height: 100%;
-            overflow-y: auto
+            overflow-y: auto;
         }
 
         .chat-container {
             flex-grow: 1;
             padding: 15px;
             overflow-y: auto;
-            border-bottom: 1px solid #eee;
+            border-bottom: none; /* 경계선 제거 */
         }
 
         .chat {
@@ -144,6 +128,12 @@
             overflow-y: scroll; /* 세로 스크롤 활성화 */
             padding-bottom: 20px; /* 스크롤 밑 여백 */
         }
+        .team-name {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
 
 </head>
@@ -172,6 +162,7 @@
     var chatList = [[${chatList}]];
     var userName = [[${userName}]];
     var userId = [[${userId}]];
+    var teamName = [[${teamName}]];
 
     // 웹 소켓 연결 생성
     function connect() {

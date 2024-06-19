@@ -11,7 +11,7 @@ body {
 
 .chat-wrapper {
   width: 100vw; /* 뷰포트 너비에 맞춤 */
-  height: 100vh; /* 뷰포트 높이에 맞춤 */
+  height: 90vh; /* 뷰포트 높이에 맞춤 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,14 +19,16 @@ body {
 
 .chat-container {
   max-width: 350px;  /* 컨테이너 최대 너비 설정 */
-  max-height: 850px; /* 컨테이너 최대 높이 설정 */
+  max-height: 750px; /* 컨테이너 최대 높이 설정 */
   width: 100%; /* 너비를 화면에 맞춤 */
   height: 100%; /* 높이를 화면에 맞춤 */
   text-align: left;
   padding: 20px;  /* 패딩 유지 */
-  background-color: #f4f4f4;
+  /*background-color: #FFFFFF;*/
+  background: linear-gradient(to bottom, #ffffff, #d6deee) ; /* 위아래로 그라데이션 배경색 설정 */
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 15px;
+  border: 1px lightsteelblue; /* 테두리 추가 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,53 +37,99 @@ body {
 }
 
 .date {
-  font-size: 22px;
+  font-size: 25px;
+  color: #3f3e3e;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-top: 10px;  /* 상단 여백 설정 */
+  margin-bottom: 25px;
+}
+
+/* 주간 컨테이너 스타일 설정 */
+.week-container {
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-bottom: 25px; /* 하단 여백 설정 */
+}
+
+.days-row, .dates-row {
+  display: grid; /* 그리드 레이아웃 사용 */
+  grid-template-columns: repeat(7, 1fr); /* 7개의 동일한 너비의 열로 설정 */
+}
+
+.days-row .day, .dates-row .date-item {
+  padding: 5px 0;
+  color: black; /* 글자 색상 설정 */
+  border-radius: 50%; /* 동그란 모양 설정 */
+}
+
+.dates-row .date-item.highlight {
+  background: linear-gradient(to bottom, #3B5998, #4d7eec); /* 위아래로 그라데이션 배경색 설정 */
+  font-weight: bold; /* 글꼴 두께 설정 */
+  color: white; /* 글자 색상 설정 */
+  border-radius: 50%; /* 동그란 모양 설정 */
+  padding: 5px 0px; /* 세로로 길게 여백 추가 */
+  margin: 0 5px; /* 좌우 여백 */
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
+/* 버튼 스타일 설정 */
 .create-room-button, .invite-code-button {
-  padding: 15px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  flex: 1;
-  margin: 0 5px;
+  padding: 15px 15px; /* 내부 여백 설정 */
+  font-size: 16px; /* 글꼴 크기 설정 */
+  background: #3B5998;
+  color: white; /* 글자 색상 설정 */
+  border: none; /* 테두리 없음 */
+  border-radius: 40px; /* 모서리 둥글게 */
+  cursor: pointer; /* 마우스 커서 포인터로 변경 */
+  flex: 1; /* 동일한 플렉스 비율 */
+  margin: 0 27px; /* 좌우 여백 설정 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 설정 */
 }
 
-.chat-box {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 10px;
+/* 팀 컨테이너 스타일 설정 */
+.my-team-container {
+  margin-bottom: 2px; /* 하단 여백 설정 */
+  height: 550px; /* 세로 크기 설정 */
+  color: #3f3e3e;
+  background-color: #f4f4f4; /* 배경색 설정 */
+  padding: 20px; /* 내부 여백 설정 */
+  border-radius: 10px; /* 모서리 둥글게 설정 */
+  /* 상하좌우 그림자 설정 */
+  box-shadow: 0px 4px 8px rgba(130, 128, 137, 0.2),
+  0px -4px 8px rgba(130, 128, 137, 0.2),
+  4px 0px 8px rgba(130, 128, 137, 0.2),
+  -4px 0px 8px rgba(130, 128, 137, 0.2);
 }
 
-.message {
+.my-team-container h2 {
+  margin: 0; /* 마진 제거 */
+  font-size: 20px; /* 글꼴 크기 설정 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+.team-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.team-button {
+  display: block;
+  width: 100%;
   padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-/*
-.message.received {
-  background-color: #eee;
+  border: none;
+  background-color: white;
   text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  border-bottom: 1px solid #ccc; /* 구분선 추가 */
 }
 
-.message.sent {
-  background-color: #d1e7dd;
-  text-align: right;
+.team-button:hover {
+  background-color: #f0f0f0; /* 호버 효과 */
 }
- */
-
 
 .popup {
   display: none;
@@ -126,96 +174,22 @@ body {
   cursor: pointer;
 }
 
+/* 팀 생성 버튼/확인 버튼 스타일 설정 */
 .create-team-button, .confirm-button {
-  width: 100%;
-  padding: 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  width: calc(100% - 20px); /* 너비 조정, 좌우 여백 포함 */
+  padding: 15px; /* 내부 여백 설정 */
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  background: linear-gradient(45deg, #6a5acd, #748bff); /* 그라데이션 배경 설정 */
+  color: white; /* 글자 색상 설정 */
+  border: none; /* 테두리 없음 */
+  border-radius: 30px; /* 모서리 둥글게 */
+  cursor: pointer; /* 마우스 커서 포인터로 변경 */
+  margin: 10px auto; /* 중앙 정렬 및 상하 여백 설정 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 설정 */
 }
 
 #invite-error-msg {
   margin-top: 10px;
   color: red;
-}
-
-.wrap {
-  padding: 70px 0;
-  background-color: #A8C0D6;
-}
-
-.wrap .chat {
-  display: flex;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-.wrap .chat .icon {
-  position: relative;
-  overflow: hidden;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #eee;
-}
-
-.wrap .chat .icon i {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  font-size: 2.5rem;
-  color: #aaa;
-  transform: translateX(-50%);
-}
-
-.wrap .chat .textbox {
-  position: relative;
-  display: inline-block;
-  max-width: calc(100% - 70px);
-  padding: 10px;
-  margin-top: 7px;
-  font-size: 13px;
-  border-radius: 10px;
-}
-
-.wrap .chat .textbox::before {
-  position: absolute;
-  display: block;
-  top: 0;
-  font-size: 1.5rem;
-}
-
-.wrap .ch1 .textbox {
-  margin-left: 20px;
-  background-color: #ddd;
-}
-
-.wrap .ch1 .textbox::before {
-  left: -15px;
-  content: "◀";
-  color: #ddd;
-}
-
-.wrap .ch2 {
-  flex-direction: row-reverse;
-}
-
-.wrap .ch2 .textbox {
-  margin-right: 20px;
-  background-color: #F9EB54;
-}
-
-.wrap .ch2 .textbox::before {
-  right: -15px;
-  content: "▶";
-  color: #F9EB54;
-}
-.chat-box{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 320px;
 }
