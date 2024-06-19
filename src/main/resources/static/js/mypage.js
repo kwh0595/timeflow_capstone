@@ -11,7 +11,7 @@ function signOut() {
         .then(response => {
             if (response.ok) {
                 setTimeout(function() {
-                    window.location.href = '/'; // 로그아웃 후 로그인 페이지로 이동
+                    window.location.href = ''; // 로그아웃 후 로그인 페이지로 이동
                 }, 2000);
             } else {
                 alert("로그아웃에 실패했습니다.");

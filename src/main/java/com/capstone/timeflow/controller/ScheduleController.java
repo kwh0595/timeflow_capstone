@@ -96,3 +96,4 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleDTOs);
     }
 }
+

@@ -1,7 +1,10 @@
 package com.capstone.timeflow.service;
 
 import com.capstone.timeflow.dto.ChatBotResponse;
+import com.capstone.timeflow.dto.ChatGPTResponse;
 import com.capstone.timeflow.dto.ScheduleDTO;
+import com.capstone.timeflow.entity.ScheduleEntity;
+import com.capstone.timeflow.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,17 +13,16 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ChatBotService {
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
     private ScheduleServiceImpl scheduleService;

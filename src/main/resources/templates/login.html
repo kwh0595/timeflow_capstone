@@ -1,37 +1,157 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/login.css" />
-    <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-    />
-    <title>로그인</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <title>TIMEFLOW</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #3B5998; /* Pastel navy blue background */
+            margin: 0;
+            padding: 0;
+            color: #ecf0f1; /* Light text color */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background: #3B5998; /* Matching the body background */
+        }
+
+        .intro {
+            max-width: 900px;
+            margin-bottom: 2rem;
+            animation: fadeIn 2s ease-in-out;
+            white-space: pre-line; /* To preserve line breaks */
+        }
+
+        .intro h1 {
+            font-size: 3rem;
+            color: #ecf0f1; /* Light text color */
+            margin-bottom: 1rem;
+        }
+
+        .intro p {
+            font-size: 1.5rem;
+            color: #bdc3c7; /* Lighter text color for paragraph */
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .login-form {
+            background-color: transparent; /* Transparent background */
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 3s ease-in-out;
+            display: none; /* Initially hidden */
+        }
+
+        .login-form h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: #ecf0f1; /* Light text color */
+            font-size: 2rem;
+        }
+
+        .login-form input[type="text"], .login-form input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            background-color: #ecf0f1; /* Light background for input fields */
+            color: #2c3e50; /* Dark text color for contrast */
+        }
+
+        .login-form .error {
+            color: #e74c3c; /* Red color for error message */
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-form input[type="submit"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #2980b9; /* Blue button color */
+            color: #ffffff; /* White text color */
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #1f618d; /* Darker blue on hover */
+        }
+
+        .login-form .links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .login-form .links a {
+            color: #ecf0f1; /* Light text color for links */
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .login-form .links a:hover {
+            color: #bdc3c7; /* Slightly darker color on hover */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h2>TIMEFLOW</h2>
-    <form th:action="@{/login}" method="post">
-        <div class="login_input">
-            <!-- 사용자 이름 필드 -->
+    <div class="intro">
+        <h1>Welcome to TIMEFLOW</h1>
+        <p>실시간 채팅 기능을 통해 팀원들과 쉽게 소통할 수 있으며, 스케줄러를 통해 프로젝트 일정과 개인 일정을 체계적으로 관리할 수 있습니다.<br>
+            이 모든 기능을 통해 팀 프로젝트를 더욱 효율적이고 체계적으로 관리하세요!</p>
+    </div>
+    <div class="login-form" id="login-form">
+        <h2>Login</h2>
+        <form th:action="@{/login}" method="post">
             <input type="text" name="userMail" placeholder="ID">
-            <!-- 비밀번호 필드 -->
             <input type="password" name="userPassword" placeholder="PASSWORD">
-        </div>
-        <div th:if="${param.error}">
-            <p class="error">로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.</p>
-        </div>
-        <div class="submit_button">
+            <div th:if="${param.error}">
+                <p class="error">로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.</p>
+            </div>
             <input type="submit" value="Login">
+        </form>
+        <div class="links">
+            <a href="/user/signup">회원가입</a>
+            <a href="/user/findId">ID 찾기</a>
+            <a href="/user/findPassword">비밀번호 찾기</a>
         </div>
-    </form>
-    <div class="links" style="display: flex; justify-content: space-around;">
-        <a href="/user/signup">회원가입</a>
-        <a href="/user/findId">ID 찾기</a>
-        <a href="/user/findPassword">비밀번호 찾기</a>
     </div>
 </div>
+<script>
+    // Show login form after a delay
+    setTimeout(() => {
+        document.getElementById('login-form').style.display = 'block';
+    }, 3000); // Adjust the delay time (in milliseconds) as needed
+</script>
 </body>
 </html>

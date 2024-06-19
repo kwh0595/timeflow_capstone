@@ -36,7 +36,6 @@ public class ChatRoomController {
     @GetMapping("/team/{teamId}")
     public String teamChat(@PathVariable(required = false) Long teamId, Model model, Authentication auth){
         List<ChatEntity> chatList = chatService.findAllChatByTeamId(teamId);
-        CustomUser customUser = (CustomUser) auth.getPrincipal();
         model.addAttribute("teamId",teamId);
         model.addAttribute("chatList", chatList);
         model.addAttribute("userName",customUser.getUserName());
@@ -99,3 +98,16 @@ public class ChatRoomController {
         }
     }
 }
+
+//GPT 응답 브로드캐스트
+//                ChatGPTResponse gptResponse = chatService.getGptResponse(message.getMessage());
+//                String gptMessageContent = gptResponse.getChoices().get(0).getGptMessage().getContent();
+//
+//                ChatEntity gptChat = chatService.createChat(teamId, "GPT-3.5", gptMessageContent);
+//                ChatMessage gptChatMessage = ChatMessage.builder()
+//                        .teamId(teamId)
+//                        .sender(gptChat.getSender())
+//                        .message(gptChat.getMessage())
+//                        .messageType(ChatMessage.MessageType.TALK)
+//                        .build();
+//                sendingOperations.convertAndSend("/team/" + teamId, gptChatMessage);
