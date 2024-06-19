@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-//
 @Entity
 @Getter
 @Setter
@@ -51,7 +50,7 @@ public class ScheduleEntity {
     //        name = "JoinTeamSchedule",
     //        joinColumns = @JoinColumn(name = "sid"),
     //        inverseJoinColumns = @JoinColumn(name = "userId")
-   // )
+    // )
     @ManyToMany
     @JoinTable(
             name = "join_team_schedule",

@@ -28,11 +28,11 @@ public class ChatBotService {
     private ScheduleServiceImpl scheduleService;
 
     // OpenAI API 키를 application.properties에서 주입받습니다.
-    @Value("${openai.api.key}")
+    @Value("${gpt_api_key}")
     private String apiKey;
 
     // OpenAI API의 엔드포인트 URL
-    private static final String API_URL = "https://api.openai.com/v1/engines/davinci-codex/completions";
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
     // 채팅방별 상태를 저장하는 맵. 채팅방 ID를 키로 사용합니다.
     private final Map<String, String> roomState = new ConcurrentHashMap<>();
