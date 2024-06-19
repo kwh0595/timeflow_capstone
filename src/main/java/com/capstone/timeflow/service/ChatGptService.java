@@ -16,9 +16,9 @@ public class ChatGptService {
 
     @Autowired
     private RestTemplate restTemplate;
-    @Value("${gpt_api_url}")
-    private String apiURL; // 실제 API 엔드포인트로 변경
-    @Value("${gpt_model}")
+    //@Value("${gpt_api_url}")
+    private String apiURL="https://api.openai.com/v1/chat/completions";
+
     private String model = "gpt-3.5-turbo"; // 실제 모델명으로 변경
 
 
@@ -27,6 +27,7 @@ public class ChatGptService {
         HttpEntity<ChatGPTRequest> entity = new HttpEntity<>(request);
 
         ResponseEntity<ChatGPTResponse> response = restTemplate.postForEntity(apiURL, entity, ChatGPTResponse.class);
+
         return response.getBody();
     }
 }
