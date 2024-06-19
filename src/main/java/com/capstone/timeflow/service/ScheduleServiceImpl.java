@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
+
     private final ScheduleRepository scheduleRepository;
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
@@ -52,6 +53,36 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            throw new RuntimeException("User not found in session");
+        }
+
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        TeamEntity team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+
+        ScheduleEntity schedule = new ScheduleEntity();
+        schedule.setSname(scheduleDTO.getSname());
+        schedule.setScontents(scheduleDTO.getScontents());
+        schedule.setStartDate(scheduleDTO.getStartdate());
+        schedule.setEndDate(scheduleDTO.getEnddate());
+        schedule.setSprocess(scheduleDTO.getSprocess());
+        schedule.setScolor(scheduleDTO.getScolor());
+        schedule.setRegistrar(user);
+        //schedule.getAssignees().add(user); // 기본적으로 등록자를 시행자로 설정
+        schedule.setTeam(team); // 팀 일정의 경우 팀 아이디 설정
+        if (scheduleDTO.getAssigneeUsernames() != null) {
+            for (String userName : scheduleDTO.getAssigneeUsernames()) {
+                UserEntity assignee = userRepository.findByUserName(userName)
+                        .orElseThrow(() -> new RuntimeException("User not found: " + userName));
+                schedule.getAssignees().add(assignee);
+            }
+        }
+
+        return scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, Long userId) {
         if (userId == null) {
             throw new RuntimeException("User not found in session");
         }

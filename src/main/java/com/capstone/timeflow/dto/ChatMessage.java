@@ -19,6 +19,7 @@ public class ChatMessage {
     }
 
     private Long teamId;
+    private Long userId;
     private String sender;
     private String message;
     private LocalDateTime sendDate;

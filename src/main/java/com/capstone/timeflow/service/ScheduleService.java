@@ -11,6 +11,9 @@ public interface ScheduleService {
 
     ScheduleEntity createPersonalSchedule(ScheduleDTO scheduleDTO, HttpSession session);
     ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, HttpSession session);
+
+    ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, Long userId);
+
     boolean updateSchedule(Long sid, ScheduleDTO scheduleDTO, HttpSession session);
 
     boolean deleteSchedule(Long sid, HttpSession session);

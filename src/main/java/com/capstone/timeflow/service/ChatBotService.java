@@ -1,10 +1,7 @@
 package com.capstone.timeflow.service;
 
 import com.capstone.timeflow.dto.ChatBotResponse;
-import com.capstone.timeflow.dto.ChatGPTResponse;
 import com.capstone.timeflow.dto.ScheduleDTO;
-import com.capstone.timeflow.entity.ScheduleEntity;
-import com.capstone.timeflow.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,56 +19,61 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatBotService {
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
     private ScheduleServiceImpl scheduleService;
 
     // OpenAI API 키를 application.properties에서 주입받습니다.
-    @Value("${openai.api.key}")
-    private String apiKey;
+    private String apiKey = "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";
 
     // OpenAI API의 엔드포인트 URL
-    private static final String API_URL = "https://api.openai.com/v1/engines/davinci-codex/completions";
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
     // 채팅방별 상태를 저장하는 맵. 채팅방 ID를 키로 사용합니다.
     private final Map<String, String> roomState = new ConcurrentHashMap<>();
 
-    public ChatBotResponse sendMessage(Long teamId, String prompt) {
+    public ChatBotResponse sendMessage(Long teamId, String prompt, Long userId) {
         if (prompt.startsWith("#검색")) {
+            System.out.println("#검색 시작");
             return handleSearch(teamId, prompt.substring(3).trim());
         } else if (prompt.startsWith("#일정등록")) {
-            return handleSchedule(teamId, prompt.substring(5).trim());
+            System.out.println("#일정 등록 시작");
+            return handleSchedule(teamId, prompt.substring(5).trim(), userId);
         } else {
             return sendToOpenAI(prompt);
         }
     }
 
     private ChatBotResponse handleSearch(Long teamId, String query) {
-        ChatBotResponse response = new ChatBotResponse();
+        ChatBotResponse response = sendToOpenAI(query);
+        System.out.println(response.getChoices()[0].getText());
         response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 검색 결과: " + query)});
+        System.out.println(response);
+
         return response;
     }
 
     /**
      * 일정 등록 명령어를 처리합니다.
      */
-    private ChatBotResponse handleSchedule(Long teamId, String details) {
-        String prompt = "다음 텍스트에서 일정 제목, 내용, 시작 날짜 및 시간, 종료 날짜 및 시간을 추출해줘:\n" + details;
+    private ChatBotResponse handleSchedule(Long teamId, String details, Long userId) {
+        String prompt = "다음 텍스트에서 일정 제목, 내용, 시작 날짜 및 시간, 종료 날짜 및 시간, 진행 상황을 추출해줘. 만약 시간이 지정되어있지 않다면 현재 시각을 기준으로 등록 해줘:\n" + details;
         ChatBotResponse gptResponse = sendToOpenAI(prompt);
 
         // GPT-3의 응답에서 필요한 정보를 추출
         String extractedInfo = gptResponse.getChoices()[0].getText().trim();
+        System.out.println(extractedInfo);
         ScheduleDTO scheduleDTO = parseScheduleInfo(extractedInfo);
 
-        ScheduleEntity scheduleEntity = scheduleService.createTeamSchedule(scheduleDTO, teamId);
+        scheduleService.createTeamSchedule(scheduleDTO, teamId, userId);
+        System.out.println("등록 완료 DB 확인해보셈 ㅋㅋ");
 
         ChatBotResponse response = new ChatBotResponse();
         response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 일정 등록 완료: " + extractedInfo)});
+        System.out.println(response);
         return response;
     }
 
     private ChatBotResponse sendToOpenAI(String prompt) {
+        System.out.println("GPT한테 보낼거임 ㅋㅋ");
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 요청 헤더 설정

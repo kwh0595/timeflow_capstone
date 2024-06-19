@@ -95,8 +95,4 @@ public class ScheduleController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(scheduleDTOs);
     }
-
-
-
 }
-
