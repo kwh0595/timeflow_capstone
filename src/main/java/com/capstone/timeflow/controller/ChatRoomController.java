@@ -6,20 +6,15 @@ import com.capstone.timeflow.entity.ChatEntity;
 import com.capstone.timeflow.entity.CustomUser;
 import com.capstone.timeflow.service.ChatBotService;
 import com.capstone.timeflow.service.ChatService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -74,9 +69,8 @@ public class ChatRoomController {
                     ChatMessage botMessage = ChatMessage.builder()
                             .teamId(teamId)
                             .sender("ChatBot")
-                            .message(botResponse.getChoices()[0].getText())
+                            .message(botResponse.getChoices()[0].getMessage().getContent())
                             .build();
-                    System.out.println("Sending bot message: " + botMessage);
                     //챗봇은 클라이언트에서 전송버튼으로 받아오는 sender가 없으니 dto에 먼저 sender를 저장하고 db에 저장하는 방식
                     chatService.createChat(teamId, botMessage.getSender(), botMessage.getMessage());
                     sendingOperations.convertAndSend("/team/" + teamId, botMessage);
