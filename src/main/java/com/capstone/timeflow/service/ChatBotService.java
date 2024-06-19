@@ -48,7 +48,7 @@ public class ChatBotService {
     }
 
     private ChatBotResponse handleSearch(Long teamId, String query) {
-        ChatBotResponse response = new ChatBotResponse();
+        ChatBotResponse response = sendToOpenAI(query);
         response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 검색 결과: " + query)});
         return response;
     }
