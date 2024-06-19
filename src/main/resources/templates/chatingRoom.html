@@ -64,7 +64,7 @@
         }
 
         .ch3 {
-            align-items: flex-end;
+            align-items: flex-start;
 
         }
         .icon {
@@ -81,6 +81,10 @@
         .ch2 .icon {
             margin-left: 10px;
             margin-right: 0;
+        }
+
+        .ch3 .icon {
+            margin-right: 10px;
         }
 
         .sender {
@@ -104,6 +108,7 @@
         .ch3 .textbox{
             background-color: #f1f1d6;
         }
+
         .send-area {
             display: flex;
             align-items: center;
@@ -133,6 +138,11 @@
 
         .send-area button:hover {
             background-color: #0056b3;
+        }
+        #chatting {
+            max-height: calc(100vh - 140px); /* 스크롤 영역의 최대 높이 지정 */
+            overflow-y: scroll; /* 세로 스크롤 활성화 */
+            padding-bottom: 20px; /* 스크롤 밑 여백 */
         }
     </style>
 
@@ -171,6 +181,7 @@
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             loadChat(chatList)
+            scrollChatToBottom()
 
             stompClient.subscribe('/team/' +teamId, function(chatMessage){
                 console.log(chatMessage)
@@ -206,18 +217,19 @@
         if(chatList!=null){
             for(let chat of chatList){
                 let chatHtml = '';
-                if(chat.sender!==userName) {
+                if(chat.sender === "ChatBot"){
+                    chatHtml = `<div class="chat ch3">
+                    <div class = "icon"><i class ="fa-solid fa-robot"></i></div>
+                    <div class="sender">${chat.sender}</div>
+                    <div class="textbox">${chat.message}</div>
+                    </div>`;
+                }
+                else if(chat.sender!==userName) {
                     chatHtml = `<div class="chat ch1">
                     <div class="icon"><i class="fa-solid fa-user"></i></div>
                     <div class="sender">${chat.sender}</div>
                     <div class="textbox">${chat.message}</div>
                 </div>`;
-                } else if(chat.sender === "ChatBot"){
-                    chatHtml = `<div class="chat ch3">
-                    <div class = "icon"><i class ="fa-solid fa-boot"></i></div>
-                    <div class="sender">${chat.sender}</div>
-                    <div class="textbox">${chat.message}</div>
-                    </div>`;
                 }
                 else{
                     chatHtml = `<div class="chat ch2">
@@ -239,7 +251,7 @@
         let chatHtml = '';
         if(chatMessage.sender === "ChatBot"){
             chatHtml = `<div class="chat ch3">
-                    <div class = "icon"><i class ="fa-solid fa-boot"></i></div>
+                    <div class = "icon"><i class ="fa-solid fa-robot"></i></div>
                     <div class="sender">${chatMessage.sender}</div>
                     <div class="textbox">${chatMessage.message}</div>
                     </div>`;
