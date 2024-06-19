@@ -3,10 +3,23 @@ package com.capstone.timeflow.service;
 import com.capstone.timeflow.dto.ScheduleDTO;
 import com.capstone.timeflow.entity.ScheduleEntity;
 
+import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+
 public interface ScheduleService {
 
-     //스케줄 관리를 위한 서비스 인터페이스.
-    ScheduleEntity createSchedule(ScheduleDTO scheduleDTO);
-    boolean updateSchedule(Long sid, String sprocess);
-    boolean deleteSchedule(Long sid);
+    ScheduleEntity createPersonalSchedule(ScheduleDTO scheduleDTO, HttpSession session);
+    ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, HttpSession session);
+
+    ScheduleEntity createTeamSchedule(ScheduleDTO scheduleDTO, Long teamId, Long userId);
+
+    boolean updateSchedule(Long sid, ScheduleDTO scheduleDTO, HttpSession session);
+
+    boolean deleteSchedule(Long sid, HttpSession session);
+
+    // 로그인된 사용자가 시행자로 되어 있는 일정 조회 메서드
+    List<ScheduleEntity> getSchedulesByAssignee(Long userId);
+
+    List<ScheduleEntity> getUserSchedules(Long userId);
 }

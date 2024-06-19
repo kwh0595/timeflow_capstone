@@ -78,21 +78,21 @@ public class TeamMakeController {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<List<TeamDTO>> getUsersTeams(HttpSession session) {
+    public ResponseEntity<List<TeamEntity>> getUsersTeams(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         System.out.println("userId : " + userId);
-        // 여기 그 userentity 가져오는거 서비스 짜야됨
+
         if (userId == null) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         UserEntity user = sessionUser.getUserById(userId);
 
         // 팀 ID 목록으로 팀 엔티티 목록 가져오기
-        List<TeamDTO> teams = teamService.getTeamsByUserId(userId);
+        List<TeamEntity> teams = teamService.getTeamsForUser(user);
         System.out.println(session.getAttribute("teamList" + teams));
 
-        return ResponseEntity.ok(teams);
+        return new ResponseEntity<>(teams, HttpStatus.OK);
     }
 
     @Operation(summary = "팀 생성", description = "teamName 입력을 통한 팀 생성 = joinCode 자동 생성")

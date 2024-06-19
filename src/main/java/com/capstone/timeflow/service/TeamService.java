@@ -57,6 +57,7 @@ public class TeamService {
         return team;
     }
 
+    /*
     public List<TeamDTO> getTeamsByUserId(Long userId) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -74,6 +75,10 @@ public class TeamService {
         return teams.stream()
                 .map(team -> new TeamDTO(team.getTeamId(), team.getTeamName()))
                 .collect(Collectors.toList());
+    }*/
+
+    public List<TeamEntity> getTeamsForUser(UserEntity userId) {
+        return joinTeamRepository.findTeamsByUserId(userId);
     }
 
     public TeamEntity getTeamByJoinCode(String joinCode) {

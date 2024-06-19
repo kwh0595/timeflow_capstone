@@ -39,6 +39,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            overflow-y: auto
         }
 
         .chat-container {
@@ -62,6 +63,10 @@
             align-items: flex-end;
         }
 
+        .ch3 {
+            align-items: flex-end;
+
+        }
         .icon {
             width: 30px;
             height: 30px;
@@ -96,6 +101,9 @@
             background-color: #d1e7dd;
         }
 
+        .ch3 .textbox{
+            background-color: #f1f1d6;
+        }
         .send-area {
             display: flex;
             align-items: center;
@@ -153,6 +161,7 @@
     var teamId = [[${teamId}]];
     var chatList = [[${chatList}]];
     var userName = [[${userName}]];
+    var userId = [[${userId}]];
 
     // 웹 소켓 연결 생성
     function connect() {
@@ -184,6 +193,7 @@
             stompClient.send("/send/" +teamId, {},
                 JSON.stringify({
                     'sender': userName,
+                    'userId' : userId,
                     'messageType' : 'TALK',
                     'message': $("#message").val()
                 }));
@@ -196,13 +206,20 @@
         if(chatList!=null){
             for(let chat of chatList){
                 let chatHtml = '';
-                if(chat.sender!==userName){
+                if(chat.sender!==userName) {
                     chatHtml = `<div class="chat ch1">
                     <div class="icon"><i class="fa-solid fa-user"></i></div>
                     <div class="sender">${chat.sender}</div>
                     <div class="textbox">${chat.message}</div>
                 </div>`;
-                }  else{
+                } else if(chat.sender === "ChatBot"){
+                    chatHtml = `<div class="chat ch3">
+                    <div class = "icon"><i class ="fa-solid fa-boot"></i></div>
+                    <div class="sender">${chat.sender}</div>
+                    <div class="textbox">${chat.message}</div>
+                    </div>`;
+                }
+                else{
                     chatHtml = `<div class="chat ch2">
                     <div class="icon"><i class="fa-solid fa-user"></i></div>
                     <div class="sender">${chat.sender}</div>
@@ -211,6 +228,7 @@
                 }
                 $("#chatting").append(chatHtml);
             }
+            scrollChatToBottom();
         }
     }
 
@@ -219,13 +237,19 @@
     function showChat(chatMessage){
         console.log("chatMessage.sender:", chatMessage.sender);
         let chatHtml = '';
-        if (chatMessage.sender !== userName) {
+        if(chatMessage.sender === "ChatBot"){
+            chatHtml = `<div class="chat ch3">
+                    <div class = "icon"><i class ="fa-solid fa-boot"></i></div>
+                    <div class="sender">${chatMessage.sender}</div>
+                    <div class="textbox">${chatMessage.message}</div>
+                    </div>`;
+        } else if(chatMessage.sender!==userName) {
             chatHtml = `<div class="chat ch1">
-            <div class="icon"><i class="fa-solid fa-user"></i></div>
-            <div class="sender">${chatMessage.sender}</div>
-            <div class="textbox">${chatMessage.message}</div>
-        </div>`;
-        } else {
+                    <div class="icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="sender">${chatMessage.sender}</div>
+                    <div class="textbox">${chatMessage.message}</div>
+                </div>`;
+        }else {
             chatHtml = `<div class="chat ch2">
             <div class="icon"><i class="fa-solid fa-user"></i></div>
             <div class="sender">${chatMessage.sender}</div>
@@ -250,6 +274,7 @@
 <script>
     //창 키면 바로 연결
     window.onload = function (){
+        scrollChatToBottom();
         connect();
     }
 

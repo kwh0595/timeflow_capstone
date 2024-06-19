@@ -2,39 +2,58 @@ package com.capstone.timeflow.controller;
 
 import com.capstone.timeflow.dto.ScheduleDTO;
 import com.capstone.timeflow.entity.ScheduleEntity;
-import com.capstone.timeflow.repository.UserRepository;
 import com.capstone.timeflow.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-//
+
+import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequiredArgsConstructor
 public class ScheduleController {
     private final ScheduleService scheduleService;
-// (/schedules)는 스케쥴 페이지를 반환하는 역활
-    //이 경로는 페잊만 보여줌
+
     @GetMapping("/scheduler")
     public String getSchedulerPage() {
         return "scheduler"; // templates 디렉토리의 scheduler.html 파일을 반환
     }
 
-    @PostMapping("/schedule")
-    public String createSchedule(@ModelAttribute ScheduleDTO scheduleDTO) {
-        scheduleService.createSchedule(scheduleDTO);
-        return "redirect:/scheduler";
+    @PostMapping("/schedule/personal")
+    public ResponseEntity<ScheduleDTO> createPersonalSchedule(@RequestBody ScheduleDTO scheduleDTO, HttpSession session) {
+        ScheduleEntity savedSchedule = scheduleService.createPersonalSchedule(scheduleDTO, session);
+        ScheduleDTO responseDTO = new ScheduleDTO(savedSchedule.getSid(), savedSchedule.getSname(), savedSchedule.getScontents(), savedSchedule.getStartDate(), savedSchedule.getEndDate(), savedSchedule.getSprocess(), savedSchedule.getScolor(),null);
+        return ResponseEntity.ok(responseDTO);
     }
 
 
-    // (/api/schedules)는 새로운 스케줄을 추가하는 APi  엔드포인트
-    //이 경로는 데이터 삽입 수정 삭제를 담당함.
+    @PostMapping("/schedule/team/{teamId}")
+    public ResponseEntity<ScheduleDTO> createTeamSchedule(@RequestBody ScheduleDTO scheduleDTO, @PathVariable("teamId") Long teamId, HttpSession session) {
+        ScheduleEntity savedSchedule = scheduleService.createTeamSchedule(scheduleDTO, teamId, session);
+        ScheduleDTO responseDTO = new ScheduleDTO(
+                savedSchedule.getSid(),
+                savedSchedule.getSname(),
+                savedSchedule.getScontents(),
+                savedSchedule.getStartDate(),
+                savedSchedule.getEndDate(),
+                savedSchedule.getSprocess(),
+                savedSchedule.getScolor(),
+                scheduleDTO.getAssigneeUsernames() // 팀 일정은 assigneeUsernames가 필요함
+        );
+        return ResponseEntity.ok(responseDTO);
+    }
 
-    //데이터 업데이트 부분 sid를 기준으로 데이터를 수정함
     @PutMapping("/api/schedules/{sid}")
-    public ResponseEntity<String> updateSchedule(@PathVariable Long sid, @RequestParam String sprocess) {
-        boolean success = scheduleService.updateSchedule(sid, sprocess);
+    public ResponseEntity<String> updateSchedule(
+            @PathVariable("sid") Long sid,
+            @RequestBody ScheduleDTO scheduleDTO,
+            HttpSession session) {
+        boolean success = scheduleService.updateSchedule(sid, scheduleDTO, session);
         if (success) {
             return ResponseEntity.ok("Schedule updated successfully");
         } else {
@@ -42,11 +61,10 @@ public class ScheduleController {
         }
     }
 
-    //데이터 삭제 부분. sid를 기준으로 데이터 삭제함
-    @DeleteMapping("/api/schedules/{sid}")
-    public ResponseEntity<String> deleteSchedule(@PathVariable Long sid) {
 
-        boolean success = scheduleService.deleteSchedule(sid);
+    @DeleteMapping("/api/schedules/{sid}")
+    public ResponseEntity<String> deleteSchedule(@PathVariable("sid") Long sid, HttpSession session) {
+        boolean success = scheduleService.deleteSchedule(sid, session);
         if (success) {
             return ResponseEntity.ok("Schedule deleted successfully");
         } else {
@@ -54,16 +72,30 @@ public class ScheduleController {
         }
     }
 
-    @PostMapping("/api/schedules")
-    public ResponseEntity<String> addApiSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        // ScheduleDTO를 ScheduleEntity로 변환하고 저장하는 서비스 호출
-        ScheduleEntity schedule = scheduleService.createSchedule(scheduleDTO);
-        // 저장이 성공적으로 이루어졌는지 확인
-        if (schedule != null) {
-            return ResponseEntity.ok("Schedule added successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding schedule");
-        }
-    }
-}
 
+
+
+    @GetMapping("/api/schedules/assignee")
+    public ResponseEntity<List<ScheduleDTO>> getSchedulesByAssignee(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).build();
+        }
+        List<ScheduleEntity> schedules = scheduleService.getSchedulesByAssignee(userId);
+        List<ScheduleDTO> scheduleDTOs = schedules.stream()
+                .map(schedule -> new ScheduleDTO(
+                        schedule.getSid(),
+                        schedule.getSname(),
+                        schedule.getScontents(),
+                        schedule.getStartDate(),
+                        schedule.getEndDate(),
+                        schedule.getSprocess(),
+                        schedule.getScolor()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(scheduleDTOs);
+    }
+
+
+
+}

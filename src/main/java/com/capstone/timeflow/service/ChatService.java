@@ -1,10 +1,8 @@
 package com.capstone.timeflow.service;
 
-import com.capstone.timeflow.dto.ChatGPTResponse;
+import com.capstone.timeflow.dto.ChatBotResponse;
 import com.capstone.timeflow.entity.ChatEntity;
-import com.capstone.timeflow.entity.JoinTeamEntity;
 import com.capstone.timeflow.entity.TeamEntity;
-import com.capstone.timeflow.entity.UserEntity;
 import com.capstone.timeflow.repository.ChatRepository;
 
 import com.capstone.timeflow.repository.TeamRepository;
@@ -23,7 +21,7 @@ public class ChatService {
     private final TeamRepository teamRepository;
     private final ChatRepository chatRepository;
 
-    private final ChatGptService chatGptService;
+    private final ChatBotService chatGptService;
 
 
     public ChatEntity createChat(Long teamId, String sender, String message) {
@@ -33,9 +31,5 @@ public class ChatService {
 
     public List<ChatEntity> findAllChatByTeamId(Long teamId) {
         return chatRepository.findAllByTeam_TeamId(teamId);
-    }
-    //gpt응답 받아오는 메서드
-    public ChatGPTResponse getGptResponse(String prompt) {
-        return chatGptService.chat(prompt);
     }
 }
