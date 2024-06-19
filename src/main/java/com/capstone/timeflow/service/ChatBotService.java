@@ -44,9 +44,22 @@ public class ChatBotService {
     }
 
     private ChatBotResponse handleSearch(Long teamId, String query) {
-        ChatBotResponse response = sendToOpenAI(query);
-        System.out.println(response.getChoices()[0].getText());
-        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 검색 결과: " + query)});
+        ChatBotResponse gptResponse = sendToOpenAI(query);
+
+        if (gptResponse == null || gptResponse.getChoices() == null || gptResponse.getChoices().length == 0) {
+            throw new RuntimeException("GPT-3 응답이 유효하지 않습니다.");
+        }
+
+        // GPT-3의 응답에서 필요한 정보를 추출
+        String searchResult = gptResponse.getChoices()[0].getMessage().getContent().trim();
+        System.out.println(searchResult);
+
+        // 응답 생성
+        ChatBotResponse response = new ChatBotResponse();
+        ChatBotResponse.Message message = new ChatBotResponse.Message();
+        message.setRole("assistant");
+        message.setContent(searchResult);
+        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice(message)});
         System.out.println(response);
 
         return response;
@@ -59,19 +72,28 @@ public class ChatBotService {
         String prompt = "다음 텍스트에서 일정 제목, 내용, 시작 날짜 및 시간, 종료 날짜 및 시간, 진행 상황을 추출해줘. 만약 시간이 지정되어있지 않다면 현재 시각을 기준으로 등록 해줘:\n" + details;
         ChatBotResponse gptResponse = sendToOpenAI(prompt);
 
+        if (gptResponse == null || gptResponse.getChoices() == null || gptResponse.getChoices().length == 0) {
+            throw new RuntimeException("GPT-3 응답이 유효하지 않습니다.");
+        }
+
         // GPT-3의 응답에서 필요한 정보를 추출
-        String extractedInfo = gptResponse.getChoices()[0].getText().trim();
+        String extractedInfo = gptResponse.getChoices()[0].getMessage().getContent().trim();
         System.out.println(extractedInfo);
         ScheduleDTO scheduleDTO = parseScheduleInfo(extractedInfo);
 
         scheduleService.createTeamSchedule(scheduleDTO, teamId, userId);
         System.out.println("등록 완료 DB 확인해보셈 ㅋㅋ");
 
+        // 응답 생성
         ChatBotResponse response = new ChatBotResponse();
-        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 일정 등록 완료: " + extractedInfo)});
+        ChatBotResponse.Message message = new ChatBotResponse.Message();
+        message.setRole("assistant");
+        message.setContent("채팅방 " + teamId + "의 일정 등록 완료: " + extractedInfo);
+        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice(message)});
         System.out.println(response);
         return response;
     }
+
 
     private ChatBotResponse sendToOpenAI(String prompt) {
         System.out.println("GPT한테 보낼거임 ㅋㅋ");
@@ -95,9 +117,21 @@ public class ChatBotService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-        // OpenAI API에 POST 요청을 보내고 응답을 받습니다.
-        return restTemplate.postForObject(API_URL, request, ChatBotResponse.class);
+        try {
+            // OpenAI API에 POST 요청을 보내고 응답을 받습니다.
+            ChatBotResponse response = restTemplate.postForObject(API_URL, request, ChatBotResponse.class);
+            if (response != null && response.getChoices() != null && response.getChoices().length > 0) {
+                System.out.println("Response: " + response.getChoices()[0].getMessage().getContent());
+            } else {
+                System.out.println("No response or empty choices");
+            }
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
 
 
     private ScheduleDTO parseScheduleInfo(String extractedInfo) {
