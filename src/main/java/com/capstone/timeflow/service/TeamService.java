@@ -108,4 +108,8 @@ public class TeamService {
         // 팀 삭제
         teamRepository.deleteByTeamId(teamId);
     }
+    public TeamEntity findTeamById(Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+    }
 }

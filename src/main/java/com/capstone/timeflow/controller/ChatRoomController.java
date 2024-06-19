@@ -4,8 +4,11 @@ import com.capstone.timeflow.dto.ChatBotResponse;
 import com.capstone.timeflow.dto.ChatMessage;
 import com.capstone.timeflow.entity.ChatEntity;
 import com.capstone.timeflow.entity.CustomUser;
+import com.capstone.timeflow.entity.TeamEntity;
+import com.capstone.timeflow.repository.TeamRepository;
 import com.capstone.timeflow.service.ChatBotService;
 import com.capstone.timeflow.service.ChatService;
+import com.capstone.timeflow.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,6 +27,7 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final SimpMessagingTemplate sendingOperations;
     private final ChatBotService chatBotService;
+    private final TeamService teamService;
 
 
     //채팅방 view 띄우고 model(teamId, chatList) -> 클라이언트에 전송 -> 클라이언트는 해당 값을 가지고 팀 이름과 채팅 기록을 화면에 보여주기
@@ -31,8 +35,10 @@ public class ChatRoomController {
     @GetMapping("/team/{teamId}")
     public String teamChat(@PathVariable(required = false) Long teamId, Model model, Authentication auth){
         List<ChatEntity> chatList = chatService.findAllChatByTeamId(teamId);
+        TeamEntity team = teamService.findTeamById(teamId);
         CustomUser customUser = (CustomUser) auth.getPrincipal();
         model.addAttribute("teamId",teamId);
+        model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("chatList", chatList);
         model.addAttribute("userName",customUser.getUserName());
         model.addAttribute("userId", customUser.getUserEntity().getUserId());
