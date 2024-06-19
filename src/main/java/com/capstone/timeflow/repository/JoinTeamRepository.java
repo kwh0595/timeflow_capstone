@@ -15,6 +15,9 @@ public interface JoinTeamRepository extends JpaRepository<JoinTeamEntity, Long> 
     boolean existsByTeamIdAndUserId(TeamEntity teamId, UserEntity userId);
     void deleteByTeamId(TeamEntity teamId);
     List<JoinTeamEntity> findByUserId(UserEntity userId);
+
+    @Query("SELECT j.teamId FROM JoinTeamEntity j WHERE j.userId = :userId")
+    List<TeamEntity> findTeamsByUserId(@Param("userId") UserEntity userId);
     JoinTeamEntity findByTeamIdAndUserId(TeamEntity teamId, UserEntity userId);
 
 
