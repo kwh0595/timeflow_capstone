@@ -1,140 +1,120 @@
-body {
-  display: flex;
-  background-color: white;
-}
+/* mypage.css */
 
-.top-nav {
-  height: 30px;
-  width: 100%;
-  background-color: #ddd;
-  position: fixed;
-  top: 0;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.left-nav {
-  width: 200px;
-  background-color: #eee;
-  height: 100vh;
-  padding: 40px 20px;
+/* Global styles */
+* {
+  margin: 0;
   box-sizing: border-box;
-  position: fixed;
-  left: 0;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+  color: #ecf0f1; /* Light text color */
+  font-size: 16px; /* 기본 글씨 크기를 키움 */
 }
 
-.left-nav button {
-  display: block;
-  width: 100%;
-  padding: 20px;
-  margin-bottom: 15px; /* 버튼 간 간격 추가 */
-  background-color: transparent; /* 배경색 제거 */
-  border: none; /* 테두리 제거 */
-  font-family: 'Noto Sans', sans-serif; /* 글씨체 변경, 웹사이트에 따라 @import나 link태그로 Noto Sans 추가 필요 */
-  font-size: 16px; /* 글씨 크기 조정 */
-  color: #333; /* 글씨 색상 설정, 필요에 따라 변경 가능 */
-  cursor: pointer; /* 마우스 오버 시 커서 변경 */
-  text-align: left; /* 왼쪽 정렬 */
-}
-
-.sign-out {
-  margin-top: 20px;
-  padding: 10px 20px; /* 간격 증가 */
-  position: absolute;
-  bottom: 40px; /* 간격 증가 */
-  width: calc(100% - 40px);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+body {
+  background-color: #3B5998; /* Pastel navy blue background */
+  margin: 0;
+  padding: 0;
 }
 
 .profile {
-  margin-left: 240px; /* 간격 증가 */
-  padding: 60px; /* 간격 증가 */
-  background-color: #e0f2f1;
-  width: calc(100% - 240px);
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  padding: 2rem;
 }
 
-.profile h2, .profile hr, .profile p, .profile .field {
-  margin-bottom: 37px; /* 간격 증가 */
-}
-
-.name, .name strong{
-  font-size: 24px; /* 원하는 글씨 크기로 설정 */
+h2 {
+  font-size: 3rem;
+  color: #ecf0f1; /* Light text color */
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .field {
-  display: flex;
-  flex-direction: column; /* 요소들을 세로로 배열 */
-  align-items: flex-start; /* 왼쪽 정렬 */
-  margin-bottom: 30px; /* 필요에 따라 조정 */
-}
-
-.field p {
-  margin: 0 0 10px 0; /* 문구와 입력칸 사이의 간격 */
-}
-
-.field input {
   width: 100%;
-  height: 40px;
-  padding: 0 10px;
-  font-size: 18px;
-  margin: 5px 0;
-  font-size: 16px;
+  max-width: 400px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
   box-sizing: border-box;
+  font-size: 1rem;
+  background-color: #ecf0f1; /* Light background for input fields */
+  color: #2c3e50; /* Dark text color for contrast */
 }
 
-.field input, .field button {
-  margin: 5px 0; /* 입력칸과 버튼 사이의 간격 */
+.intro {
+  font-size: 1.5rem;
+  color: #bdc3c7; /* Lighter text color for paragraph */
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  white-space: pre-line; /* To preserve line breaks */
+  text-align: center;
+}
+
+button {
+  padding: 0.75rem 1rem; /* 버튼 패딩 조정 */
+  font-size: 1rem; /* 버튼 글씨 크기를 조정 */
+  background-color: #2980b9; /* Blue button color */
+  color: #ffffff; /* White text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  font-weight: 700;
 }
 
 button:hover {
-  background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
+  background-color: #1f618d; /* Darker blue on hover */
 }
 
-.edit-button {
-  padding: 5px 10px;
-  font-size: 12px;
-}
-
-button:hover {
-  background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
+.save-changes-button, .sign-out {
+  width: auto; /* Edit 버튼과 동일하게 width 조정 */
 }
 
 .save-changes-button {
-  background-color: white;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 5px 5px;
-  cursor: pointer;
-  border-radius: 25px;
-  position: fixed;
-  right: 40px;
-  bottom: 40px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #2980b9; /* Blue button color */
 }
 
-.save-changes {
-  margin-top: 20px;
-  padding: 10px 20px;
-  position: fixed;
-  right: 20px;
-  bottom: 40px;
+.save-changes-button:hover {
+  background-color: #1f618d; /* Darker blue on hover */
 }
+
+.sign-out {
+  background-color: #2980b9; /* Blue button color */
+}
+
+.sign-out:hover {
+  background-color: #1f618d; /* Darker blue on hover */
+}
+
 .link-button {
+  width: auto;
+  height: auto;
+  font-size: 1rem;
   background: none;
+  color: #2980b9; /* Blue text color for link */
+  padding: 0;
+  margin: 0;
   border: none;
-  color: black;
-  font-size: 16px;
   cursor: pointer;
-  display: inline;
 }
 
 .link-button:hover {
-  color: #000000; / 마우스 오버 시 색상 변경 */
+  text-decoration: underline;
 }
-

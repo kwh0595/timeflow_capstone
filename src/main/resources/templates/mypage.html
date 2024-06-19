@@ -8,43 +8,26 @@
     <script src="/js/mypage.js" defer></script>
 </head>
 <body>
-<div class="navigation-bar">
-    <div class="top-nav"></div>
-    <div class="left-nav">
-        <button>My Tasks</button>
-        <button>My Team</button>
-        <button onclick="redirectToMainPage()">Edit Schedule</button>
-        <button>Chat</button>
-        <button class="sign-out" onclick="signOut()">Sign out</button>
-    </div>
-</div>
 <div class="profile">
     <h2>User Profile</h2>
-    <hr>
-    <p class="name">Name: <strong id="displayName">Eojin Kim</strong></p>
-    <p class="intro">A short introduction about myself.</p>
-    <hr>
+
     <div class="field">
         <label for="name">Name:</label>
         <input id="name" type="text" disabled>
         <button onclick="enableEdit('name')">Edit</button>
     </div>
-    <hr>
+
     <div class="field">
         <label for="email">Email Address:</label>
         <input id="email" type="text" disabled>
     </div>
-    <hr>
+
     <div class="field">
-        <label for="team">Team:</label>
-        <input id="team" type="text" disabled>
-    </div>
-    <hr>
-    <div class="field">
-        <label for="password">Password:</label>
+        <label>Password:</label>
         <button class="set-new-password-button link-button" onclick="location.href='/user/mypage/newpassword'">새 비밀번호 변경 &rarr;</button>
     </div>
     <button class="save-changes-button" onclick="saveChanges()">Save Changes</button>
+    <button class="sign-out" onclick="signOut()">Sign out</button>
 </div>
 </body>
 </html>
