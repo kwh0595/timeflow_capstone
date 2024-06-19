@@ -1,10 +1,11 @@
-*{
-    margin: 0px;
+/* Global styles */
+* {
+    margin: 0;
     box-sizing: border-box;
-    font-size: 11px;
+    font-size: 14px; /* 기본 글씨 크기를 키움 */
 }
 
-html{
+html {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -12,92 +13,94 @@ html{
     padding-bottom: 20px;
 }
 
-body{
-    width: 30%;
+body {
+    width: 40%; /* 전체 폭을 더 넓게 설정 */
+    font-family: 'Arial', sans-serif;
+    background-color: #3B5998; /* Pastel navy blue background */
+    color: #ecf0f1; /* Light text color */
 }
 
-input{
-    border: 1px solid black;
+input {
+    border: 1px solid #bdc3c7;
     border-radius: 3px;
-    line-height: 35px;
-    font-size:12px;
-    padding-left: 10px;
-    padding-right: 10px;
+    line-height: 45px; /* 입력 칸의 높이를 키움 */
+    font-size: 16px; /* 입력 칸의 글씨 크기를 키움 */
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ecf0f1; /* Light background for input fields */
+    color: #2c3e50; /* Dark text color for contrast */
 }
 
-.wrapper{
-    padding: 10px;
+.wrapper {
+    padding: 20px; /* 내부 여백을 더 넓게 설정 */
 }
 
-div{
-    padding-top: 3px;
-    padding-bottom: 8px;
+div {
+    padding-top: 10px;
+    padding-bottom: 12px;
 }
 
-.title{
+.title {
     text-align: center;
     font-weight: 700;
+    color: #ecf0f1; /* Light text color */
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem; /* 제목의 글씨 크기를 키움 */
 }
 
-.email input{
-    width: 100%;
-}
-
-.name input{
-    width: 100%;
-}
-
-.password input{
+.email input, .name input, .password input {
     width: 100%;
 }
 
 .info {
     position: relative;
-    padding-bottom: 60px;
+    padding-bottom: 80px; /* 아래 여백을 더 넓게 설정 */
 }
 
 /* 출생 연도 드롭다운 스타일 */
 #birth-year {
     box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 0px; /* .info 내에서의 왼쪽 기준 위치 */
-    top: 20px; /* "생년월일" 텍스트 바로 아래에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
+    position: relative;
+    width: 30%; /* 세 개의 드롭다운 총 길이가 100%가 되도록 조정 */
+    height: 45px; /* 다른 입력 칸과 높이를 맞춤 */
+    margin-right: 2%; /* 드롭다운 사이의 간격을 조정 */
+    margin-top: 10px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
     border-radius: 10px;
 }
 
 /* 월 드롭다운 스타일 */
 #birth-month {
     box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 176px; /* #birth-year 다음에 위치 */
-    top: 20px; /* 동일한 높이에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
+    position: relative;
+    width: 30%; /* 세 개의 드롭다운 총 길이가 100%가 되도록 조정 */
+    height: 45px; /* 다른 입력 칸과 높이를 맞춤 */
+    margin-right: 2%; /* 드롭다운 사이의 간격을 조정 */
+    margin-top: 10px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
     border-radius: 10px;
 }
 
 /* 일 드롭다운 스타일 */
 #birth-day {
     box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 350px; /* #birth-month 다음에 위치 */
-    top: 20px; /* 동일한 높이에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
+    position: relative;
+    width: 30%; /* 세 개의 드롭다운 총 길이가 100%가 되도록 조정 */
+    height: 45px; /* 다른 입력 칸과 높이를 맞춤 */
+    margin-top: 10px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
     border-radius: 10px;
 }
 
 .gender {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px; /* 위쪽 여백을 넓게 설정 */
 }
 
 .buttons {
@@ -106,66 +109,120 @@ div{
 
 .gender button {
     width: 100%;
-    height: 40px;
-    font-size: 14px;
+    height: 45px; /* 버튼 높이를 키움 */
+    font-size: 16px; /* 버튼 글씨 크기를 키움 */
+    background-color: #2980b9; /* Blue button color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
 }
 
-.genders:focus{
-    background-color:#0056b3;
+.gender button:hover {
+    background-color: #1f618d; /* Darker blue on hover */
+}
+
+.genders:focus {
+    background-color: #1f618d;
 }
 
 /* 버튼 사이의 간격을 추가하고 싶다면, 다음과 같이 스타일을 적용할 수 있습니다. */
 .gender .buttons button:not(:last-child) {
-    margin-right: 10px; /* 마지막 버튼을 제외한 버튼에 오른쪽 여백 추가 */
+    margin-right: 15px; /* 마지막 버튼을 제외한 버튼에 오른쪽 여백 추가 */
 }
 
 .signUp button {
     width: 100%;
     cursor: pointer;
-    height: 30px;
-    background-color: #0056b3; /* 버튼의 배경색을 지정 */
-    color: white; /* 버튼의 글자색을 지정 */
-    border: none; /* 버튼의 테두리를 제거 */
+    height: 50px; /* 버튼 높이를 키움 */
+    background-color: #2980b9; /* Blue button color */
+    color: white; /* White text color */
+    border: none; /* Remove button border */
+    font-size: 1.5rem; /* 버튼 글씨 크기를 키움 */
+    font-weight: 700;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
 }
 
-.error{
-    font-size: 1px;
-    height: 20px;
-    color:red;
-    font-weight: 700;
+.signUp button:hover {
+    background-color: #1f618d; /* Darker blue on hover */
 }
+
+.error {
+    font-size: 1rem; /* 에러 메시지 글씨 크기를 키움 */
+    height: 20px;
+    color: red;
+    font-weight: 700;
+    font-family: 'Arial', sans-serif;
+}
+
 .selected {
     background-color: blue;
     color: white;
 }
 
 .genders:hover,
-.genders.active{
-    background:blue;
-    color:white;
-}
-.genders:visited{
-    background:blue;
-    color:white;
+.genders.active {
+    background: blue;
+    color: white;
 }
 
-.hide{
-    display:none;
+.genders:visited {
+    background: blue;
+    color: white;
 }
-.success-message{
-    color:blue;
+
+.hide {
+    display: none;
 }
-.failure-message{
+
+.success-message {
+    color: blue;
+}
+
+.failure-message {
     color: red;
 }
-.strongPassword-message{
-    color:red;
-}
-.email_button{
-    background-color: blue;
-    color:white;
+
+.strongPassword-message {
+    color: red;
 }
 
-.signUpButton:disabled{
+.email_button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem;
+    font-size: 1.2rem; /* 버튼 글씨 크기를 키움 */
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
+}
+
+.email_button:hover {
+    background-color: #1f618d; /* Darker blue on hover */
+}
+
+.signUpButton:disabled {
     background-color: rgb(168, 202, 244);
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px; /* 위쪽 여백을 넓게 설정 */
+    margin-bottom: 15px; /* 아래쪽 여백을 넓게 설정 */
+}
+
+.radio-group label {
+    margin-right: 20px;
+    color: #ecf0f1;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px; /* 라벨 글씨 크기를 키움 */
 }

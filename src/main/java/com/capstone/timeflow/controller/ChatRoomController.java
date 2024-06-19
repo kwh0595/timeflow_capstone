@@ -4,22 +4,20 @@ import com.capstone.timeflow.dto.ChatBotResponse;
 import com.capstone.timeflow.dto.ChatMessage;
 import com.capstone.timeflow.entity.ChatEntity;
 import com.capstone.timeflow.entity.CustomUser;
+import com.capstone.timeflow.entity.TeamEntity;
+import com.capstone.timeflow.repository.TeamRepository;
 import com.capstone.timeflow.service.ChatBotService;
 import com.capstone.timeflow.service.ChatService;
-import jakarta.servlet.http.HttpSession;
+import com.capstone.timeflow.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,6 +27,7 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final SimpMessagingTemplate sendingOperations;
     private final ChatBotService chatBotService;
+    private final TeamService teamService;
 
 
     //채팅방 view 띄우고 model(teamId, chatList) -> 클라이언트에 전송 -> 클라이언트는 해당 값을 가지고 팀 이름과 채팅 기록을 화면에 보여주기
@@ -36,7 +35,10 @@ public class ChatRoomController {
     @GetMapping("/team/{teamId}")
     public String teamChat(@PathVariable(required = false) Long teamId, Model model, Authentication auth){
         List<ChatEntity> chatList = chatService.findAllChatByTeamId(teamId);
+        TeamEntity team = teamService.findTeamById(teamId);
+        CustomUser customUser = (CustomUser) auth.getPrincipal();
         model.addAttribute("teamId",teamId);
+        model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("chatList", chatList);
         model.addAttribute("userName",customUser.getUserName());
         model.addAttribute("userId", customUser.getUserEntity().getUserId());
@@ -75,7 +77,6 @@ public class ChatRoomController {
                             .sender("ChatBot")
                             .message(botResponse.getChoices()[0].getMessage().getContent())
                             .build();
-                    System.out.println("Sending bot message: " + botMessage);
                     //챗봇은 클라이언트에서 전송버튼으로 받아오는 sender가 없으니 dto에 먼저 sender를 저장하고 db에 저장하는 방식
                     chatService.createChat(teamId, botMessage.getSender(), botMessage.getMessage());
                     sendingOperations.convertAndSend("/team/" + teamId, botMessage);
@@ -98,16 +99,3 @@ public class ChatRoomController {
         }
     }
 }
-
-//GPT 응답 브로드캐스트
-//                ChatGPTResponse gptResponse = chatService.getGptResponse(message.getMessage());
-//                String gptMessageContent = gptResponse.getChoices().get(0).getGptMessage().getContent();
-//
-//                ChatEntity gptChat = chatService.createChat(teamId, "GPT-3.5", gptMessageContent);
-//                ChatMessage gptChatMessage = ChatMessage.builder()
-//                        .teamId(teamId)
-//                        .sender(gptChat.getSender())
-//                        .message(gptChat.getMessage())
-//                        .messageType(ChatMessage.MessageType.TALK)
-//                        .build();
-//                sendingOperations.convertAndSend("/team/" + teamId, gptChatMessage);
