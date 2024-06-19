@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -38,12 +37,12 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable) // 로컬에서 확인하기 위해 csrf 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/user/findId","/user/findIdResult","user/signup","user/findPassword").permitAll()// 해당 경로에서는 로그인 없이 접근 가능
+                        .requestMatchers("/","/user/findId","/user/findIdResult","user/signup","user/findPassword","/chat-bot").permitAll()// 해당 경로에서는 로그인 없이 접근 가능
                         .requestMatchers("/team/create").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form // 성공하면 메인 페이지로 이동
-                        .loginPage("/")
+                        .loginPage("")
                         .loginProcessingUrl("/login")
                         .usernameParameter("userMail")
                         .passwordParameter("userPassword")

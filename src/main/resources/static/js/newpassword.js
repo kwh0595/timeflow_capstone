@@ -73,7 +73,7 @@ document.getElementById('newpasswordForm').addEventListener('submit', function(e
             .then(data => {
                 if (data.success) { // 비밀번호 변경이 성공한 경우
                     alert("비밀번호가 성공적으로 변경되었습니다.");
-                    window.location.href = '/'; // login.html로 리디렉션
+                    window.location.href = ''; // login.html로 리디렉션
                 } else { // 비밀번호 변경이 실패한 경우
                     alert("비밀번호 변경에 실패했습니다.");
                 }

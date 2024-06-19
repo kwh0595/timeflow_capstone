@@ -24,7 +24,7 @@ public class HomeController {
     private final UserServiceImpl userService;
 
     @GetMapping("/")
-    public String loginPage(){
+    public String timeflowPage(){
         return "login";
     }
 
