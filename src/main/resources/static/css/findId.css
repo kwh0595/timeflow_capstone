@@ -1,108 +1,112 @@
 body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #3B5998; /* Pastel navy blue background */
+    margin: 0;
+    padding: 0;
+    color: #ecf0f1; /* Light text color */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    height: 100vh;
 }
 
 .find-id-form {
-    width: 80%;
-    max-width: 500px;
-    padding: 20px;
+    background-color: transparent; /* Transparent background */
+    padding: 2rem;
     border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 2s ease-in-out;
+    text-align: center; /* Center align the text */
 }
 
 .find-id-form h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: #ecf0f1; /* Light text color */
+    font-size: 2rem;
 }
 
-.form-group {
-    margin-bottom: 20px;
-    position: relative;
-    min-height: 70px;
+.find-id-form .form-group {
+    margin-bottom: 1rem;
+    text-align: left; /* Left align labels and inputs */
 }
 
-.form-group label {
+.find-id-form label {
     display: block;
-    margin-bottom: .5rem;
+    font-size: 1rem;
+    color: #bdc3c7; /* Lighter text color for label */
+    margin-bottom: 0.5rem;
 }
 
-.form-group input,
-.form-group select {
+.find-id-form input[type="text"], .find-id-form select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #bdc3c7;
     border-radius: 5px;
     box-sizing: border-box;
-    margin-top: 10px;
+    font-size: 1rem;
+    background-color: #ecf0f1; /* Light background for input fields */
+    color: #2c3e50; /* Dark text color for contrast */
 }
 
-button {
+.find-id-form button[type="button"] {
     width: 100%;
-    padding: 15px;
-    background-color: #007bff;
-    color: white;
+    padding: 0.75rem;
     border: none;
     border-radius: 5px;
+    background-color: #2980b9; /* Blue button color */
+    color: #ffffff; /* White text color */
+    font-size: 1.2rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+.find-id-form button[type="button"]:hover {
+    background-color: #1f618d; /* Darker blue on hover */
 }
 
-/* 출생 연도 드롭다운 스타일 */
-#birthday_year {
-    box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 0px; /* .info 내에서의 왼쪽 기준 위치 */
-    top: 20px; /* "생년월일" 텍스트 바로 아래에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 10px;
+.find-id-form .box {
+    width: 30%; /* Adjusted width to fit all three boxes */
+    display: inline-block;
+    margin-right: 2%; /* Margin between select boxes */
+    background-color: #ecf0f1; /* Light background for select fields */
+    color: #2c3e50; /* Dark text color for contrast */
 }
 
-/* 월 드롭다운 스타일 */
-#birthday_month {
-    box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 176px; /* #birth-year 다음에 위치 */
-    top: 20px; /* 동일한 높이에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 10px;
+.find-id-form .box:last-child {
+    margin-right: 0; /* Remove margin from last select box */
 }
 
-/* 일 드롭다운 스타일 */
-#birthday_day {
-    box-sizing: border-box;
-    position: absolute;
-    width: 150px;
-    height: 49px;
-    left: 350px; /* #birth-month 다음에 위치 */
-    top: 20px; /* 동일한 높이에 위치하도록 조정 */
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 10px;
+.find-id-form span {
+    display: block;
+    font-size: 0.875rem;
+    color: #e74c3c; /* Red color for error messages */
+    margin-top: -1rem;
+    margin-bottom: 1rem;
 }
 
 .popup {
-    display: none;
+    display: none; /* Hidden by default */
+    background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+    color: #ecf0f1; /* Light text color */
+    padding: 1rem;
+    border-radius: 5px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc; /* 테두리 스타일 및 색상 */
-    border-radius: 5px; /* 테두리의 모서리를 둥글게 만듦 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 1000; /* Ensure it appears above other elements */
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
