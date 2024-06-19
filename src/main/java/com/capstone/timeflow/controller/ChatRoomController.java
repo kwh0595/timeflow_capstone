@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatService chatService;
-    private final SimpMessageSendingOperations sendingOperations;
+    private final SimpMessagingTemplate sendingOperations;
     private final ChatBotService chatBotService;
 
 
@@ -55,6 +56,7 @@ public class ChatRoomController {
             ChatMessage chatMessage = ChatMessage.builder()
                     .teamId(teamId)
                     .sender(chat.getSender())
+                    .userId(message.getUserId())
                     .message(chat.getMessage())
                     .build();
             sendingOperations.convertAndSend("/team/" + teamId, chatMessage);
@@ -72,8 +74,9 @@ public class ChatRoomController {
                     ChatMessage botMessage = ChatMessage.builder()
                             .teamId(teamId)
                             .sender("ChatBot")
-                            .message(botResponse.getChoices()[0].getText())
+                            .message(botResponse.getChoices()[0].getMessage().getContent())
                             .build();
+                    System.out.println("Sending bot message: " + botMessage);
                     //챗봇은 클라이언트에서 전송버튼으로 받아오는 sender가 없으니 dto에 먼저 sender를 저장하고 db에 저장하는 방식
                     chatService.createChat(teamId, botMessage.getSender(), botMessage.getMessage());
                     sendingOperations.convertAndSend("/team/" + teamId, botMessage);

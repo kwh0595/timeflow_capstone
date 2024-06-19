@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,14 +19,14 @@ public class ScheduleDTO {
     private Long sid;
     private String sname;
     private String scontents;
-    private LocalDateTime startdate; // 필드명 수정
-    private LocalDateTime enddate;
+    private LocalDate startdate; // 필드명 수정
+    private LocalDate enddate;
     private String sprocess;
     private String scolor;
 
     private List<String> assigneeUsernames;//add
 
-    public ScheduleDTO(Long sid, String sname, String scontents, LocalDateTime startdate, LocalDateTime enddate, String sprocess, String scolor) {
+    public ScheduleDTO(Long sid, String sname, String scontents, LocalDate startdate, LocalDate enddate, String sprocess, String scolor) {
         this.sid = sid;
         this.sname = sname;
         this.scontents = scontents;

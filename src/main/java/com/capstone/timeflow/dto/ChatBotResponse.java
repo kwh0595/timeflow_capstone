@@ -18,6 +18,14 @@ public class ChatBotResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Choice {
-        private String text;
+        private Message message;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Message {
+        private String role;
+        private String content;
     }
 }

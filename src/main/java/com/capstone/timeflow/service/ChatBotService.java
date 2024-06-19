@@ -10,8 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,7 +26,8 @@ public class ChatBotService {
     private ScheduleServiceImpl scheduleService;
 
     // OpenAI API 키를 application.properties에서 주입받습니다.
-    private String apiKey = "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";
+    @Value("${gpt_api_key}")
+    private String apiKey;
 
     // OpenAI API의 엔드포인트 URL
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
@@ -43,9 +48,22 @@ public class ChatBotService {
     }
 
     private ChatBotResponse handleSearch(Long teamId, String query) {
-        ChatBotResponse response = sendToOpenAI(query);
-        System.out.println(response.getChoices()[0].getText());
-        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 검색 결과: " + query)});
+        ChatBotResponse gptResponse = sendToOpenAI(query);
+
+        if (gptResponse == null || gptResponse.getChoices() == null || gptResponse.getChoices().length == 0) {
+            throw new RuntimeException("GPT-3 응답이 유효하지 않습니다.");
+        }
+
+        // GPT-3의 응답에서 필요한 정보를 추출
+        String searchResult = gptResponse.getChoices()[0].getMessage().getContent().trim();
+        System.out.println(searchResult);
+
+        // 응답 생성
+        ChatBotResponse response = new ChatBotResponse();
+        ChatBotResponse.Message message = new ChatBotResponse.Message();
+        message.setRole("assistant");
+        message.setContent("채팅방 " + teamId + "의 검색 결과: " + searchResult);
+        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice(message)});
         System.out.println(response);
 
         return response;
@@ -55,22 +73,31 @@ public class ChatBotService {
      * 일정 등록 명령어를 처리합니다.
      */
     private ChatBotResponse handleSchedule(Long teamId, String details, Long userId) {
-        String prompt = "다음 텍스트에서 일정 제목, 내용, 시작 날짜 및 시간, 종료 날짜 및 시간, 진행 상황을 추출해줘. 만약 시간이 지정되어있지 않다면 현재 시각을 기준으로 등록 해줘:\n" + details;
+        String prompt = "다음 텍스트에서 title(String), content(String), startDate(LocalDate YYYY-MM-DD), endDate(LocalDate YYYY-MM-DD), sprocess(완료, 진행중, 진행예정), assigneeUsernames(String)을 추출해줘. 만약 시간이 지정되어있지 않다면 현재 시각을 기준으로 등록 해줘. 각 필드를 콜론(:)으로 구분하고, 줄바꿈으로 구분하세요.:\n" + details;
         ChatBotResponse gptResponse = sendToOpenAI(prompt);
 
+        if (gptResponse == null || gptResponse.getChoices() == null || gptResponse.getChoices().length == 0) {
+            throw new RuntimeException("GPT-3 응답이 유효하지 않습니다.");
+        }
+
         // GPT-3의 응답에서 필요한 정보를 추출
-        String extractedInfo = gptResponse.getChoices()[0].getText().trim();
-        System.out.println(extractedInfo);
+        String extractedInfo = gptResponse.getChoices()[0].getMessage().getContent().trim();
+        System.out.println("extractInfo : 0" + extractedInfo);
         ScheduleDTO scheduleDTO = parseScheduleInfo(extractedInfo);
 
         scheduleService.createTeamSchedule(scheduleDTO, teamId, userId);
         System.out.println("등록 완료 DB 확인해보셈 ㅋㅋ");
 
+        // 응답 생성
         ChatBotResponse response = new ChatBotResponse();
-        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice("채팅방 " + teamId + "의 일정 등록 완료: " + extractedInfo)});
+        ChatBotResponse.Message message = new ChatBotResponse.Message();
+        message.setRole("assistant");
+        message.setContent("요청하신 일정이 등록 완료 되었습니다.");
+        response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice(message)});
         System.out.println(response);
         return response;
     }
+
 
     private ChatBotResponse sendToOpenAI(String prompt) {
         System.out.println("GPT한테 보낼거임 ㅋㅋ");
@@ -83,23 +110,94 @@ public class ChatBotService {
 
         // 요청 본문 설정
         Map<String, Object> body = new HashMap<>();
-        body.put("prompt", prompt);
+        body.put("model", "gpt-3.5-turbo"); // 모델 파라미터 추가
+        body.put("messages", new Object[]{
+                new HashMap<String, String>() {{
+                    put("role", "user");
+                    put("content", prompt);
+                }}
+        });
         body.put("max_tokens", 150);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-        // OpenAI API에 POST 요청을 보내고 응답을 받습니다.
-        return restTemplate.postForObject(API_URL, request, ChatBotResponse.class);
+        try {
+            // OpenAI API에 POST 요청을 보내고 응답을 받습니다.
+            ChatBotResponse response = restTemplate.postForObject(API_URL, request, ChatBotResponse.class);
+            if (response != null && response.getChoices() != null && response.getChoices().length > 0) {
+                System.out.println("Response: " + response.getChoices()[0].getMessage().getContent());
+            } else {
+                System.out.println("No response or empty choices");
+            }
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private ScheduleDTO parseScheduleInfo(String extractedInfo) {
-        // GPT-3의 응답을 ScheduleDTO로 변환하는 로직
-        String[] infoParts = extractedInfo.split(",");
-        String title = infoParts[0].split(":")[1].trim();
-        String content = infoParts[1].split(":")[1].trim();
-        LocalDateTime startDate = LocalDateTime.parse(infoParts[2].split(":")[1].trim());
-        LocalDateTime endDate = LocalDateTime.parse(infoParts[3].split(":")[1].trim());
+        System.out.println("ScheduleDTO extractInfo : " + extractedInfo);
 
-        return new ScheduleDTO(null, title, content, startDate, endDate, null, null, null);
+        // GPT-3의 응답을 ScheduleDTO로 변환하는 로직
+        String[] infoParts = extractedInfo.split("\n"); // 줄바꿈 기준으로 분리
+        String title = null;
+        String content = null;
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        String sprocess = null;
+        List<String> assigneeUsernames = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (String part : infoParts) {
+            String[] keyValue = part.split(": ");
+            if (keyValue.length < 2) continue; // 잘못된 형식 무시
+            String key = keyValue[0].trim(); // 키 부분
+            String value = keyValue[1].trim(); // 값 부분
+
+            switch (key) {
+                case "title":
+                    title = value;
+                    break;
+                case "content":
+                    content = value;
+                    break;
+                case "startDate":
+                    if (value.equals("현재 시각")) {
+                        startDate = LocalDate.now(); // 현재 시각 설정
+                    } else {
+                        startDate = LocalDate.parse(value, formatter); // 주어진 날짜 파싱
+                    }
+                    break;
+                case "endDate":
+                    if (value.equals("현재 시각으로부터 한달 뒤")) {
+                        endDate = LocalDate.now().plusMonths(1);
+                    } else if (value.equals("없음")) {
+                        endDate = null; // '없음'일 경우 null로 설정
+                    } else {
+                        endDate = LocalDate.parse(value, formatter); // 주어진 날짜 파싱
+                    }
+                    break;
+                case "sprocess":
+                    sprocess = value;
+                    break;
+                case "assigneeUsernames":
+                    if (!value.equals("null")) {
+                        // 값이 'null'이 아닐 경우, 콤마로 구분된 사용자 이름들을 리스트에 추가
+                        for (String username : value.split(",")) {
+                            assigneeUsernames.add(username.trim());
+                        }
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unexpected key: " + key); // 예기치 않은 키가 있을 경우 예외 발생
+            }
+        }
+
+        ScheduleDTO scheduleDTO = new ScheduleDTO(null, title, content, startDate, endDate, sprocess, "blue", assigneeUsernames);
+        System.out.println("return ScheduleDTO : \n" + scheduleDTO);
+        return scheduleDTO;
     }
+
 }
