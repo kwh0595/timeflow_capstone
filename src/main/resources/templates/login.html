@@ -6,58 +6,119 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <title>TIMEFLOW</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #3B5998; /* Pastel navy blue background */
-            margin: 0;
-            padding: 0;
-            color: #ecf0f1; /* Light text color */
+        @font-face {
+            font-family: 'BMDOHYEON';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'HSGooltokki';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/HSGooltokki.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
         }
 
-        .container {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            margin: 0;
+            padding: 0;
+            color: c; /* Dark text color */
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .left, .right {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            padding: 2rem;
             height: 100vh;
-            background: #3B5998; /* Matching the body background */
         }
 
-        .intro {
-            max-width: 900px;
-            margin-bottom: 2rem;
-            animation: fadeIn 2s ease-in-out;
-            white-space: pre-line; /* To preserve line breaks */
+        .left {
+            background-color: rgba(57, 99, 168, 0.76); /* Blue background */
+            color: #ffffff; /* White text color */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .intro h1 {
+        .fixed-title {
+            position: absolute;
+            top: 1rem; /* Position title at the top */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .fixed-title h1 {
+            font-family: 'HSGooltokki', sans-serif; /* 적용할 폰트 지정 */
+            font-weight: 300; /* 폰트 굵기 얇게 설정 */
+        }
+
+        .slides-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: calc(100% - 4rem); /* Adjust height to avoid overlap with title */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .slide {
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .left h1 {
+            font-family: 'BMDOHYEON', sans-serif;
             font-size: 3rem;
-            color: #ecf0f1; /* Light text color */
             margin-bottom: 1rem;
         }
 
-        .intro p {
-            font-size: 1.5rem;
-            color: #bdc3c7; /* Lighter text color for paragraph */
-            margin-bottom: 2rem;
+        .left p {
+            font-size: 1.25rem;
             line-height: 1.6;
+            white-space: pre-line;
+            max-width: 500px;
+            margin: 1rem 0;
+        }
+
+        .left img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .right {
+            background-color: #ffffff; /* White background */
+            color: #333333; /* Dark text color */
+            text-align: center;
         }
 
         .login-form {
-            background-color: transparent; /* Transparent background */
-            padding: 2rem;
-            border-radius: 10px;
-            width: 100%;
             max-width: 400px;
+            width: 100%;
             animation: fadeIn 3s ease-in-out;
-            display: none; /* Initially hidden */
         }
 
         .login-form h2 {
             margin-bottom: 1.5rem;
             font-weight: 700;
-            color: #ecf0f1; /* Light text color */
+            color: #2c3e50; /* Dark text color */
             font-size: 2rem;
         }
 
@@ -84,7 +145,7 @@
             padding: 0.75rem;
             border: none;
             border-radius: 5px;
-            background-color: #2980b9; /* Blue button color */
+            background-color: rgba(57, 99, 168, 0.76); /* Blue button color */
             color: #ffffff; /* White text color */
             font-size: 1.2rem;
             font-weight: 700;
@@ -93,7 +154,7 @@
         }
 
         .login-form input[type="submit"]:hover {
-            background-color: #1f618d; /* Darker blue on hover */
+            background-color: rgba(32, 73, 147, 0.76); /* Darker blue on hover */
         }
 
         .login-form .links {
@@ -103,14 +164,14 @@
         }
 
         .login-form .links a {
-            color: #ecf0f1; /* Light text color for links */
+            color: #2980b9; /* Blue text color for links */
             text-decoration: none;
             font-size: 1rem;
             transition: color 0.3s ease;
         }
 
         .login-form .links a:hover {
-            color: #bdc3c7; /* Slightly darker color on hover */
+            color: #1f618d; /* Darker blue on hover */
         }
 
         @keyframes fadeIn {
@@ -124,12 +185,23 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="intro">
-        <h1>Welcome to TIMEFLOW</h1>
-        <p>실시간 채팅 기능을 통해 팀원들과 쉽게 소통할 수 있으며, 스케줄러를 통해 프로젝트 일정과 개인 일정을 체계적으로 관리할 수 있습니다.<br>
-            이 모든 기능을 통해 팀 프로젝트를 더욱 효율적이고 체계적으로 관리하세요!</p>
+<div class="left">
+    <div class="fixed-title">
+        <h1>Timeflow</h1>
     </div>
+    <div class="slides-container">
+        <div class="slide active">
+            <p>실시간 채팅 기능을 통해 팀원들과 쉽게 소통할 수 있습니다.</p>
+        </div>
+        <div class="slide">
+            <p>스케줄러를 통해 프로젝트 일정과 개인 일정을 체계적으로 관리할 수 있습니다.</p>
+        </div>
+        <div class="slide">
+            <p>이 모든 기능을 통해 팀 프로젝트를 더욱 효율적이고 체계적으로 관리하세요!</p>
+        </div>
+    </div>
+</div>
+<div class="right">
     <div class="login-form" id="login-form">
         <h2>Login</h2>
         <form th:action="@{/login}" method="post">
@@ -152,6 +224,18 @@
     setTimeout(() => {
         document.getElementById('login-form').style.display = 'block';
     }, 3000); // Adjust the delay time (in milliseconds) as needed
+
+    // Slide show for left content
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slides-container .slide');
+
+    function showNextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    setInterval(showNextSlide, 5000); // Change slide every 5 seconds
 </script>
 </body>
 </html>

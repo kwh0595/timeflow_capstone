@@ -39,6 +39,7 @@ public class ChatRoomController {
         CustomUser customUser = (CustomUser) auth.getPrincipal();
         model.addAttribute("teamId",teamId);
         model.addAttribute("teamName",team.getTeamName());
+        System.out.println("teamName은 !!!!!!!!!!!!!!!!!!11"+team.getTeamName());
         model.addAttribute("chatList", chatList);
         model.addAttribute("userName",customUser.getUserName());
         model.addAttribute("userId", customUser.getUserEntity().getUserId());
