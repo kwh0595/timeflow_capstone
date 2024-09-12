@@ -1,36 +1,40 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>아이디 찾기</title>
-  <link href="/css/findId.css" rel="stylesheet"/>
-</head>
-<body>
-  <div class="find-id-form">
-    <h2>아이디 찾기</h2>
-    <form id="findIdForm" action="/user/findIdResult" method="post">
-      <div class="form-group">
-        <label for="userName">이름:</label>
-        <input type="text" id="userName" name="userName" required>
-        <span id="name_error_message"></span>
-      </div>
-      <div class="form-group">
-        <label for="birthday_year">생년월일:</label>
-        <select class="box" id="birthday_year" name="birthday_year" required>
-          <option disabled selected>출생 연도</option>
-        </select>
-        <select class="box" id="birthday_month" name="birthday_month" required>
-          <option disabled selected>월</option>
-        </select>
-        <select class="box" id="birthday_day" name="birthday_day" required>
-          <option disabled selected>일</option>
-        </select>
-        <span id="birthday_error_message"></span>
-      </div>
-      <button type="button" id="findIdButton">아이디 찾기</button>
-    </form>
-  </div>
-  <div id="popup_message" class="popup"></div>
-  <script src="/js/findId.js"></script>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Find Id</title>
+        <link rel="stylesheet" href="/static/css/findid.css">
+        <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <header>
+            <img src="/static/assets/timeflow_icon_mini_white.png" alt="Logo" class="logo">
+        </header>
+        <div class="contents">
+            <h2>아이디 찾기</h2>
+            <form id="findIdForm">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" placeholder="Enter Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" placeholder="Enter Your Email">
+                    <a href="find-password.html" class="find-password">비밀번호 찾기</a>
+                </div>
+                <button type="submit" class="find-id-btn">아이디 찾기</button>
+            </form>
+        </div>
+        <footer>
+            <img src="/static/assets/timeflow_icon_black.png" alt="사이트 로고" class="footer-logo">
+            <p>
+                대표 : 김여정&김우희 | 주소 : 광주광역시 동구 조선대5길 65 IT융합대학 <br>
+                사업자등록번호 : 그런거 없졍
+            </p>
+            <p>
+                개인정보 처리방침 | 이용약관 | 사업자 정보 확인
+            </p>
+        </footer>
+    </body>
 </html>

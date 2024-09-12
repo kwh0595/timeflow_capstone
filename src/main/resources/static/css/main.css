@@ -1,75 +1,143 @@
+/* 폰트 설정 */
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 전체 배경 그라데이션 */
 body {
-  font-family: 'Noto Sans KR', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to top left, #3182f6, #00dcee);
+    height: 130vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.container {
-  display: flex;
-  height: 100%;
-  width: 100%;
+/* Header 스타일 */
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
 }
 
-.chat {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%; /* 너비를 비율로 조정 */
-  height: 100%;
-  border-right: 1px solid #ccc;
+.logo {
+    height: 50px; /* 로고의 크기에 맞게 조절하세요 */
+    width: auto;
 }
 
-.scheduler {
-  flex-grow: 1;
-  height: 100%;
+/* 로고 링크 스타일 */
+.logo-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
 }
 
-.chat, .scheduler {
-  border: none;
+.login-btn {
+    background-color: white;
+    color: #3182f6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-align: center;
+    transition: background-color 0.5s, color 0.5s; /* 호버 효과를 위한 부드러운 전환 */
+    cursor: pointer;
+    font-size: 15px;
 }
 
-
-button:hover {
-  background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
+.login-btn:hover {
+    background-color: #000000; /* 호버 시 배경색 흰색으로 변경 */
+    color: #ffffff; /* 호버 시 글씨색 변경 */
 }
 
-button:hover {
-  background-color: #f2f2f2; /* 마우스 오버 시 버튼 배경 색상을 연한 회색으로 변경 */
+/* Contents 스타일 */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/*마이페이지 버튼*/
-.mypage-button {
-  background-color: white;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 5px 5px;
-  cursor: pointer;
-  border-radius: 25px;
-  position: fixed;
-  right: 40px;
-  bottom: 40px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+.content {
+    text-align: center;
 }
 
-.mypage {
-  margin-top: 20px;
-  padding: 10px 20px;
-  position: fixed;
-  right: 20px;
-  bottom: 40px;
+.main-text-large {
+    font-family: 'Tenada', sans-serif; /* 폰트 적용 */
+    font-size: 30px;
+    letter-spacing: 3px; /* 글자 간격을 2px로 설정 */
+    color: white;
+    margin-top: 50px;
+    font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+.main-text-medium {
+    font-family: 'Tenada', sans-serif; /* 폰트 적용 */
+    font-size: 50px;
+    letter-spacing: 3px; /* 글자 간격을 2px로 설정 */
+    color: white;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-style: italic;
+}
 
+.main-text-small {
+    font-family: 'Tenada', sans-serif; /* 폰트 적용 */
+    font-size: 50px;
+    letter-spacing: 3px; /* 글자 간격을 2px로 설정 */
+    color: white;
+    margin-top: 0px;
+    font-style: italic;
+}
 
+.image-container {
+    position: relative;
+    text-align: center; /* 버튼 중앙 정렬 */
+}
 
+/* 타원형 버튼 스타일 */
+.oval-button {
+    display: inline-block;
+    padding: 15px 25px;
+    border: 2px solid #ffffff; /* 흰색 선 */
+    background-color: transparent; /* 투명 배경 */
+    color: #ffffff; /* 흰색 글씨 */
+    border-radius: 50px; /* 타원형 모양 */
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.5s, color 0.5s; /* 호버 효과를 위한 부드러운 전환 */
+    margin-bottom: 70px; /* 상하 여백 조정 */
+}
 
+.oval-button:hover {
+    background-color: #ffffff; /* 호버 시 배경색 흰색으로 변경 */
+    color: #3182f6; /* 호버 시 글씨색 변경 */
+}
 
+.main-image {
+    width: 250px;
+    height: auto;
+}
 
+/* Footer 스타일 */
+footer {
+    background-color: #000000;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-logo {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+footer p {
+    margin: 5px 0;
+    color: #ACACAC;
+    font-size: 15px;
+    line-height: 2;
+}

@@ -89,7 +89,8 @@ public class ChatRoomController {
                             .sender(chat.getSender())
                             .message(chat.getMessage())
                             .build();
-                    sendingOperations.convertAndSend("/team/" + teamId, chatMessage);*/
+                    sendingOperations.convertAndSend("/team/" + teamId,
+                     chatMessage);*/
                 }
             } catch (Exception e) {
                 // 예외 처리
@@ -99,3 +100,16 @@ public class ChatRoomController {
         }
     }
 }
+
+//GPT 응답 브로드캐스트
+//                ChatGPTResponse gptResponse = chatService.getGptResponse(message.getMessage());
+//                String gptMessageContent = gptResponse.getChoices().get(0).getGptMessage().getContent();
+//
+//                ChatEntity gptChat = chatService.createChat(teamId, "GPT-3.5", gptMessageContent);
+//                ChatMessage gptChatMessage = ChatMessage.builder()
+//                        .teamId(teamId)
+//                        .sender(gptChat.getSender())
+//                        .message(gptChat.getMessage())
+//                        .messageType(ChatMessage.MessageType.TALK)
+//                        .build();
+//                sendingOperations.convertAndSend("/team/" + teamId, gptChatMessage);

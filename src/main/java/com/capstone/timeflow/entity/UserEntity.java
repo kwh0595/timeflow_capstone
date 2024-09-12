@@ -41,6 +41,7 @@ public class UserEntity {
     @Column(name="userAge",columnDefinition = "int default 20")
     private Integer userAge;
 
+    @Builder.Default
     @Column(name = "userJoinDate")
     private LocalDateTime userJoinDate = LocalDateTime.now(); // 현재 시간으로 초기화
 

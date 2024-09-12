@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OpenAiConfig {
     //.env에 있는 gpt_api_key 가져오기
-    @Value("${gpt_api_key}")
+    @Value("${gpt.api.key}")
     private String openAiKey;
     @Bean
     public RestTemplate template(){

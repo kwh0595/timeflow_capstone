@@ -1,110 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Page</title>
-  <link rel="stylesheet" href="/css/main.css">
-  <!--    <link rel="stylesheet" href="/css/main.css"> //메인 CSS 파일을 링크-->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<div class="container">
-  <div class="chat" id="chat"></div>
-  <div class="scheduler" id="scheduler"></div>
-</div>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TimeFlow</title>
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <header>
+            <a href="/" class="logo-link">
+                <img src="/static/assets/timeflow_icon_white_header.png" alt="사이트 로고" class="logo">
+            </a>
+            <button class="login-btn">Login</button>
+        </header>
+        <main>
+            <div class="content">
+                <h1 class="main-text-large">쉽고 빠른 협업 플랫폼</h1>
+                <h2 class="main-text-medium">TimeFlow</h2>
+                <h3 class="main-text-small">Together, Smarter, Faster</h3>
 
-<script>
-  // DOM이 완전히 로드되었을 때 실행
-  document.addEventListener("DOMContentLoaded", function() {
-    // URL과 엘리먼트 ID를 받아 콘텐츠를 로드하는 함수
-    function loadContent(url, elementId, callback) {
-      fetch(url) // URL에서 콘텐츠를 가져옴
-              .then(response => {
-                // 응답이 성공적이지 않으면 에러를 던짐
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text(); // 응답을 텍스트로 변환
-              })
-              .then(data => {
-                // 임시로 데이터를 담을 div 생성
-                const container = document.createElement('div');
-                container.innerHTML = data;
-                // 대상 엘리먼트에 데이터 삽입
-                document.getElementById(elementId).innerHTML = container.innerHTML;
+                <div class="button-container">
+                    <button class="oval-button">START</button>
+                </div>
 
-                // CSS 파일을 로드하고 적용
-                const styles = container.querySelectorAll('link[rel="stylesheet"]');
-                styles.forEach(style => {
-                  const newStyle = document.createElement('link');
-                  newStyle.rel = 'stylesheet';
-                  newStyle.href = style.href;
-                  document.head.appendChild(newStyle);
-                });
+            <img src="/static/assets/main_icon.png" alt="임의의 그림" class="main-image">
+            </div>
+        </main>
 
-                // JS 파일을 로드하고 실행
-                const scripts = container.querySelectorAll('script');
-                let scriptsLoaded = 0;
+        <footer>
+            <img src="/static/assets/timeflow_icon_white.png" alt="사이트 로고" class="footer-logo">
+            <p>
+                대표 : 김여정&김우희 | 주소 : 광주광역시 동구 조선대5길 65 IT융합대학 <br>
+                사업자등록번호 : 그런거 없졍
+            </p>
+            <p>
+                개인정보 처리방침 | 이용약관 | 사업자 정보 확인
+            </p>
+        </footer>
 
-                //콜백 함수
-                const scriptLoadHandler = () => {
-                  scriptsLoaded++;
-                  if (scriptsLoaded === scripts.length) {
-                    if (callback) callback();
-                  }
-                };
-
-                scripts.forEach(script => {
-                  const newScript = document.createElement('script');
-                  if (script.src) {
-                    newScript.src = script.src;
-                    newScript.onload = scriptLoadHandler;
-                    newScript.onerror = () => console.error(`Error loading script: ${script.src}`);
-                    document.body.appendChild(newScript);
-                  } else {
-                    newScript.textContent = script.textContent;
-                    document.body.appendChild(newScript);
-                    scriptLoadHandler();
-                  }
-                });
-              })
-              .catch(error => {
-                // 에러 발생 시 콘솔에 로그를 남기고, 해당 엘리먼트에 에러 메시지 표시
-                console.error('Error loading content:', error);
-                document.getElementById(elementId).innerHTML = `<p>Failed to load ${elementId} content.</p>`;
-              });
-    }
-
-    // chat.html과 scheduler.html을 각각 로드
-    loadContent('chat', 'chat', () => {
-      console.log('Chat content loaded');
-      fetchUserTeams();
-    });
-
-    loadContent('scheduler', 'scheduler', () => {
-      console.log('Scheduler content loaded');
-    });
-
-    function fetchUserTeams(){
-      var teams = localStorage.getItem('teams');
-      $.ajax({
-        type: 'GET',
-        url: 'team/teams',
-        data: {teams: teams},
-        success: function(response){
-          localStorage.setItem('team-list', JSON.stringify(response));
-          console.log("채팅 리스트 변수에 저장 완료");
-          console.log(response);
-          addJoinTeamToList(response);
-        },
-        error: function(xhr, status, error){
-          console.error("채팅 리스트 가져오는 도중 오류", error);
-        }
-      });
-    }
-  });
-</script>
-<button class="mypage-button" onclick="location.href='/user/mypage'">마이페이지</button>
-</body>
+    <script src="script.js"></script>
+    </body>
 </html>

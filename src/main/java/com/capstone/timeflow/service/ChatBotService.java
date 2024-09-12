@@ -1,9 +1,7 @@
 package com.capstone.timeflow.service;
 
 import com.capstone.timeflow.dto.ChatBotResponse;
-import com.capstone.timeflow.dto.ChatGPTResponse;
 import com.capstone.timeflow.dto.ScheduleDTO;
-import com.capstone.timeflow.entity.ScheduleEntity;
 import com.capstone.timeflow.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,7 +29,7 @@ public class ChatBotService {
     private ScheduleServiceImpl scheduleService;
 
     // OpenAI API 키를 application.properties에서 주입받습니다.
-    @Value("${gpt_api_key}")
+    @Value("${gpt.api.key}")
     private String apiKey;
 
     // OpenAI API의 엔드포인트 URL
@@ -64,7 +65,7 @@ public class ChatBotService {
         ChatBotResponse response = new ChatBotResponse();
         ChatBotResponse.Message message = new ChatBotResponse.Message();
         message.setRole("assistant");
-        message.setContent("채팅방 " + teamId + "의 검색 결과: " + searchResult);
+        message.setContent(searchResult);
         response.setChoices(new ChatBotResponse.Choice[]{new ChatBotResponse.Choice(message)});
         System.out.println(response);
 

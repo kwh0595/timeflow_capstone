@@ -4,6 +4,7 @@ import com.capstone.timeflow.service.FindPWService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,11 @@ public class FindPWController {
         return "findPassword";
     }
 
-    @Operation(summary = "비밀번호 찾기", description = "비밀번호찾기 메서드 실행")
-    @PostMapping("/user/findPassword")
-    public String findPassword(@RequestParam String userEmail) {
+    @Operation(summary = "비밀번호 찾기", description =  "비밀번호찾기 메서드 실행")
+    @PostMapping("/findPassword")
+    public ResponseEntity<Object> findPassword(@RequestParam String userEmail) {
         findPWService.resetPasswordAndSendEmail(userEmail);
         System.out.println("성공");
-        return "findPassword";
+        return ResponseEntity.ok("ok");
     }
 }

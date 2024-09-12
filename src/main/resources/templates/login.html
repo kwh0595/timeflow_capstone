@@ -1,157 +1,59 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <title>TIMEFLOW</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #3B5998; /* Pastel navy blue background */
-            margin: 0;
-            padding: 0;
-            color: #ecf0f1; /* Light text color */
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 100vh;
-            background: #3B5998; /* Matching the body background */
-        }
-
-        .intro {
-            max-width: 900px;
-            margin-bottom: 2rem;
-            animation: fadeIn 2s ease-in-out;
-            white-space: pre-line; /* To preserve line breaks */
-        }
-
-        .intro h1 {
-            font-size: 3rem;
-            color: #ecf0f1; /* Light text color */
-            margin-bottom: 1rem;
-        }
-
-        .intro p {
-            font-size: 1.5rem;
-            color: #bdc3c7; /* Lighter text color for paragraph */
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .login-form {
-            background-color: transparent; /* Transparent background */
-            padding: 2rem;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            animation: fadeIn 3s ease-in-out;
-            display: none; /* Initially hidden */
-        }
-
-        .login-form h2 {
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            color: #ecf0f1; /* Light text color */
-            font-size: 2rem;
-        }
-
-        .login-form input[type="text"], .login-form input[type="password"] {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #bdc3c7;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            background-color: #ecf0f1; /* Light background for input fields */
-            color: #2c3e50; /* Dark text color for contrast */
-        }
-
-        .login-form .error {
-            color: #e74c3c; /* Red color for error message */
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .login-form input[type="submit"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 5px;
-            background-color: #2980b9; /* Blue button color */
-            color: #ffffff; /* White text color */
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .login-form input[type="submit"]:hover {
-            background-color: #1f618d; /* Darker blue on hover */
-        }
-
-        .login-form .links {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .login-form .links a {
-            color: #ecf0f1; /* Light text color for links */
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .login-form .links a:hover {
-            color: #bdc3c7; /* Slightly darker color on hover */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="icon" href="/static/assets/favicon.ico" type="image/x-icon">
 </head>
-<body>
-<div class="container">
-    <div class="intro">
-        <h1>Welcome to TIMEFLOW</h1>
-        <p>실시간 채팅 기능을 통해 팀원들과 쉽게 소통할 수 있으며, 스케줄러를 통해 프로젝트 일정과 개인 일정을 체계적으로 관리할 수 있습니다.<br>
-            이 모든 기능을 통해 팀 프로젝트를 더욱 효율적이고 체계적으로 관리하세요!</p>
-    </div>
-    <div class="login-form" id="login-form">
-        <h2>Login</h2>
-        <form th:action="@{/login}" method="post">
-            <input type="text" name="userMail" placeholder="ID">
-            <input type="password" name="userPassword" placeholder="PASSWORD">
-            <div th:if="${param.error}">
-                <p class="error">로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.</p>
+    <body>
+        <header>
+            <img src="/static/assets/timeflow_icon_mini_white.png" alt="Logo" class="logo">
+        </header>
+        <div class="contents">
+            <div class="right-section">
+                <h2>Sign In</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">로그인</button>
+                    <div class="links">
+                        <a href="#">아이디 찾기</a>
+                        <div class="divider"></div>
+                        <a href="#">비밀번호 찾기</a>
+                    </div>
+                </form>
             </div>
-            <input type="submit" value="Login">
-        </form>
-        <div class="links">
-            <a href="/user/signup">회원가입</a>
-            <a href="/user/findId">ID 찾기</a>
-            <a href="/user/findPassword">비밀번호 찾기</a>
+            <div class="separator">
+                <div class="separator-line"></div>
+                <div class="separator-content">OR</div>
+            </div>
+            <div class="left-section">
+            <h2>Social Login</h2>
+            <div class="social-buttons">
+                <button class="kakao">Kakao</button>
+                <button class="naver">Naver</button>
+                <button class="google">Google</button>
+            </div>
         </div>
-    </div>
-</div>
-<script>
-    // Show login form after a delay
-    setTimeout(() => {
-        document.getElementById('login-form').style.display = 'block';
-    }, 3000); // Adjust the delay time (in milliseconds) as needed
-</script>
-</body>
+        </div>
+        <footer>
+            <img src="/static/assets/timeflow_icon_white.png" alt="사이트 로고" class="footer-logo">
+            <p>
+                대표 : 김여정&김우희 | 주소 : 광주광역시 동구 조선대5길 65 IT융합대학 <br>
+                사업자등록번호 : 그런거 없졍
+            </p>
+            <p>
+                개인정보 처리방침 | 이용약관 | 사업자 정보 확인
+            </p>
+        </footer>
+    <script src="script.js"></script>
+    </body>
 </html>
